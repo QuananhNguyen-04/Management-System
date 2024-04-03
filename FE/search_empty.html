@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NHÀ XE HẠNH PHÚC</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    /* CSS */
+    /* Chỉnh sửa cho thanh tìm kiếm */
+    #search-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 20px;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      background-color: #f3f3f3;
+      border-radius: 20px;
+      padding: 5px 10px;
+      width: 300px;
+    }
+
+    #search-text {
+      border: none;
+      background: none;
+      flex: 1;
+      padding: 5px;
+    }
+
+    #search-type {
+      padding: 5px;
+      margin-right: 10px;
+      border: none;
+      background: none;
+    }
+
+    #search-btn {
+      background-color: #333;
+      color: #fff;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    #search-btn:hover {
+      background-color: #555;
+    }
+
+    /* CSS cho bảng dữ liệu */
+    #result-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    #result-table th, #result-table td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+
+    #result-table th {
+      background-color: #f2f2f2;
+    }
+    
+    /* CSS cho profile */
+    .profile-container {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      z-index: 9999;
+    }
+    
+    .profile-container img {
+      width: 150px;
+      height: auto;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      cursor: pointer;
+    }
+
+    .profile-container img:hover {
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    }
+
+    .profile-container .driver-info,
+    .profile-container .assistant-info {
+      display: flex;
+      align-items: center;
+    }
+
+    .profile-container .driver-info img,
+    .profile-container .assistant-info img {
+      margin-right: 20px;
+    }
+    
+    
+    /* CSS cho form chỉnh sửa */
+    .edit-form {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      z-index: 9999;
+    }
+
+    .edit-form input {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo-wrapper">
+        <a href="https://www.facebook.com/vongoctrieuU" target="_blank">
+            <img src="https://cdn.tgdd.vn/2020/03/GameApp/Facebook-200x200.jpg" alt="Facebook Logo" class="facebook-logo">
+        </a>
+        <img src="https://media.loveitopcdn.com/3807/la-co-viet-nam-vector-1.png" alt="Vietnam Flag" class="vietnam-flag">
+    </div>
+    <h1>NHÀ XE HẠNH PHÚC</h1>
+  </header>
+  <div class="overlay"></div>
+  <div id="search-container">
+    <div class="search-box">
+      <select id="search-type">
+        <option value="">Loại xe</option>
+        <option value="Xe khách">Xe khách</option>
+        <option value="Xe tải">Xe tải</option>
+        <option value="Xe container">Xe container</option>
+      </select>
+      <input type="text" placeholder="Biển số xe" id="search-text">
+      <button id="search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+    </div>
+  </div>
+
+  <div id="result-container"></div>
+
+  <div class="profile-container" id="profile-container">
+    <h2 id="profile-name"></h2>
+    <div class="driver-info">
+      <img  id="profile-driver-photo" alt="Profile Photo">
+      <div class="driver-details">
+        <p id="profile-driver-name"></p>
+        <p id="profile-driver-dob"></p>
+        <p id="profile-driver-hometown"></p>
+      </div>
+    </div>
+    <p id="profile-type"></p>
+    <p id="profile-phone"></p>
+    <p id="profile-status"></p>
+    <div id="profile-images"></div>
+    <button onclick="closeProfile()">Đóng</button>
+    <button onclick="editProfile()">Chỉnh sửa</button>
+  </div>
+  
+
+  <div class="edit-form" id="edit-form">
+    <table>
+      <tr>
+        <td>Tài xế chính:</td>
+        <td><input type="text" id="edit-main-driver"></td>
+      </tr>
+      <tr>
+        <td>Ngày sinh tài xế:</td>
+        <td><input type="text" id="edit-main-driver-dob"></td>
+      </tr>
+      <tr>
+        <td>Quê quán tài xế:</td>
+        <td><input type="text" id="edit-main-driver-hometown"></td>
+      </tr>
+      <tr>
+        <td>Số điện thoại tài xế:</td>
+        <td><input type="text" id="edit-main-driver-phone"></td>
+      </tr>
+      <tr>
+        <td>Tình trạng xe:</td>
+        <td><input type="text" id="edit-status-vehicle"></td>
+      </tr>
+      <tr>
+      <tr>
+        <td>Hình ảnh tài xế:</td>
+        <td><input type="text" id="edit-main-driver-photo"></td>
+      </tr>
+    </table>
+    <button onclick="cancelEdit()">Hủy</button>
+    <button onclick="updateDriver()">Cập nhật</button>
+  </div>
+  
+
+  <footer>
+    <p>&copy; 2024 Nhà Xe Hạnh Phúc. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Dữ liệu mẫu về tài xế
+    var drivers = [
+      { 
+        plateNumber: '29B-12345', 
+        mainDriver: 'Tài xế 1', 
+        mainDriverDOB: '01/01/1980', 
+        mainDriverHometown: 'Hà Nội', 
+        mainDriverPhone: '0123456789', 
+        statusVehicle: 'Đang bảo dưỡng', 
+        type: 'Xe khách', 
+        mainDriverPhoto: 'https://photocross.net/wp-content/uploads/2020/03/anh-chan-dung.jpg', 
+        imageUrl: ['https://photocross.net/wp-content/uploads/2020/03/anh-chan-dung.jpg', 'https://via.placeholder.com/150', 'https://via.placeholder.com/150'] 
+      },
+      { 
+        plateNumber: '29B-12346', 
+        mainDriver: '', 
+        mainDriverDOB: '', 
+        mainDriverHometown: '', 
+        mainDriverPhone: '', 
+        statusVehicle: 'Chưa sử dụng', 
+        type: 'Xe tải', 
+        mainDriverPhoto: '', 
+        imageUrl: ['https://photocross.net/wp-content/uploads/2020/03/anh-chan-dung.jpg', 'https://via.placeholder.com/150', 'https://via.placeholder.com/150'] 
+      },{ 
+        plateNumber: '29B-12346', 
+        mainDriver: '', 
+        mainDriverDOB: '', 
+        mainDriverHometown: '', 
+        mainDriverPhone: '', 
+        statusVehicle: 'Chưa sử dụng', 
+        type: 'Xe khách', 
+        mainDriverPhoto: '', 
+        imageUrl: ['https://photocross.net/wp-content/uploads/2020/03/anh-chan-dung.jpg', 'https://via.placeholder.com/150', 'https://via.placeholder.com/150'] 
+      },
+      // Các dữ liệu mẫu khác...
+    ];
+
+    var filteredDrivers = [];
+    var currentDriverIndex = null;
+
+    // Function hiển thị profile của tài xế
+    function showProfile(index) {
+      var driver = filteredDrivers[index];
+      currentDriverIndex = index;
+      document.getElementById('profile-name').textContent = "Biển số xe: " + driver.plateNumber;
+      document.getElementById('profile-type').textContent = "Loại xe: " + driver.type;
+      document.getElementById('profile-phone').textContent = "Số điện thoại tài xế: " + driver.mainDriverPhone;
+      document.getElementById('profile-status').textContent = "Tình trạng xe: " + driver.statusVehicle;
+      
+      var profileImages = document.getElementById('profile-images');
+      profileImages.innerHTML = '';
+      driver.imageUrl.forEach(function(imageUrl) {
+        var img = document.createElement('img');
+        img.src = imageUrl;
+        img.onclick = function() {
+          window.open(imageUrl, '_blank');
+        };
+        profileImages.appendChild(img);
+      });
+
+      // Hiển thị thông tin tài xế 
+      document.getElementById('profile-driver-name').textContent = "Tên tài xế: " + driver.mainDriver;
+      document.getElementById('profile-driver-dob').textContent = "Ngày sinh: " + driver.mainDriverDOB;
+      document.getElementById('profile-driver-hometown').textContent = "Quê quán: " + driver.mainDriverHometown;
+      document.getElementById('profile-driver-photo').src = driver.mainDriverPhoto;
+
+      document.querySelector('.profile-container').style.display = 'block';
+      document.querySelector('.overlay').style.display = 'block'; // Show overlay
+    }
+
+    // Function đóng profile
+    function closeProfile() {
+      document.querySelector('.profile-container').style.display = 'none';
+      document.querySelector('.overlay').style.display = 'none'; // Hide overlay
+    }
+
+    // Function mở form chỉnh sửa
+    function editProfile() {
+      var driver = filteredDrivers[currentDriverIndex];
+      document.getElementById('edit-main-driver').value = driver.mainDriver;
+      document.getElementById('edit-main-driver-dob').value = driver.mainDriverDOB;
+      document.getElementById('edit-main-driver-hometown').value = driver.mainDriverHometown;
+      document.getElementById('edit-main-driver-phone').value = driver.mainDriverPhone;
+      document.getElementById('edit-status-vehicle').value = driver.statusVehicle;
+      document.getElementById('edit-main-driver-photo').value = driver.mainDriverPhoto;
+      document.querySelector('.edit-form').style.display = 'block';
+      document.querySelector('.profile-container').style.display = 'none';
+      
+    }
+    // Thêm sự kiện click vào overlay
+    document.querySelector('.overlay').addEventListener('click', function() {
+      // Đóng bảng profile
+      document.querySelector('.profile-container').style.display = 'none';
+      // Đóng form chỉnh sửa
+      document.querySelector('.edit-form').style.display = 'none';
+      // Ẩn overlay
+      this.style.display = 'none';
+    });
+
+    // Function hủy chỉnh sửa
+    function cancelEdit() {
+      document.querySelector('.edit-form').style.display = 'none';
+      document.querySelector('.profile-container').style.display = 'block';
+    }
+
+    // Function cập nhật thông tin tài xế
+    function updateDriver() {
+      var driver = filteredDrivers[currentDriverIndex];
+      driver.mainDriver = document.getElementById('edit-main-driver').value;
+      driver.mainDriverPhone = document.getElementById('edit-main-driver-phone').value;
+      driver.statusVehicle = document.getElementById('edit-status-vehicle').value; 
+
+      // driver.imageUrl[0] = document.getElementById('edit-image-url').value;
+      // Cập nhật xong, ẩn form chỉnh sửa và hiển thị profile
+      document.querySelector('.edit-form').style.display = 'none';
+      document.querySelector('.profile-container').style.display = 'block';
+      // Hiển thị thông tin cập nhật trên profile
+      document.getElementById('profile-name').textContent = "Biển số xe: " + driver.plateNumber;
+      document.getElementById('profile-type').textContent = "Loại xe: " + driver.type;
+      document.getElementById('profile-phone').textContent = "Số điện thoại tài xế: " + driver.mainDriverPhone;
+      var profileImages = document.getElementById('profile-images');
+      profileImages.innerHTML = '';
+      driver.imageUrl.forEach(function(imageUrl) {
+        var img = document.createElement('img');
+        img.src = imageUrl;
+        img.onclick = function() {
+          window.open(imageUrl, '_blank');
+        };
+        profileImages.appendChild(img);
+      });
+
+      // Hiển thị thông tin tài xế
+      document.getElementById('profile-driver-name').textContent = "Tên tài xế: " + driver.mainDriver;
+      document.getElementById('profile-driver-dob').textContent = "Ngày sinh: " + driver.mainDriverDOB;
+      document.getElementById('profile-driver-hometown').textContent = "Quê quán: " + driver.mainDriverHometown;
+      document.getElementById('profile-driver-photo').src = driver.mainDriverPhoto;
+    }
+
+    // Xử lý sự kiện khi nhấn nút tìm kiếm
+    document.getElementById('search-btn').addEventListener('click', function() {
+      var selectedType = document.getElementById('search-type').value.toLowerCase();
+      var searchText = document.getElementById('search-text').value.toLowerCase();
+
+      filteredDrivers = drivers.filter(function(driver) {
+        return (driver.plateNumber.toLowerCase().includes(searchText) || searchText === '') && (driver.type.toLowerCase().includes(selectedType) || selectedType === '');
+      });
+
+      var resultContainer = document.getElementById('result-container');
+      resultContainer.innerHTML = '';
+
+      if (filteredDrivers.length > 0) {
+        var table = document.createElement('table');
+        table.id = 'result-table';
+
+        var headerRow = table.insertRow();
+        var headers = ['Loại xe', 'Biển số xe', 'Lái xe chính', 'Số điện thoại', 'Tình trạng xe', 'Hình ảnh'];
+        headers.forEach(function(header) {
+          var th = document.createElement('th');
+          th.textContent = header;
+          headerRow.appendChild(th);
+        });
+
+        filteredDrivers.forEach(function(driver, index) {
+          var row = table.insertRow();
+          var values = [driver.type, driver.plateNumber, driver.mainDriver, driver.mainDriverPhone, driver.statusVehicle, driver.imageUrl[0]];
+          values.forEach(function(value, i) {
+            var cell = row.insertCell();
+            if (i === 1) {
+              var link = document.createElement('a');
+              link.href = '#';
+              link.textContent = value;
+              link.addEventListener('click', function() {
+                showProfile(index);
+              });
+              cell.appendChild(link);
+            } else if (i === 5) {
+              var img = document.createElement('img');
+              img.src = value;
+              img.style.maxWidth = '100px';
+              cell.appendChild(img);
+            } else {
+              cell.textContent = value;
+            }
+          });
+        });
+
+        resultContainer.appendChild(table);
+      } else {
+        var noResult = document.createElement('p');
+        noResult.textContent = 'Không tìm thấy xe phù hợp.';
+        noResult.className = 'no-result-message'; // Áp dụng class CSS mới
+        resultContainer.appendChild(noResult);
+      }
+    });
+  </script>
+</body>
+</html>
