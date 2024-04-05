@@ -1,0 +1,22 @@
+{
+  "name": "management-system",
+  "version": "1.0.0",
+  "description": "Web application provides common tasks in managing vehicles and drivers",
+  "main": "BE/main.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/QuananhNguyen-04/Management-System.git"
+  },
+  "author": "QuananhNguyen-04",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/QuananhNguyen-04/Management-System/issues"
+  },
+  "homepage": "https://github.com/QuananhNguyen-04/Management-System#readme",
+  "dependencies": {
+    "firebase": "^10.10.0"
+  }
+}
