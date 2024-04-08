@@ -2,7 +2,7 @@
   "name": "management-system",
   "version": "1.0.0",
   "description": "Web application provides common tasks in managing vehicles and drivers",
-  "main": "BE/main.js",
+  "main": "BE/index.js",
   "scripts": {
     "test": "test"
   },
