@@ -1,35 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
     <link rel="stylesheet" href="request.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
+
 <body>
     <header>
         <div class="logo-wrapper">
             <a href="https://www.facebook.com/vongoctrieuU" target="_blank">
-                <img src="https://cdn.tgdd.vn/2020/03/GameApp/Facebook-200x200.jpg" alt="Facebook Logo" class="facebook-logo">
+                <img src="https://cdn.tgdd.vn/2020/03/GameApp/Facebook-200x200.jpg" alt="Facebook Logo"
+                    class="facebook-logo">
             </a>
-            <img src="https://media.loveitopcdn.com/3807/la-co-viet-nam-vector-1.png" alt="Vietnam Flag" class="vietnam-flag">
+            <img src="https://media.loveitopcdn.com/3807/la-co-viet-nam-vector-1.png" alt="Vietnam Flag"
+                class="vietnam-flag">
         </div>
         <h1>NHÀ XE HẠNH PHÚC</h1>
     </header>
     <div class="Request_Box">
-        <input type="text" class="Customer_Name" placeholder="Tên khách hàng...">
-        <input type="text" class="Customer_Phone" placeholder="SĐT khách hàng...">
-        <input type="text" class="Start_Dest" placeholder="Nơi đi...">
-        <input type="text" class="End_Dest" placeholder="Nơi đến...">
-        <input type="time" class="Start_Time">
-        <input type="date" class="Start_Day">
-        <button type="submit" id="btn_check" class="btn_check" onclick="Find_Driver()">Kiểm tra</button>
+        <div class="gr1">
+            <div class="gr1-1">
+                <input type="text" class="Request_Box-item Customer_Name" placeholder="Tên khách hàng...">
+                <input type="text" class="Request_Box-item Customer_Phone" placeholder="SĐT khách hàng...">
+            </div>
+            <div class="gr1-2">
+                <input type="time" class="Request_Box-item Start_Time">
+                <input type="date" class="Request_Box-item Start_Day">
+            </div>
+        </div>
+        <div class="gr2">
+            <div class="gr2-1">
+                <input type="tel" class="Request_Box-item Start_Dest" placeholder="Nơi đi...">
+                <input type="text" class="Request_Box-item End_Dest" placeholder="Nơi đến...">
+            </div>
+            <div class="g2-2">
+            <button type="submit" id="btn_check" class="Request_Box-item btn_check" onclick="Find_Driver()">Kiểm tra</button>
+            </div>
+        </div>
     </div>
-    <div id="Container_Filter" class ="tableclass row2colors">
+    <div id="Container_Filter" class="tableclass row2colors">
     </div>
-    <footer>
+    <div class="footer">
         <p>&copy; 2024 Nhà Xe Hạnh Phúc. All rights reserved.</p>
-    </footer>
+    </div>
 </body>
 <script src="request.js"></script>
+
 </html>
