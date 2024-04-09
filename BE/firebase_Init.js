@@ -7,7 +7,7 @@
 const { initializeApp } = require("firebase/app");
 const { getAnalytics } = require("firebase/analytics");
 const { getDatabase } = require("firebase/database");
-const { getDoc, initializeFirestore, doc, addDoc, getFirestore } = require("firebase/firestore");
+const { getDoc, setDoc, doc, addDoc, getFirestore, collection } = require("firebase/firestore");
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -48,4 +48,22 @@ const get = async function () {
     const output = await getDoc(cityRef);
     console.log(output.data());
 }
+
+// const push = async function () {
+//     await addDoc(doc(store, 'users', "Quan"))({
+//         Age: 21, Job: "student"
+//     });
+// }
+
+const push = async function () {
+    const colRef = doc(store, 'users', 'Quan'); // Adjust the collection name
+    try {
+        await setDoc(colRef, { Age: 21, Job: 'student' });
+        console.log('Document successfully written!');
+    } catch (error) {
+        console.error('Error adding document:', error);
+    }
+};
+
 get();
+push();
