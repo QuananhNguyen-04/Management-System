@@ -1,13 +1,12 @@
 //! NEED EMAIL TO ACCESS THE DATABASE
 //! DO NOT CLEAR ANOTHER'S DATA
 
-//! DO XAI FREE NEN HINH NHU CHI TAO DUOC 1 CAI DATABASE THI PHAI =)))))
 
 // Import the functions you need from the SDKs you need
-const { initializeApp } = require("firebase/app");
-const { getAnalytics } = require("firebase/analytics");
-const { getDatabase } = require("firebase/database");
-const { getDoc, setDoc, doc, addDoc, getFirestore, collection } = require("firebase/firestore");
+const {initializeApp} = require("firebase/app");
+const {getAnalytics} = require("firebase/analytics");
+const {getDatabase} = require("firebase/database");
+const {getDocs, getDoc, setDoc, doc, addDoc, getFirestore, collection} = require("firebase/firestore");
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -28,8 +27,9 @@ const firebaseConfig = {
 // const app = initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
 // TODO: do the export for firestore, app, ... and hide the config
-var app;
-let analytics; let firestore;
+let app;
+let analytics;
+let firestore;
 if (firebaseConfig?.projectId) {
     // Initialize Firebase
     app = initializeApp(firebaseConfig);
@@ -39,11 +39,20 @@ if (firebaseConfig?.projectId) {
         analytics = getAnalytics(app);
     }
 }
-const store = getFirestore();
+const db = getFirestore();
+
+//!//////////////////////////////////////////////////////////////////////////////////
+// DO NOT CHANGE THE CODE ABOVE
+//!//////////////////////////////////////////////////////////////////////////////////
+
 
 // need async function to use await getDoc, or else synchronous will overload the output
+
+//Example functions, use node "file_add" to run
+
+
 const get = async function () {
-    const cityRef = doc(store, 'users', 'Tam');
+    const cityRef = doc(db, 'users', 'Tam');
 
     const output = await getDoc(cityRef);
     console.log(output.data());
@@ -56,14 +65,16 @@ const get = async function () {
 // }
 
 const push = async function () {
-    const colRef = doc(store, 'users', 'Quan'); // Adjust the collection name
+    const colRef = doc(db, 'users', 'Quan'); // Adjust the collection name
     try {
-        await setDoc(colRef, { Age: 21, Job: 'student' });
+        await setDoc(colRef, {Age: 21, Job: 'student'});
         console.log('Document successfully written!');
     } catch (error) {
         console.error('Error adding document:', error);
     }
 };
 
-get();
-push();
+// get();
+// temp();
+module.exports = {db, app};
+// push();
