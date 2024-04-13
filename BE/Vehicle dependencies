@@ -1,0 +1,249 @@
+//Random ID generator for vehicle ID
+function generateID(){
+    return Math.floor(Math.random() * 1000000);
+}
+
+//Enum for vehicle type and status
+const VehicleType = {
+    Truck: 1,
+    Coach: 2,
+    Container: 3
+};
+
+const VehicleStatus = {
+    ACTIVE: 1,
+    MAINTENANCE: 2,
+    UNAVAILABLE: 3
+};
+
+//Create parent vehicle class
+class vehicle{
+    //Factory method pattern to create vehicle object
+    vehicleRegister(control_Plate, VehicleType, weight, fuel, capacity, speciality,
+ weight, height, length, max_Load){
+        this.car_ID = generateID();
+        this.control_Plate = control_Plate;
+        this.VehicleType = VehicleType;
+        if(VehicleType == VehicleType.Truck)
+            this.vehicle = new Truck(weight, fuel);
+        else if(VehicleType == VehicleType.Coach)
+            this.vehicle = new Coach(capacity, speciality);
+        else if(VehicleType == VehicleType.Container)
+            this.vehicle = new Container(weight, height, length, max_Load);
+        this.status = VehicleStatus.ACTIVE;
+        this.recent_Trip = null;
+        this.maintenance = null;
+        return this.vehicle;
+    }
+    //vehicle method
+    vehicles_Info(){
+        if(this.VehicleType == VehicleType.Truck)
+            return "ID: " + this.car_ID + "\n" +
+                   "Control Plate: " + this.control_Plate + "\n" +
+                   "Vehicle Type: " + this.VehicleType + "\n" +
+                   "Weight: " + this.vehicle.weight + "\n" +
+                   "Fuel: " + this.vehicle.fuel + "\n" +
+                   "Status: " + this.status;
+        else if(this.VehicleType == VehicleType.Coach)
+            return "ID: " + this.car_ID + "\n" +
+                   "Control Plate: " + this.control_Plate + "\n" +
+                   "Vehicle Type: " + this.VehicleType + "\n" +
+                   "Capacity: " + this.vehicle.capacity + "\n" +
+                   "Speciality: " + this.vehicle.speciality + "\n" +
+                   "Status: " + this.status;
+        else if(this.VehicleType == VehicleType.Container)
+            return "ID: " + this.car_ID + "\n" +
+                   "Control Plate: " + this.control_Plate + "\n" +
+                   "Vehicle Type: " + this.VehicleType + "\n" +
+                   "Weight: " + this.vehicle.weight + "\n" +
+                   "Height: " + this.vehicle.height + "\n" +
+                   "Length: " + this.vehicle.length + "\n" +
+                   "Max Load: " + this.vehicle.max_Load + "\n" +
+                   "Status: " + this.status;
+    }
+    setting_Maintenance(Date, maintenance_time, driver_ID, Driver_Object){
+        this.maintenance = new maintenance_info(this.car_ID, Date, maintenance_time);
+        this.maintenance.assign_Driver(driver_ID, Driver_Object);
+    }
+    alert_Maintenance(){
+        this.status = VehicleStatus.MAINTENANCE;
+        this.maintenance.alert();
+    }
+    update_Info(Trip_Info_Object, crashed){
+        if(this.maintenance == null && crashed == false){
+            this.status = VehicleStatus.ACTIVE;
+        } else if(crashed == true){
+            this.status = VehicleStatus.UNAVAILABLE;
+        } else {
+            const current_time = new Date();
+            if(this.maintenance.date + this.maintenance.maintenance_time < current_time){
+                this.status = VehicleStatus.ACTIVE;
+                this.maintenance = null;
+            }
+        }
+        if(this.recent_Trip != null){
+            this.recent_Trip = Trip_Info_Object;
+        }
+    }
+}
+
+//Create child classes for vehicle
+class Truck extends vehicle{
+    constructor(weight, fuel){
+        this.weight = weight;
+        this.fuel = fuel;
+    }
+}
+class Coach extends vehicle{
+    constructor(capacity, speciality){
+        this.capacity = capacity;
+        this.speciality = speciality;
+    }
+}
+class Container extends vehicle{
+    constructor(weight, height, length, max_Load){
+        this.weight = weight;
+        this.height = height;
+        this.length = length;
+        this.max_Load = max_Load;
+    }
+}
+
+//Create wrapper for list of vehicle information
+class vehicles_wrapper{
+    constructor(){
+        this.vehicle_list = []
+        this.vehicleInfo = new vehicle();
+        this.size = 0;
+    }
+    //vehicle_wrapper method
+    add(VehicleType, control_Plate, weight, fuel, capacity, speciality,
+weight, height, length, max_Load){
+        this.vehicle_list.push(this.vehicleInfo.vehicleRegister(control_Plate, VehicleType, weight, fuel,
+ capacity, speciality, weight, height, length, max_Load));
+        this.size++;
+    }
+    delete(car_ID){
+        for(let i = 0; i < this.size; i++){
+            if(this.vehicle_list[i].car_ID == car_ID){
+                this.vehicle_list.splice(i, 1);
+                this.size--;
+                return;
+            }
+        }
+    }
+    search(control_Plate){
+        for(let i in this.vehicle_list){
+            if(i.control_Plate == control_Plate)
+                return i.vehicles_Info();
+        }
+    }
+    edit(VehicleType, control_Plate, weight, fuel, capacity, speciality,
+weight, height, length, max_Load){
+        for(let i in this.vehicle_list){
+            if(i.control_Plate == control_Plate){
+                if(VehicleType == VehicleType.Truck){
+                    i.vehicle.weight = weight;
+                    i.vehicle.fuel = fuel;
+                }
+                else if(VehicleType == VehicleType.Coach){
+                    i.vehicle.capacity = capacity;
+                    i.vehicle.speciality = speciality;
+                }
+                else if(VehicleType == VehicleType.Container){
+                    i.vehicle.weight = weight;
+                    i.vehicle.height = height;
+                    i.vehicle.length = length;
+                    i.vehicle.max_Load = max_Load;
+                }
+            }
+        }
+    }
+    active_List(){
+        const active_list = [];
+        for(let i in this.vehicle_list){
+            if(i.status == VehicleStatus.ACTIVE)
+                active_list.push(i.vehicles_Info());
+        }
+        return active_list;
+    }
+    maintenance_List(){
+        const maintenance_list = [];
+        for(let i in this.vehicle_list){
+            if(i.status == VehicleStatus.MAINTENANCE)
+                maintenance_list.push(i.vehicles_Info());
+        }
+        return maintenance_list;
+    }
+    unavailable_List(){
+        const unavailable_list = [];
+        for(let i in this.vehicle_list){
+            if(i.status == VehicleStatus.UNAVAILABLE)
+                unavailable_list.push(i.vehicles_Info());
+        }
+        return unavailable_list;
+    }
+}
+
+//Create class for maintenance information
+class maintenance_info{
+    constructor(car_ID, date, maintenance_time){
+        this.car_ID = car_ID;
+        this.update(date, maintenance_time);
+    }
+
+    //maintenance_info method
+    assign_Driver(driver_ID, Driver_Object){
+        this.driver_ID = driver_ID;
+        return Driver_Object.DriverInfo();
+    }
+    alert(){
+        console.log("Maintenance for vehicle ID: " + this.car_ID);
+    }
+    update(Date, maintenance_time){
+        this.date = Date;
+        this.maintenance_time = maintenance_time;
+    }
+}
+
+//Observer pattern for maintenance alert
+class maintenance_alert{
+    constructor(vehicle_list){
+        this.observers = [];
+        this.list = vehicle_list;
+    }
+    
+    //maintenance_alert method
+    Alert_List(observer){
+        this.observers.push(observer);
+    }
+    NonAlert_List(observer){
+        this.observers = this.observers.filter(subscriber => subscriber !== observer);
+    }
+    // notify(){
+    //     this.observers.forEach(observer => observer.update());
+    // }
+    reload(){
+        const current_time = new Date();
+        for(let i in this.list){
+            if(i.date >= current_time) this.Alert_List(i);
+            else this.NonAlert_List(i);
+        }
+        this.observers.forEach(observer => observer.alert_Maintenance());
+    }
+}
+
+//Test communication between classes
+const vehicleList = new vehicles_wrapper();
+const maintenanceAlert = new maintenance_alert(vehicleList.vehicle_list);
+//Test program to run Real-time for classes
+setInterval(function(){
+    maintenanceAlert.reload();
+    for(let i in vehicleList.vehicle_list){
+        if(Trip_Info_Object.end_Time < new Date()) vehicleList.vehicle_list[i].update_Info(Trip_Info_Object, false);
+        else if(crashed == true) vehicleList.vehicle_list[i].update_Info(null, true);
+        else vehicleList.vehicle_list[i].update_Info(null, false);
+    }
+}, 1000);
+//Note: The above code is a test code to run the program in real-time to see whether the class function act normally. 
+// The actual code will be different.
