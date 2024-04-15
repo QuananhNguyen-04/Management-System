@@ -1,5 +1,6 @@
 const {db, app} = require('./firebase_Init')
 const {
+    and,
     or,
     getCountFromServer,
     getDoc,
@@ -14,12 +15,37 @@ const {
 } = require("firebase/firestore");
 
 class Trip_Schedule {
+    async sup_Add(car_id, start, des) {
+        let money = trip_Money(start, des);
+        if (car_id.type == "Truck") {
+            if (car_id.k == 1) {
+                money += 23456678 // Điều kiện
+            }
+        } else if (car_id.type == "Coach") {
+            money -= 1000000
+        } else if (car_id.type == "Container") {
+            money += 500000
+        }
 
+    }
 
     async getSize() {
         const coll = collection(db, "Trip");
         const snapshot = await getCountFromServer(coll);
         console.log('count: ', snapshot.data().count);
+    }
+
+    async search_bien_so_xe(search) {
+        const q = await query(collection(db, "vehicles"),
+            and(where('status', '==', 'on')),
+            where('bxs', '==', search));
+        const temp = await getDocs(q)
+        const q1 = await query(collection(db, "Trip"),
+            where("car_Id", '==', temp.forEach(doc => doc.id))
+        )
+        temp.forEach(tmp => {
+
+        })
     }
 
     async add(driver_Id, car_Id, subDriver_Id, cus_Id, cus_Phone_Num,
@@ -143,11 +169,29 @@ const tripConverter = {
 
 const trip = new Trip_Schedule()
 
+function trip_Money(start, des) {
+    let money = 0;
+    if (start == "HN" && des == "HCM" || start == "HCM" && des == "HN") {
+        money = 2000000;
+    } else if (start == "HN" && des == "DN" || start == "DN" && des == "HN") {
+        money = 1500000;
+    } else if (start == "HCM" && des == "DN" || start == "DN" && des == "HCM") {
+        money = 1800000;
+    } else if (start == "HCM" && des == "VT" || start == "VT" && des == "HCM") {
+        money = 1000000;
+    } else if (start == "DN" && des == "VT" || start == "VT" && des == "DN") {
+        money = 1200000;
+    } else if (start == "HN" && des == "VT" || start == "VT" && des == "HN") {
+        money = 1800000;
+    }
+}
+
 console.log("Testing...")
 // trip.show_All()
-trip.add("tamdeptrai", "car", "sub", "cus_id(name)", "13555",
+trip.add("driverId", "car", "sub", "cus_id(name)", "13555",
     "start", "end", "time_start", "time_end",
     "cus_phone", "revenue")
 trip.del("car")
 // trip.getSize()
-trip.search("sub")
+trip.search("car")
+// trip.search_bien_so_xe("1221")
