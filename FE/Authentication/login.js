@@ -2,11 +2,13 @@
 const inputUsername = document.querySelector(".input-login-username");
 const inputPassword = document.querySelector(".input-login-password");
 const btnLogin = document.querySelector(".login__signInButton");
-
+import checkConnect from "../../BE/Login.js"
 // validation form login
 
 btnLogin.addEventListener("click", (e) => {
   e.preventDefault();
+  checkConnect();
+  return;
   if (inputUsername.value === "" || inputPassword.value === "") {
     alert("Please do not leave it blank");
   } else {
@@ -15,8 +17,9 @@ btnLogin.addEventListener("click", (e) => {
       user.username === inputUsername.value &&
       user.password === inputPassword.value
     ) {
+      localStorage.setItem("loggedInUser", inputUsername.value);
       alert("Login success");
-      window.location.href = "web.html";
+      window.location.href = "index.html";
     } else {
       alert("Login failed");
     }

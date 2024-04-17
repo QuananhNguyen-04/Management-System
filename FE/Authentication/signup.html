@@ -4,9 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NHÀ XE HẠNH PHÚC</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="../header.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+  <link
+  href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+  rel="stylesheet"
+  />
 </head>
 <body>
   <header>
@@ -18,28 +23,34 @@
     </div>
     <h1>NHÀ XE HẠNH PHÚC</h1>
   </header>
-  <div class="content">
+  
+  <div class="content-signup">
     <div class="wrapper">
         <form action="">
-            <h1>Management login</h1>
+            <h1>Register</h1>
             <div class="input-box">
-                <input type="text" placeholder="Username" class="input-login-username" required>
+                <input type="text" placeholder="Username" class="input-signup-username" required>
                 <i class='bx bxs-user' ></i>
             </div>
             <div class="input-box">
-                <input type="Password" placeholder="Password" class="input-login-password" required>
+              <input type="text" placeholder="Email" class="input-signup-email" required>
+              <i class='bx bx-envelope'></i>
+            </div>
+            <div class="input-box">
+                <input type="Password" placeholder="Password" class="input-signup-password" required>
                 <i class='bx bxs-lock-alt' ></i>
             </div>
-            <div class="remember-forgot">
-                <!-- <label><input type="checkbox"> Remember me</label> -->
-                <a href="./forgotpassword.html">Forgot password?</a>
+            <div class="input-box">
+              <input type="Password" placeholder="Comfirm password" class="input-signup-confirmpassword" required>
+              <i class='bx bxs-lock-alt' ></i>
             </div>
 
-            <button type="submit" class="login__signInButton">LOGIN</button>
+            <button type="submit" class="signup__signInButton">REGISTER</button>
         </form>
         <br>
-        <div class="login__registerButton">
-          <a href="./signup.html">Register</a>
+
+        <div class="signup__registerButton">
+          <a href="./login.html" class="link">Login</a>
         </div>
     </div>
   </div>
@@ -48,5 +59,5 @@
     <p>&copy; 2024 Nhà Xe Hạnh Phúc. All rights reserved.</p>
   </footer>
 </body>
-<script src="./main.js"></script>
+<script src="./signup.js"></script>
 </html>

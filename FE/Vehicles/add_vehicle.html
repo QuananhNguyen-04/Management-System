@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="add_vehicle.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .user-icon{
+            width: 30px;
+            height: auto;
+            border-radius: 100px;
+        }
+        /* Định vị dropdown container */
+        .dropdown.logout-container {
+            position: absolute;
+            top: 40px; /* Đặt ở phía trên cùng của màn hình */
+            right: 10px; /* Đặt ở phía bên phải của màn hình */
+        }
+        /* Dropdown content */
+        .logout-info {
+            display: none;
+            position: absolute;
+            background-color: #376999;
+            border: 5px solid #ccc;
+            padding: 10px;
+            z-index: 5;
+            top: 30px; /* Hiển thị dropdown content dưới dropdown container */
+            right: 0;
+            text-align: left;
+        }
+        /* Hiển thị dropdown content khi hover vào dropdown container */
+        .logout-container:hover .logout-info {
+        display: block;
+        }
+      </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo-wrapper">
+            <a href="https://www.facebook.com/vongoctrieuU" target="_blank">
+                <img src="https://cdn.tgdd.vn/2020/03/GameApp/Facebook-200x200.jpg" alt="Facebook Logo"
+                    class="facebook-logo">
+            </a>
+            <img src="https://media.loveitopcdn.com/3807/la-co-viet-nam-vector-1.png" alt="Vietnam Flag"
+                class="vietnam-flag">
+        </div>
+        <h1>NHÀ XE HẠNH PHÚC</h1>
+        <div class="dropdown logout-container">
+            <img src="https://png.pngtree.com/png-clipart/20190604/original/pngtree-truck-driver-png-image_805319.jpg" alt="User Icon" class="user-icon">
+            <!-- Thêm dropdown content -->
+            <div class="dropdown-content logout-info">
+                <div>
+                <tr>
+                  <td><a href="../index.html">Trang chủ</a></td>
+                </tr>
+                <tr>
+                  <td><a href="../Authentication/change_password.html">Đổi mật khẩu</a></td>
+                </tr>
+                <tr>
+                  <td><a href="../Authentication/login.html">Đăng xuất</a></td>
+                </tr>
+              </div>
+            </div>
+          </div>
+    </header>
+    <div class="btn">
+        <button class="Choose_BTN" onclick="showForm('Truck')">Xe Tải</button>
+        <button class="Choose_BTN" onclick="showForm('Coach')">Xe Khách</button>
+        <button class="Choose_BTN" onclick="showForm('Container')">Xe Container</button>
+    </div>
+    <div id="Truck" style="display: block;">
+        <form class="Vehicle">
+            <h3>Xe Tải</h3>
+            <div class="Vehicle_item">
+                <label for="Control_Plate" class="label_">Biển số xe:</label>
+                <input type="text" class="input_" id="Control_Plate" name="Control_Plate" required>
+                <br>
+            </div>
+            <div class="Vehicle_item">
+                <label for="Weight_Vehicle" class="label_">Khối lượng xe:</label>
+                <input type="text" class="input_" id="Weight_Vehicle" name="Weight_Vehicle" required>
+                <br>
+            </div>
+            <div class="Vehicle_item">
+                <label for="Fuel_Vehicle" class="label_">Loại nhiên liệu:</label>
+                <input type="text" class="input_" id="Fuel_Vehicle" name="Fuel_Vehicle" required>
+                <br>
+            </div>
+            <div class="Vehicle_item">
+                <label for="IMG_Vehicle1" class="label_">Ảnh phía trước xe:</label>
+                <input type="file" class="input_" id="IMG_Vehicle1" name="IMG_Vehicle1" accept="image/*" required>
+                <br>
+            </div>
+            <div class="Vehicle_item">
+                <label for="IMG_Vehicle2" class="label_">Ảnh phía sau xe:</label>
+                <input type="file" class="input_" id="IMG_Vehicle2" name="IMG_Vehicle2" accept="image/*" required>
+                <br>
+            </div>
+            <div class="Vehicle_item">
+                <label for="IMG_Vehicle3" class="label_">Ảnh bên trái xe:</label>
+                <input type="file" class="input_" id="IMG_Vehicle3" name="IMG_Vehicle3" accept="image/*" required>
+                <br>
+            </div>
+            <div class="Vehicle_item">
+                <label for="IMG_Vehicle4" class="label_">Ảnh bên phải xe:</label>
+                <input type="file" class="input_" id="IMG_Vehicle4" name="IMG_Vehicle4" accept="image/*" required>
+                <br>
+            </div>
+            <button class="submit_BTN" type="submit">Thêm xe</button>
+        </form>
+    </div>
+    <div id="Coach" style="display: none;">
+        <form class="Vehicle">
+            <h3>Xe Khách</h3>
+            <div class="Vehicle_item">
+                <label for="Control_Plate" class="label_">Biển số xe:</label>
+                <input type="text" class="input_" id="Control_Plate" name="Control_Plate" required>
+                <br>
+            </div>
+            <div class="Vehicle_item">
+                <label for="Capacity_Vehicle" class="label_">Số chỗ ngồi:</label>
+                <input type="text" class="input_" id="Capacity_Vehicle" name="Capacity_Vehicle" required>
+                <br>
+            </div>
+            <div class="Vehicle_item">
+                <!-- oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -->
+                <label for="Speciality_Vehicle" class="label_">Loại nhiên liệu:</label>
+                <input type="text" class="input_" id="Speciality_Vehicle" name="Speciality_Vehicle" required>
+                <br>
+            </div>
+            <div class="Vehicle_item">
+                <label for="IMG_Vehicle1" class="label_">Ảnh phía trước xe:</label>
+                <input type="file" class="input_" id="IMG_Vehicle1" name="IMG_Vehicle1" accept="image/*" required>
+                <br>
+            </div>
+            <div class="Vehicle_item">
+                <label for="IMG_Vehicle2" class="label_">Ảnh phía sau xe:</label>
+                <input type="file" class="input_" id="IMG_Vehicle2" name="IMG_Vehicle2" accept="image/*" required>
+                <br>
+            </div>
+            <div class="Vehicle_item">
+                <label for="IMG_Vehicle3" class="label_">Ảnh bên trái xe:</label>
+                <input type="file" class="input_" id="IMG_Vehicle3" name="IMG_Vehicle3" accept="image/*" required>
+                <br>
+            </div>
+            <div class="Vehicle_item">
+                <label for="IMG_Vehicle4" class="label_">Ảnh bên phải xe:</label>
+                <input type="file" class="input_" id="IMG_Vehicle4" name="IMG_Vehicle4" accept="image/*" required>
+                <br>
+            </div>
+            <button class="submit_BTN" type="submit">Thêm xe</button>
+        </form>
+    </div>
+    <div id="Container" style="display: none;">
+        <form class="Vehicle">
+            <h3>Xe Container</h3>
+            <div class="Vehicle_item">
+                <label for="Control_Plate" class="label_">Biển số xe:</label>
+                <input type="text" class="input_" id="Control_Plate" name="Control_Plate" required>
+                <br>
+            </div>
+            <div class="Vehicle_item">
+                <label for="Weight_Vehicle" class="label_">Khối lượng xe:</label>
+                <input type="text" class="input_" id="Weight_Vehicle" name="Weight_Vehicle" required>
+                <br>
+            </div>
+            <div class="Vehicle_item">
+                <label for="Height_Vehicle" class="label_">Chiều cao xe:</label>
+                <input type="text" class="input_" id="Height_Vehicle" name="Height_Vehicle" required>
+                <br>
+            </div>
+            <div class="Vehicle_item">
+                <label for="Length_Vehicle" class="label_">Chiều dài xe:</label>
+                <input type="text" class="input_" id="Length_Vehicle" name="Length_Vehicle" required>
+                <br>
+            </div>
+            <div class="Vehicle_item">
+                <label for="MaxLoad_Vehicle" class="label_">Trọng tải tối đa:</label>
+                <input type="text" class="input_" id="MaxLoad_Vehicle" name="MaxLoad_Vehicle" required>
+                <br>
+            </div>
+            <div class="Vehicle_item">
+                <label for="IMG_Vehicle1" class="label_">Ảnh phía trước xe:</label>
+                <input type="file" class="input_" id="IMG_Vehicle1" name="IMG_Vehicle1" accept="image/*" required>
+                <br>
+            </div>
+            <div class="Vehicle_item">
+                <label for="IMG_Vehicle2" class="label_">Ảnh phía sau xe:</label>
+                <input type="file" class="input_" id="IMG_Vehicle2" name="IMG_Vehicle2" accept="image/*" required>
+                <br>
+            </div>
+            <div class="Vehicle_item">
+                <label for="IMG_Vehicle3" class="label_">Ảnh bên trái xe:</label>
+                <input type="file" class="input_" id="IMG_Vehicle3" name="IMG_Vehicle3" accept="image/*" required>
+                <br>
+            </div>
+            <div class="Vehicle_item">
+                <label for="IMG_Vehicle4" class="label_">Ảnh bên phải xe:</label>
+                <input type="file" class="input_" id="IMG_Vehicle4" name="IMG_Vehicle4" accept="image/*" required>
+                <br>
+            </div>
+            <button class="submit_BTN" type="submit">Thêm xe</button>
+        </form>
+    </div>
+    <footer>
+        <p>&copy; 2024 Nhà Xe Hạnh Phúc. All rights reserved.</p>
+    </footer>
+</body>
+<script src="add_vehicle.js"></script>
+
+</html>

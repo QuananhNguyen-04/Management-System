@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Web application provides common tasks in managing vehicles and drivers",
   "main": "BE/index.js",
+  "type": "module",
   "scripts": {
     "test": "test"
   },
