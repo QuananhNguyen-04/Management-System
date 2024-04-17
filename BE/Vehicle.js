@@ -1,43 +1,46 @@
 //import information from another file
-import {generateID, Vehicle_Type, VehicleStatus} from './Extra_function.js';
+import {generateID, generateCoef, Vehicle_Type, VehicleStatus} from './Extra_function.js';
 import {maintenance_info} from './Maintainance.js';
 
 //Create parent vehicle class
 class vehicle{
     //Factory method pattern to create vehicle object
     vehicleRegister(control_Plate, VehicleType, weight, fuel, capacity, speciality,
- weight, height, length, max_Load){
+ height, length, max_Load){
         this.car_ID = generateID();
         this.control_Plate = control_Plate;
         this.VehicleType = VehicleType;
-        if(this.VehicleType == Vehicle_Type.Truck)
+        if(this.VehicleType == Vehicle_Type.B2_Type){
             this.vehicle = new Truck(weight, fuel);
-        else if(this.VehicleType == Vehicle_Type.Coach)
+            this.coef = generateCoef(weight, 1000);        //1000 is the min weight for truck and container. Unit: kg 
+        } else if(this.VehicleType == Vehicle_Type.C_type) {
             this.vehicle = new Coach(capacity, speciality);
-        else if(this.VehicleType == Vehicle_Type.Container)
+            this.coef = generateCoef(capacity, 10);        //10 is the min capacity for coach. Unit: people
+        } else if(this.VehicleType == Vehicle_Type.E_type)
             this.vehicle = new Container(weight, height, length, max_Load);
+            this.coef = generateCoef(weight, 1000);        //1000 is the min weight for truck and container. Unit: kg
         this.status = VehicleStatus.ACTIVE;
-        this.recent_Trip = null;
+        this.recent_Trip = null;    
         this.maintenance = null;
         return this.vehicle;
     }
     //vehicle method
     vehicles_Info(){
-        if(this.VehicleType == VehicleType.Truck)
+        if(this.VehicleType == Vehicle_Type.B2_Type)
             return "ID: " + this.car_ID + "\n" +
                    "Control Plate: " + this.control_Plate + "\n" +
                    "Vehicle Type: " + this.VehicleType + "\n" +
                    "Weight: " + this.vehicle.weight + "\n" +
                    "Fuel: " + this.vehicle.fuel + "\n" +
                    "Status: " + this.status;
-        else if(this.VehicleType == VehicleType.Coach)
+        else if(this.VehicleType == Vehicle_Type.C_type)
             return "ID: " + this.car_ID + "\n" +
                    "Control Plate: " + this.control_Plate + "\n" +
                    "Vehicle Type: " + this.VehicleType + "\n" +
                    "Capacity: " + this.vehicle.capacity + "\n" +
                    "Speciality: " + this.vehicle.speciality + "\n" +
                    "Status: " + this.status;
-        else if(this.VehicleType == VehicleType.Container)
+        else if(this.VehicleType == Vehicle_Type.E_type)
             return "ID: " + this.car_ID + "\n" +
                    "Control Plate: " + this.control_Plate + "\n" +
                    "Vehicle Type: " + this.VehicleType + "\n" +

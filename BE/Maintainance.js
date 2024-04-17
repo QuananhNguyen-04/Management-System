@@ -1,5 +1,4 @@
 //import information from another file
-
 //Create class for maintenance information
 class maintenance_info{
     constructor(car_ID, date, maintenance_time){
@@ -8,9 +7,8 @@ class maintenance_info{
     }
 
     //maintenance_info method
-    assign_Driver(driver_ID, Driver_Object){
+    assign_Driver(driver_ID){
         this.driver_ID = driver_ID;
-        return Driver_Object.DriverInfo();
     }
     alert(){
         console.log("Maintenance for vehicle ID: " + this.car_ID);

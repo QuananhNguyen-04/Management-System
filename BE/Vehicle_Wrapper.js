@@ -1,4 +1,6 @@
 //import information from another file
+import {addVehicle, deleteVehicle, searchVehicle, DefaultsearchVehicle, editVehicle, fetchVehicle} from './fetchVehicle.js';
+import {isExisted} from './isExisted.js'; //Use from driver-and-driver-wrapper branch
 import {Vehicle_Type, VehicleStatus} from './Extra_function.js';
 import {vehicle} from './Vehicle.js';
 
@@ -8,73 +10,83 @@ class vehicles_wrapper{
         this.vehicle_list = []
         this.vehicleInfo = new vehicle();
         this.size = 0;
+
+        if(fetchVehicle(this.vehicle_list)){
+            console.log('Create VehicleWrapper successfully.');
+            this.size=this.getSize();
+        } else{
+            console.log('Fail: something wrong happened.');   
+        }
     }
     //vehicle_wrapper method
-    add(VehicleType, control_Plate, weight, fuel, capacity, speciality,
-weight, height, length, max_Load){
-        this.vehicle_list.push(this.vehicleInfo.vehicleRegister(control_Plate, VehicleType, weight, fuel,
- capacity, speciality, weight, height, length, max_Load));
-        this.size++;
+    add(VehicleType, control_Plate, weight, fuel, capacity, speciality, height, length, max_Load){
+        const new_vehicle = this.vehicleInfo.vehicleRegister(control_Plate, VehicleType, weight, fuel,
+ capacity, speciality, height, length, max_Load);
+        let checked = DefaultsearchVehicle(new_vehicle);
+        if(isExisted(checked)){
+            this.vehicle_list.push(new_vehicle);
+            this.size++;
+            addVehicle(new_vehicle);
+        } else console.log("Vehicle already existed");
     }
-    delete(car_ID){
-        for(let i = 0; i < this.size; i++){
-            if(this.vehicle_list[i].car_ID == car_ID){
-                this.vehicle_list.splice(i, 1);
-                this.size--;
-                return;
+
+    delete(VehicleData){
+        let checked = DefaultsearchVehicle(VehicleData);
+        if(isExisted(checked)){
+            checked.forEach(async (doc) => { deleteVehicle(doc.id); });
+            for(let i = 0; i < this.size; i++){
+                if(this.vehicle_list[i].control_Plate == VehicleData.control_Plate){
+                    this.vehicle_list.splice(i, 1);
+                    this.size--;
+                }
             }
-        }
+        } else console.log("Vehicle not found")
     }
-    search(control_Plate){
-        for(let i in this.vehicle_list){
-            if(i.control_Plate == control_Plate)
-                return i.vehicles_Info();
-        }
+
+    Default_search(control_Plate){
+        // for(let i in this.vehicle_list){
+        //     if(i.control_Plate == control_Plate)
+        //         return i.vehicles_Info();
+        // }
+        this.Advanced_search('control_Plate', control_Plate);
     }
-    edit(VehicleType, control_Plate, weight, fuel, capacity, speciality,
-weight, height, length, max_Load){
+
+    Advanced_search(field, value){
+        let result = searchVehicle(field, value);
+        let result_list = [];
+        result.forEach((doc) => { result_list.push(doc.data()); });
+        result_list.forEach(element => { console.log(element); });
+    }
+
+    edit(control_Plate, weight, fuel, capacity, speciality, height, length, max_Load){
         for(let i in this.vehicle_list){
             if(i.control_Plate == control_Plate){
-                if(i.VehicleType == Vehicle_Type.Truck){
+                let OldData = DefaultsearchVehicle(i);
+                if(i.VehicleType == Vehicle_Type.B2_Type){
                     i.vehicle.weight = weight;
                     i.vehicle.fuel = fuel;
-                }
-                else if(i.VehicleType == Vehicle_Type.Coach){
+                } else if(i.VehicleType == Vehicle_Type.C_type){
                     i.vehicle.capacity = capacity;
                     i.vehicle.speciality = speciality;
-                }
-                else if(i.VehicleType == Vehicle_Type.Container){
+                } else if(i.VehicleType == Vehicle_Type.E_type){
                     i.vehicle.weight = weight;
                     i.vehicle.height = height;
                     i.vehicle.length = length;
                     i.vehicle.max_Load = max_Load;
                 }
+                OldData.forEach(doc => { editVehicle(doc.id, i); });
+                break;
             }
         }
     }
     active_List(){
-        const active_list = [];
-        for(let i in this.vehicle_list){
-            if(i.status == VehicleStatus.ACTIVE)
-                active_list.push(i.vehicles_Info());
-        }
-        return active_list;
+        this.Advanced_search('status', VehicleStatus.ACTIVE);
     }
     maintenance_List(){
-        const maintenance_list = [];
-        for(let i in this.vehicle_list){
-            if(i.status == VehicleStatus.MAINTENANCE)
-                maintenance_list.push(i.vehicles_Info());
-        }
-        return maintenance_list;
+        this.Advanced_search('status', VehicleStatus.MAINTENANCE);
     }
     unavailable_List(){
-        const unavailable_list = [];
-        for(let i in this.vehicle_list){
-            if(i.status == VehicleStatus.UNAVAILABLE)
-                unavailable_list.push(i.vehicles_Info());
-        }
-        return unavailable_list;
+        this.Advanced_search('status', VehicleStatus.UNAVAILABLE);
     }
 }
 
