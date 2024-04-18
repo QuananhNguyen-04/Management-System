@@ -3,10 +3,15 @@
 
 
 // Import the functions you need from the SDKs you need
-const {initializeApp} = require("firebase/app");
-const {getAnalytics} = require("firebase/analytics");
-const {getDatabase} = require("firebase/database");
-const {getDocs, getDoc, setDoc, doc, addDoc, getFirestore, collection} = require("firebase/firestore");
+import { initializeApp }
+    from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
+import { getAnalytics }
+    from "https://www.gstatic.com/firebasejs/10.10.0/firebase-analytics.js";
+// import { getDatabase } from "";
+import { getDocs, getDoc, setDoc, doc, addDoc, getFirestore, collection }
+    from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, updatePassword }
+    from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -27,7 +32,7 @@ const firebaseConfig = {
 // const app = initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
 // TODO: do the export for firestore, app, ... and hide the config
-let app;
+var app;
 let analytics;
 let firestore;
 if (firebaseConfig?.projectId) {
@@ -40,7 +45,7 @@ if (firebaseConfig?.projectId) {
     }
 }
 const db = getFirestore();
-
+const auth = getAuth();
 //!//////////////////////////////////////////////////////////////////////////////////
 // DO NOT CHANGE THE CODE ABOVE
 //!//////////////////////////////////////////////////////////////////////////////////
@@ -67,7 +72,7 @@ const get = async function () {
 const push = async function () {
     const colRef = doc(db, 'users', 'Quan'); // Adjust the collection name
     try {
-        await setDoc(colRef, {Age: 21, Job: 'student'});
+        await setDoc(colRef, { Age: 21, Job: 'student' });
         console.log('Document successfully written!');
     } catch (error) {
         console.error('Error adding document:', error);
@@ -76,5 +81,7 @@ const push = async function () {
 
 // get();
 // temp();
-module.exports = {db, app};
+export default { db };
+export { db, auth, signInWithEmailAndPassword, updatePassword,
+    createUserWithEmailAndPassword, sendPasswordResetEmail, setDoc, getDoc, doc };
 // push();
