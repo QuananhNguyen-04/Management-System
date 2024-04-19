@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="add_drive.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <header>
+    <div class="logo-wrapper">
+      <a href="https://www.facebook.com/vongoctrieuU" target="_blank">
+        <img src="https://cdn.tgdd.vn/2020/03/GameApp/Facebook-200x200.jpg" alt="Facebook Logo" class="facebook-logo">
+      </a>
+      <img src="https://media.loveitopcdn.com/3807/la-co-viet-nam-vector-1.png" alt="Vietnam Flag" class="vietnam-flag">
+    </div>
+    <h1>NHÀ XE HẠNH PHÚC</h1>
+  </header>
+  <form id="personalForm">
+    <h2 class="PI">Thông tin cá nhân</h2>
+    <div class="hehe">
+      <div class="gr1">
+        <label for="Name_Driver" class="label_">Họ và tên:</label>
+        <input type="text" class="input_" id="Name_Driver" name="Name_Driver" required>
+        <br>
+      </div>
+      <div class="gr2">
+        <label for="DoB_Driver" class="label_">Ngày sinh:</label>
+        <input type="date" class="input_" id="DoB_Driver" name="DoB_Driver" required>
+        <br>
+      </div>
+    </div>
+    <div class="hehe">
+      <div class="gr1">
+        <label for="Phone_Driver" class="label_">Số điện thoại:</label>
+        <input type="text" class="input_" id="Phone_Driver" name="Phone_Driver" required>
+        <br>
+      </div>
+      <div class="gr2">
+        <label for="ID_Driver" class="label_">Số CCCD:</label>
+        <input type="text" class="input_" id="ID_Driver" name="ID_Driver" required>
+        <br>
+      </div>
+    </div>
+    <div class="img_Driver">
+        <label for="IMG_Driver" class="label_" >Ảnh thẻ:</label>
+        <input type="file" class="input_" id="IMG_Driver" name="IMG_Driver" accept="image/*" required>
+        <br>
+    </div>
+    <h2 class="LI">Thông tin bằng lái</h2>
+    <div class="hehe">
+      <div class="gr1">
+        <label for="Lisence_Rank" class="label_">Loại bằng:</label>
+        <input type="text" class="input_" id="Lisence_Rank" name="Lisence_Rank" required>
+        <br>
+      </div>
+      <div class="gr2">
+        <label for="Lisence_ID" class="label_">Mã số GPLX:</label>
+        <input type="text" class="input_" id="Lisence_ID" name="Lisence_ID" required>
+        <br>
+      </div>
+    </div>
+    <div class="hehe">
+      <div class="gr1">
+        <label for="Lisence_BD" class="label_">Ngày cấp:</label>
+        <input type="date" class="input_" id="Lisence_BD" name="Lisence_BD" required>
+        <br>
+      </div>
+      <div class="gr2">
+        <label for="Lisence_Experies" class="label_">Ngày hết hạn:</label>
+        <input type="date" class="input_" id="Lisence_Experies" name="Lisence_Experies" required>
+        <br>
+      </div>
+    </div>
+    <div class="hehe">
+      <div class="gr1">
+        <label for="Front_License" class="label_">Mặt trước GPLX:</label>
+        <input type="file" class="input_" id="Front_License" name="Front_License" accept="image/*" required>
+        <br>
+      </div>
+      <div class="gr2">
+        <label for="Back_Lisence" class="label_">Mặt sau GPLX:</label>
+        <input type="file" class="input_" id="Back_Lisence" name="Back_Lisence" accept="image/*" required>
+        <br>
+      </div>
+    </div>
+    <button type="submit">Submit</button>
+  </form>
+  <footer>
+    <p>&copy; 2024 Nhà Xe Hạnh Phúc. All rights reserved.</p>
+  </footer>
+</body>
+<script src="add_drive.js"></script>
+</html>
