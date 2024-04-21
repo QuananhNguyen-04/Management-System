@@ -6,35 +6,9 @@
     <title>Document</title>
     <link rel="stylesheet" href="add_vehicle.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        .user-icon{
-            width: 30px;
-            height: auto;
-            border-radius: 100px;
-        }
-        /* Định vị dropdown container */
-        .dropdown.logout-container {
-            position: absolute;
-            top: 40px; /* Đặt ở phía trên cùng của màn hình */
-            right: 10px; /* Đặt ở phía bên phải của màn hình */
-        }
-        /* Dropdown content */
-        .logout-info {
-            display: none;
-            position: absolute;
-            background-color: #376999;
-            border: 5px solid #ccc;
-            padding: 10px;
-            z-index: 5;
-            top: 30px; /* Hiển thị dropdown content dưới dropdown container */
-            right: 0;
-            text-align: left;
-        }
-        /* Hiển thị dropdown content khi hover vào dropdown container */
-        .logout-container:hover .logout-info {
-        display: block;
-        }
-      </style>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js"></script>
 </head>
 
 <body>
@@ -48,28 +22,11 @@
                 class="vietnam-flag">
         </div>
         <h1>NHÀ XE HẠNH PHÚC</h1>
-        <div class="dropdown logout-container">
-            <img src="https://png.pngtree.com/png-clipart/20190604/original/pngtree-truck-driver-png-image_805319.jpg" alt="User Icon" class="user-icon">
-            <!-- Thêm dropdown content -->
-            <div class="dropdown-content logout-info">
-                <div>
-                <tr>
-                  <td><a href="../index.html">Trang chủ</a></td>
-                </tr>
-                <tr>
-                  <td><a href="../Authentication/change_password.html">Đổi mật khẩu</a></td>
-                </tr>
-                <tr>
-                  <td><a href="../Authentication/login.html">Đăng xuất</a></td>
-                </tr>
-              </div>
-            </div>
-          </div>
     </header>
     <div class="btn">
-        <button class="Choose_BTN" onclick="showForm('Truck')">Xe Tải</button>
-        <button class="Choose_BTN" onclick="showForm('Coach')">Xe Khách</button>
-        <button class="Choose_BTN" onclick="showForm('Container')">Xe Container</button>
+        <button id="btn_Truck" class="Choose_BTN">Xe Tải</button>
+        <button id="btn_Coach" class="Choose_BTN">Xe Khách</button>
+        <button id="btn_Container" class="Choose_BTN">Xe Container</button>
     </div>
     <div id="Truck" style="display: block;">
         <form class="Vehicle">
@@ -109,7 +66,7 @@
                 <input type="file" class="input_" id="IMG_Vehicle4" name="IMG_Vehicle4" accept="image/*" required>
                 <br>
             </div>
-            <button class="submit_BTN" type="submit">Thêm xe</button>
+            <button id="submit_truck" class="submit_BTN" type="submit">Thêm xe</button>
         </form>
     </div>
     <div id="Coach" style="display: none;">
@@ -122,12 +79,12 @@
             </div>
             <div class="Vehicle_item">
                 <label for="Capacity_Vehicle" class="label_">Số chỗ ngồi:</label>
-                <input type="text" class="input_" id="Capacity_Vehicle" name="Capacity_Vehicle" required>
+                <input type="tel" class="input_" id="Capacity_Vehicle" name="Capacity_Vehicle" required>
                 <br>
             </div>
             <div class="Vehicle_item">
                 <!-- oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -->
-                <label for="Speciality_Vehicle" class="label_">Loại nhiên liệu:</label>
+                <label for="Speciality_Vehicle" class="label_">Loại xe:</label>
                 <input type="text" class="input_" id="Speciality_Vehicle" name="Speciality_Vehicle" required>
                 <br>
             </div>
@@ -151,7 +108,7 @@
                 <input type="file" class="input_" id="IMG_Vehicle4" name="IMG_Vehicle4" accept="image/*" required>
                 <br>
             </div>
-            <button class="submit_BTN" type="submit">Thêm xe</button>
+            <button id="submit_coach" class="submit_BTN" type="submit">Thêm xe</button>
         </form>
     </div>
     <div id="Container" style="display: none;">
@@ -202,13 +159,13 @@
                 <input type="file" class="input_" id="IMG_Vehicle4" name="IMG_Vehicle4" accept="image/*" required>
                 <br>
             </div>
-            <button class="submit_BTN" type="submit">Thêm xe</button>
+            <button id="submit_container" class="submit_BTN" type="submit">Thêm xe</button>
         </form>
     </div>
     <footer>
         <p>&copy; 2024 Nhà Xe Hạnh Phúc. All rights reserved.</p>
     </footer>
 </body>
-<script src="add_vehicle.js"></script>
+<script type="module" src="add_vehicle.js"></script>
 
 </html>

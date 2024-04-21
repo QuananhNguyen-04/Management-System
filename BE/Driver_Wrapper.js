@@ -1,6 +1,9 @@
-const {driver,compareDriver,setInfo,driverLicense,setExpiry,clearExpiry} =require("./Driver");
-const {isExisted} = require("./isExisted");
-const {searchDriverByInfo,searchDriver,fetchDriverList,editDriver,pushNewDriver,deleteDriver} = require('./fetchDriver');
+import { driver, compareDriver, setInfo, driverLicense, setExpiry, clearExpiry } 
+from "./Driver.js";
+import { isExisted } 
+from "./isExisted.js";
+import { searchDriverByInfo, searchDriver, fetchDriverList, editDriver, pushNewDriver, deleteDriver } 
+from './fetchDriver.js';
 
 class driver_wrapper
 {
@@ -67,6 +70,7 @@ class driver_wrapper
             this.idList[this.size]=newDriver.id;                
             this.size++;
             pushNewDriver(newDriver);
+            console.log("Add Success")
         }
         else console.log('Fail: Id existed.');
     }
@@ -118,4 +122,4 @@ class driver_wrapper
         else console.log('Fail: Undefined driver.');
     }
 }
-module.exports={driver_wrapper};
+export default{driver_wrapper};

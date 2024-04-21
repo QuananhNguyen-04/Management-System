@@ -1,58 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NHÀ XE HẠNH PHÚC</title>
-  <link rel="stylesheet" href="../header.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <style>
-    /* Chỉnh sửa cho thanh tìm kiếm */
-    #search-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-top: 20px;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NHÀ XE HẠNH PHÚC</title>
+    <link rel="stylesheet" href="../header.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* Chỉnh sửa cho thanh tìm kiếm */
+        #search-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
 
-    .search-box {
-      display: flex;
-      align-items: center;
-      background-color: #f3f3f3;
-      border-radius: 20px;
-      padding: 5px 10px;
-      width: 300px;
-    }
+        .search-box {
+            display: flex;
+            align-items: center;
+            background-color: #f3f3f3;
+            border-radius: 20px;
+            padding: 5px 10px;
+            width: 300px;
+        }
 
-    #search-text {
-      border: none;
-      background: none;
-      flex: 1;
-      padding: 5px;
-    }
+        #search-text {
+            border: none;
+            background: none;
+            flex: 1;
+            padding: 5px;
+        }
 
-    #search-type {
-      padding: 5px;
-      margin-right: 10px;
-      border: none;
-      background: none;
-    }
+        #search-type {
+            padding: 5px;
+            margin-right: 10px;
+            border: none;
+            background: none;
+        }
 
-    #search-btn {
-      background-color: #333;
-      color: #fff;
-      border: none;
-      padding: 5px 10px;
-      border-radius: 50%;
-      cursor: pointer;
-    }
+        #search-btn {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
 
-    #search-btn:hover {
-      background-color: #555;
-    }
+        #search-btn:hover {
+            background-color: #555;
+        }
 
-    /* CSS cho bảng dữ liệu */
-    /* #result-table {
+        /* CSS cho bảng dữ liệu */
+        /* #result-table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 20px;
@@ -67,223 +70,237 @@
     #result-table th {
       background-color: #f2f2f2;
     } */
-    .tableclass {
-      margin: 20px auto;
-      max-height: 500px;
-      overflow: auto;
-      width: 80%;
-      box-shadow: 7px 5px 5px #555;
+        .tableclass {
+            margin: 20px auto;
+            max-height: 500px;
+            overflow: auto;
+            width: 80%;
+            box-shadow: 7px 5px 5px #555;
 
-    }
+        }
 
-    .tableclass table {
-        width: 100%;
-        border-left: 1px solid #ddd;
-        border-top: 1px solid #ddd;
-        border-spacing: 0;
-        border-collapse: collapse;
-    }
-/* 
+        .tableclass table {
+            width: 100%;
+            border-left: 1px solid #ddd;
+            border-top: 1px solid #ddd;
+            border-spacing: 0;
+            border-collapse: collapse;
+        }
+
+        /* 
   .tableclass thead {
     position: sticky;
     top: 0;
     
   } */
-  .tableclass th {
-      position: sticky;
-      top: 0;
-      color: #393E41;
-      background-color: #bbbbbb;
-      border-bottom: 1px solid #ddd;
-      border-right: 1px solid #ddd;
-      padding-top: 5px;
-      padding-bottom: 5px;
-      padding-left: 5px;
-      padding-right: 5px;
-      height: 40px;
-      text-align: center;
-  }
-  .tableclass td {
-      border-bottom: 1px solid #ddd;
-      border-right: 1px solid #ddd;
-      padding-top: 5px;
-      padding-bottom: 5px;
-      padding-left: 5px;
-      padding-right: 5px;
-      height: 40px;
-      cursor: pointer;
-  }
+        .tableclass th {
+            position: sticky;
+            top: 0;
+            color: #393E41;
+            background-color: #bbbbbb;
+            border-bottom: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            padding-left: 5px;
+            padding-right: 5px;
+            height: 40px;
+            text-align: center;
+        }
 
-  .row2colors tr:nth-child(odd) {
-      background-color: #fff;
-  }
+        .tableclass td {
+            border-bottom: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            padding-left: 5px;
+            padding-right: 5px;
+            height: 40px;
+            cursor: pointer;
+        }
 
-.row2colors tr:nth-child(even) {
-      background-color: #ddd;
-  }
+        .row2colors tr:nth-child(odd) {
+            background-color: #fff;
+        }
 
-.row2colors tr:hover{
-    background-color: #dfd;
-}
-    
-    /* CSS cho profile */
-    .profile-container {
-      border: 1px solid #666;
-      display: none;
-      position: fixed;
-      box-shadow: 5px 5px 5px #7d7878;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: white;
-      padding: 20px;
-      z-index: 9999;
-      max-width: 600px; /* Tăng kích thước tối đa */
-      width: 80%; /* Thay đổi kích thước theo tỷ lệ */
-    }
+        .row2colors tr:nth-child(even) {
+            background-color: #ddd;
+        }
 
-    .profile-container img {
-      max-width: 4in; /* Kích thước 4x6 inch */
-      max-height: 6in;
-      border-radius: 8px;
-      margin-bottom: 10px;
-    }
-    
+        .row2colors tr:hover {
+            background-color: #dfd;
+        }
 
-    
-    /* CSS cho bảng thông tin tài xế */
-    #driver-info-table {
-      border-collapse: collapse;
-      width: 100%;
-    }
-    
-    #driver-info-table th, #driver-info-table td {
-      border: 1px solid #ddd;
-      padding: 8px;
-    }
-    
-    #driver-info-table img {
-      max-width: 100px;
-      border-radius: 8px;
-    }
+        /* CSS cho profile */
+        .profile-container {
+            border: 1px solid #666;
+            display: none;
+            position: fixed;
+            box-shadow: 5px 5px 5px #7d7878;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            z-index: 9999;
+            max-width: 600px;
+            /* Tăng kích thước tối đa */
+            width: 80%;
+            /* Thay đổi kích thước theo tỷ lệ */
+        }
 
-    /* CSS cho phần chỉnh sửa */
-    .edit-container {
-      display: none;
-      margin-top: 20px;
-    }
-
-    .edit-container input {
-      width: calc(100% - 20px);
-      padding: 5px;
-      margin-bottom: 10px;
-    }
-
-    .edit-buttons button {
-      background-color: #333;
-      color: #fff;
-      border: none;
-      padding: 5px 10px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .edit-buttons button:hover {
-      background-color: #555;
-    }
-
-    .update-text {
-      font-style: italic;
-      color: #666;
-      margin-top: 10px;
-    }
-    #overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);  /* Màu nền bán trong suốt */
-    display: none;  /* Ban đầu, overlay sẽ bị ẩn */
-  }
+        .profile-container img {
+            max-width: 4in;
+            /* Kích thước 4x6 inch */
+            max-height: 6in;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
 
 
 
-  </style>
+        /* CSS cho bảng thông tin tài xế */
+        #driver-info-table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        #driver-info-table th,
+        #driver-info-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        #driver-info-table img {
+            max-width: 100px;
+            border-radius: 8px;
+        }
+
+        /* CSS cho phần chỉnh sửa */
+        .edit-container {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .edit-container input {
+            width: calc(100% - 20px);
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+
+        .edit-buttons button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .edit-buttons button:hover {
+            background-color: #555;
+        }
+
+        .update-text {
+            font-style: italic;
+            color: #666;
+            margin-top: 10px;
+        }
+
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            /* Màu nền bán trong suốt */
+            display: none;
+            /* Ban đầu, overlay sẽ bị ẩn */
+        }
+    </style>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js"></script>
 </head>
+
 <body>
-  <header>
-    <div class="logo-wrapper">
-        <a href="https://www.facebook.com/vongoctrieuU" target="_blank">
-            <img src="https://cdn.tgdd.vn/2020/03/GameApp/Facebook-200x200.jpg" alt="Facebook Logo" class="facebook-logo">
-        </a>
-        <img src="https://media.loveitopcdn.com/3807/la-co-viet-nam-vector-1.png" alt="Vietnam Flag" class="vietnam-flag">
-    </div>
-    <h1>NHÀ XE HẠNH PHÚC</h1>
-    <div class="dropdown logout-container">
-      <img src="https://png.pngtree.com/png-clipart/20190604/original/pngtree-truck-driver-png-image_805319.jpg" alt="User Icon" class="user-icon">
-      <!-- Thêm dropdown content -->
-      <div class="dropdown-content logout-info">
-          <div>
-          <tr>
-            <td><a href="../index.html">Trang chủ</a></td>
-          </tr>
-          <tr>
-            <td><a href="../Authentication/change_password.html">Đổi mật khẩu</a></td>
-          </tr>
-          <tr>
-            <td><a href="../Authentication/login.html">Đăng xuất</a></td>
-          </tr>
+    <header>
+        <div class="logo-wrapper">
+            <a href="https://www.facebook.com/vongoctrieuU" target="_blank">
+                <img src="https://cdn.tgdd.vn/2020/03/GameApp/Facebook-200x200.jpg" alt="Facebook Logo"
+                    class="facebook-logo">
+            </a>
+            <img src="https://media.loveitopcdn.com/3807/la-co-viet-nam-vector-1.png" alt="Vietnam Flag"
+                class="vietnam-flag">
         </div>
-      </div>
+        <h1>NHÀ XE HẠNH PHÚC</h1>
+        <div class="dropdown logout-container">
+            <img src="https://png.pngtree.com/png-clipart/20190604/original/pngtree-truck-driver-png-image_805319.jpg"
+                alt="User Icon" class="user-icon">
+            <!-- Thêm dropdown content -->
+            <div class="dropdown-content logout-info">
+                <div>
+                    <tr>
+                        <td><a href="../index.html">Trang chủ</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="../Authentication/change_password.html">Đổi mật khẩu</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="../Authentication/login.html">Đăng xuất</a></td>
+                    </tr>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="overlay"></div>
+    <div id="search-container">
+        <div class="search-box">
+            <select id="search-type" onchange="redraw()">
+                <option value="">Loại xe</option>
+                <option value="Xe khách">Xe khách</option>
+                <option value="Xe tải">Xe tải</option>
+                <option value="Xe container">Xe container</option>
+            </select>
+            <input type="text" placeholder="Tìm kiếm tài xế" id="search-text">
+            <button id="search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
     </div>
-  </header>
-  <div class="overlay"></div>
-  <div id="search-container">
-    <div class="search-box">
-      <select id="search-type" onchange="redraw()">
-        <option value="">Loại xe</option>
-        <option value="Xe khách">Xe khách</option>
-        <option value="Xe tải">Xe tải</option>
-        <option value="Xe container">Xe container</option>
-      </select>
-      <input type="text" placeholder="Tìm kiếm tài xế" id="search-text">
-      <button id="search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
-    </div>
-  </div>
-  <div class ="tableclass row2colors" id="result-container"></div>
+    <div class="tableclass row2colors" id="result-container"></div>
 
-  <div class="profile-container" id="profile-container">
-    <table id="driver-info-table">
-      <tr>
-        <td rowspan="3"><img src="" alt="Profile Picture" id="profile-picture"></td>
-        <td colspan="2"><img src="" alt="Driving License" id="driving-license"></td>
-      </tr>
-      <tr>
-        <td colspan="2" id="profile-name"></td>
-      </tr>
-      <tr>
-        <td colspan="2" id="profile-info"></td>
-      </tr>
-    </table>
-    <div class="edit-container">
-      <input type="text" id="edit-name" placeholder="Tên tài xế">
-      <input type="text" id="edit-type" placeholder="Loại xe">
-      <input type="text" id="edit-phone" placeholder="Số điện thoại">
-      <div class="edit-buttons">
-        <button onclick="cancelEdit()">Hủy</button>
-        <button onclick="updateDriver()">Cập nhật</button>
-      </div>
+    <div class="profile-container" id="profile-container">
+        <table id="driver-info-table">
+            <tr>
+                <td rowspan="3"><img src="" alt="Profile Picture" id="profile-picture"></td>
+                <td colspan="2"><img src="" alt="Driving License" id="driving-license"></td>
+            </tr>
+            <tr>
+                <td colspan="2" id="profile-name"></td>
+            </tr>
+            <tr>
+                <td colspan="2" id="profile-info"></td>
+            </tr>
+        </table>
+        <div class="edit-container">
+            <input type="text" id="edit-name" placeholder="Tên tài xế">
+            <input type="text" id="edit-type" placeholder="Loại xe">
+            <input type="text" id="edit-phone" placeholder="Số điện thoại">
+            <div class="edit-buttons">
+                <button onclick="cancelEdit()">Hủy</button>
+                <button onclick="updateDriver()">Cập nhật</button>
+            </div>
+        </div>
+        <!-- <button onclick="closeProfile()">Đóng</button> -->
+        <button onclick="editProfile()">Chỉnh sửa</button>
     </div>
-    <!-- <button onclick="closeProfile()">Đóng</button> -->
-    <button onclick="editProfile()">Chỉnh sửa</button>
-  </div>
 
-  <footer>
-    <p>&copy; 2024 Nhà Xe Hạnh Phúc. All rights reserved.</p>
-  </footer>
-  <div id="overlay" onclick="hideOverlay()"></div>
-  <script src="search_driver.js">
-  </script>
+    <footer>
+        <p>&copy; 2024 Nhà Xe Hạnh Phúc. All rights reserved.</p>
+    </footer>
+    <div id="overlay" onclick="hideOverlay()"></div>
+    <script src="search_driver.js">
+    </script>
 </body>
+
 </html>

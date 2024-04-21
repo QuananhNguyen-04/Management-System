@@ -1,25 +1,8 @@
-//const {db,app} = require('./firebase_Init');
-//const {isExisted} = require("./Driver");
-const {isExisted} = require("./isExisted");
-const {initializeApp} = require("firebase/app");
-//const {getAnalytics} = require("firebase/analytics");
-//const {getDatabase} = require("firebase/database");
-const {getDocs, getDoc, setDoc, doc, /*addDoc,*/ getFirestore, collection, query, where} = require("firebase/firestore");
 
-
-const firebaseConfig = {
-    apiKey: "AIzaSyAFfRTomodMfFqP3JkXPTu34W3vYnKwtmY",
-    authDomain: "nha-xe-hanh-phuc-ltnc.firebaseapp.com",
-    databaseURL: "https://nha-xe-hanh-phuc-ltnc-default-rtdb.asia-southeast1.firebasedatabase.app/",
-    projectId: "nha-xe-hanh-phuc-ltnc",
-    storageBucket: "nha-xe-hanh-phuc-ltnc.appspot.com",
-    messagingSenderId: "260388398077",
-    appId: "1:260388398077:web:2d2149e08a20947333af94",
-    measurementId: "G-ZF1G64YNDE"
-};
-
-let app = initializeApp(firebaseConfig);
-let db = getFirestore(app);
+import { isExisted } from "./isExisted.js";
+import { db } from "./firebase_Init.js"
+import { getDocs, getDoc, setDoc, doc, collection, query, where } 
+from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 
 /*async function fetchDriver(documentId) 
 {
@@ -189,5 +172,5 @@ async function deleteDriver(documentId)
         console.log('Error deleting driver: ',error);
     }
 }
-module.exports={searchDriverByInfo,fetchDriverList,editDriver,pushNewDriver,deleteDriver,searchDriver};
+export default{searchDriverByInfo,fetchDriverList,editDriver,pushNewDriver,deleteDriver,searchDriver};
 

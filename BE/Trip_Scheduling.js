@@ -1,18 +1,5 @@
-const {db, app} = require('./firebase_Init')
-const {
-    and,
-    or,
-    getCountFromServer,
-    getDoc,
-    getDocs,
-    query,
-    where,
-    addDoc,
-    deleteDoc,
-    setDoc,
-    doc,
-    collection
-} = require("firebase/firestore");
+import { db, app } from './firebase_Init';
+import { and, or, getCountFromServer, getDoc, getDocs, query, where, addDoc, deleteDoc, setDoc, doc, collection } from "firebase/firestore";
 
 class Trip_Schedule {
     async sup_Add(car_id, start, des) {
@@ -49,7 +36,7 @@ class Trip_Schedule {
     }
 
     async add(driver_Id, car_Id, subDriver_Id, cus_Id, cus_Phone_Num,
-              start_Dest, end_Dest, start_Time, end_Time, customer_Phone_Number, revenue) {
+        start_Dest, end_Dest, start_Time, end_Time, customer_Phone_Number, revenue) {
         try {
             const docRef = doc(collection(db, "Trip").withConverter(tripConverter));
             await setDoc(docRef, new Trip(driver_Id, car_Id, subDriver_Id, cus_Id, cus_Phone_Num,
@@ -125,7 +112,7 @@ class Trip_Schedule {
 class Trip {
 
     constructor(driver_Id, car_ID, subDriver_Id, cus_Id, cus_Phone_Num,
-                start_Dest, end_Dest, start_Time, end_Time, customer_Phone_Number, revenue) {
+        start_Dest, end_Dest, start_Time, end_Time, customer_Phone_Number, revenue) {
         this.driver_Id = driver_Id;
         this.subDriver_Id = subDriver_Id;
         this.car_Id = car_ID;

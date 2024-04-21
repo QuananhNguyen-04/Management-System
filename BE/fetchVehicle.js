@@ -1,28 +1,9 @@
 //Import the firebase functions
-const {initializeApp} = require("firebase/app");
-const {isExisted} = require("./isExisted");     //Use from driver-and-driver-wrapper branch
-// const {getAnalytics} = require("firebase/analytics");
-// const {getDatabase} = require("firebase/database");
-const {getDocs, getDoc, setDoc, doc, /*addDoc,*/ getFirestore, collection, deleteDoc, query, where} = require("firebase/firestore");
-// import { initializeApp } from "firebase/app";
-// import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { isExisted } from "./isExisted.js";
+import { db } from "./firebase_Init.js"
+import { getDocs, getDoc, setDoc, doc, collection, deleteDoc, query, where } 
+from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 
-//Import the firebase configuration
-const firebaseConfig = {
-    apiKey: "AIzaSyAFfRTomodMfFqP3JkXPTu34W3vYnKwtmY",
-    authDomain: "nha-xe-hanh-phuc-ltnc.firebaseapp.com",
-    databaseURL: "https://nha-xe-hanh-phuc-ltnc-default-rtdb.asia-southeast1.firebasedatabase.app/",
-    projectId: "nha-xe-hanh-phuc-ltnc",
-    storageBucket: "nha-xe-hanh-phuc-ltnc.appspot.com",
-    messagingSenderId: "260388398077",
-    appId: "1:260388398077:web:2d2149e08a20947333af94",
-    measurementId: "G-ZF1G64YNDE"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-// Initialize Cloud Firestore and get a reference to the service
-const db = getFirestore(app);
 
 // try {
 //     const docRef = await addDoc(collection(db, "vehicles"), {
@@ -119,4 +100,4 @@ async function fetchVehicle(vehicle_list) {
     }
 }
 
-export {addVehicle, deleteVehicle, searchVehicle, DefaultsearchVehicle, editVehicle, fetchVehicle, searchVehicle};
+export {addVehicle, deleteVehicle, searchVehicle, DefaultsearchVehicle, editVehicle, fetchVehicle};

@@ -15,8 +15,8 @@
 - efficiency:   đánh giá từ manager        
 - other:        Object (đề phòng cần thêm những thông tin cá nhân nhưng ko dùng tới trong BE)
 */
-const {searchDriver,editDriver} = require('./fetchDriver');
-const {isExisted} = require("./isExisted");
+import { searchDriver, editDriver } from './fetchDriver.js';
+import { isExisted } from "./isExisted.js";
 
 //import { set } from "firebase/database";
 
@@ -193,4 +193,4 @@ class driver
         else console.log('Fail: Undefined driver.');
     }
 }
-module.exports = {driver,compareDriver,setInfo,driverLicense,/*isObjectExisted,*/setExpiry,clearExpiry};
+export default {driver,compareDriver,setInfo,driverLicense,/*isObjectExisted,*/setExpiry,clearExpiry};

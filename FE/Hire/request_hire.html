@@ -1,22 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
     <link rel="stylesheet" href="request.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        .user-icon{
+        .user-icon {
             width: 30px;
             height: auto;
             border-radius: 100px;
         }
+
         /* Định vị dropdown container */
         .dropdown.logout-container {
             position: absolute;
-            top: 40px; /* Đặt ở phía trên cùng của màn hình */
-            right: 10px; /* Đặt ở phía bên phải của màn hình */
+            top: 40px;
+            /* Đặt ở phía trên cùng của màn hình */
+            right: 10px;
+            /* Đặt ở phía bên phải của màn hình */
         }
+
         /* Dropdown content */
         .logout-info {
             display: none;
@@ -25,42 +30,51 @@
             border: 5px solid #ccc;
             padding: 10px;
             z-index: 5;
-            top: 30px; /* Hiển thị dropdown content dưới dropdown container */
+            top: 30px;
+            /* Hiển thị dropdown content dưới dropdown container */
             right: 0;
             text-align: left;
         }
+
         /* Hiển thị dropdown content khi hover vào dropdown container */
         .logout-container:hover .logout-info {
-        display: block;
+            display: block;
         }
-      </style>
+    </style>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js"></script>
 </head>
+
 <body>
     <header>
         <div class="logo-wrapper">
             <a href="https://www.facebook.com/vongoctrieuU" target="_blank">
-                <img src="https://cdn.tgdd.vn/2020/03/GameApp/Facebook-200x200.jpg" alt="Facebook Logo" class="facebook-logo">
+                <img src="https://cdn.tgdd.vn/2020/03/GameApp/Facebook-200x200.jpg" alt="Facebook Logo"
+                    class="facebook-logo">
             </a>
-            <img src="https://media.loveitopcdn.com/3807/la-co-viet-nam-vector-1.png" alt="Vietnam Flag" class="vietnam-flag">
+            <img src="https://media.loveitopcdn.com/3807/la-co-viet-nam-vector-1.png" alt="Vietnam Flag"
+                class="vietnam-flag">
         </div>
         <h1>NHÀ XE HẠNH PHÚC</h1>
         <div class="dropdown logout-container">
-            <img src="https://png.pngtree.com/png-clipart/20190604/original/pngtree-truck-driver-png-image_805319.jpg" alt="User Icon" class="user-icon">
+            <img src="https://png.pngtree.com/png-clipart/20190604/original/pngtree-truck-driver-png-image_805319.jpg"
+                alt="User Icon" class="user-icon">
             <!-- Thêm dropdown content -->
             <div class="dropdown-content logout-info">
                 <div>
-                <tr>
-                  <td><a href="../index.html">Trang chủ</a></td>
-                </tr>
-                <tr>
-                  <td><a href="../Authentication/change_password.html">Đổi mật khẩu</a></td>
-                </tr>
-                <tr>
-                  <td><a href="../Authentication/login.html">Đăng xuất</a></td>
-                </tr>
-              </div>
+                    <tr>
+                        <td><a href="../index.html">Trang chủ</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="../Authentication/change_password.html">Đổi mật khẩu</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="../Authentication/login.html">Đăng xuất</a></td>
+                    </tr>
+                </div>
             </div>
-          </div>
+        </div>
     </header>
     <div class="Request_Box">
         <input type="text" class="Customer_Name" placeholder="Tên khách hàng...">
@@ -71,11 +85,12 @@
         <input type="date" class="Start_Day">
         <button type="submit" id="btn_check" class="btn_check" onclick="Find_Driver()">Kiểm tra</button>
     </div>
-    <div id="Container_Filter" class ="tableclass row2colors">
+    <div id="Container_Filter" class="tableclass row2colors">
     </div>
     <footer>
         <p>&copy; 2024 Nhà Xe Hạnh Phúc. All rights reserved.</p>
     </footer>
 </body>
 <script src="request.js"></script>
+
 </html>

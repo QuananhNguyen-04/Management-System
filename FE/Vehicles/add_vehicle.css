@@ -1,11 +1,28 @@
+html{
+    min-height: 100%;
+    margin: 0;
+    position: relative;
+    padding-bottom: 70px;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    /* text-align: center; */
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    min-height: 750px;
+    /* display: flex; */
+    /* flex-direction: column; */
+}
 header {
     background-color: #333;
     color: #fff;
-    padding: 33px 0;
+    padding: 20px 0;
     text-align: center;
     position: relative;
-    margin: 0;
-    width: 100%;
 }
 
 .logo-wrapper {
@@ -91,19 +108,20 @@ footer {
     color: #fff;
     text-align: center;
     padding: 20px 0;
-    position: relative;
-    bottom: 0;
-    left: 0;
-    bottom: 0;
+}
+footer {
     width: 100%;
     background-color: #333;
     color: white;
     text-align: center;
     padding: 10px 0;
+    position: absolute;
+    bottom: 0;
 }
 
+
 .Vehicle {
-    height: 90%;
+    min-height: 90%;
     display: flex;
     flex-direction: column;
     align-items: start;
@@ -112,13 +130,32 @@ footer {
     border-radius: 20px;
     background-color: #ddd;
     margin: 20px;
+    padding: 20px;
 }
 
 h3 {
     width: 10%;
     margin: 20px auto;
 }
-
+.Choose_BTN {
+    min-width: 100px;
+    min-height: 30px;
+    border: none;
+    background-color: rgb(210, 239, 211);
+    border-radius: 20px;
+    margin-top: 30px;
+    cursor: pointer;
+}
+.active{
+    background-color: rgb(13, 219, 47);
+}
+/* .Choose_BTN {
+    min-width: 100px;
+    min-height: 30px;
+    border-radius: 20px;
+    margin-top: 30px;
+    cursor: pointer;
+} */
 .Vehicle_item {
     width: 60%;
     margin: 20px auto;
@@ -141,13 +178,6 @@ h3 {
     justify-content: space-around;
 }
 
-.Choose_BTN {
-    min-width: 100px;
-    min-height: 30px;
-    border-radius: 20px;
-    margin-top: 30px;
-    cursor: pointer;
-}
 
 .submit_BTN {
     min-width: 100px;
