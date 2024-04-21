@@ -1,8 +1,8 @@
-// import { vehicles_wrapper } from "../../BE/Vehicle_Wrapper.js";
-// import { vehicle } from "../../BE/Vehicle.js";
+import { vehicles_wrapper } from "../../BE/Vehicle_Wrapper.js";
+import { vehicle } from "../../BE/Vehicle.js";
 
 
-let buttonActive = null;
+let buttonActive = document.getElementById('btn_Truck');
 var control_Plate;
 // var weight;
 var type;
@@ -10,7 +10,7 @@ var img1;
 var img2;
 var img3;
 var img4;
-// var wrapper = new vehicles_wrapper()
+var wrapper = new vehicles_wrapper()
 
 function showForm(formId) {
     console.log("click")
@@ -27,9 +27,15 @@ function showForm(formId) {
     document.getElementById(formId).style.display = 'block';
 }
 
-document.getElementById('btn_Truck').addEventListener('click', showForm('Truck'));
-document.getElementById('btn_Coach').addEventListener('click', showForm('Coach'));
-document.getElementById('btn_Container').addEventListener('click', showForm('Container'));
+document.getElementById('btn_Truck').addEventListener('click', () => {
+    showForm('Truck')
+});
+document.getElementById('btn_Coach').addEventListener('click', () => {
+    showForm('Coach')
+});
+document.getElementById('btn_Container').addEventListener('click', () => {
+    showForm('Container')
+});
 
 function submitTruck() {
     type = "TRUCK";
@@ -40,7 +46,7 @@ function submitTruck() {
     img2 = document.querySelector("#Truck input[name='IMG_Vehicle2']").value;
     img3 = document.querySelector("#Truck input[name='IMG_Vehicle3']").value;
     img4 = document.querySelector("#Truck input[name='IMG_Vehicle4']").value;
-    // wrapper.add(1, Control_Plate, Weight_Vehicle, Fuel_Vehicle, null, null, null, null, null);
+    wrapper.add(1, Control_Plate, Weight_Vehicle, Fuel_Vehicle, null, null, null, null, null);
 }
 
 function submitCoach() {
@@ -52,7 +58,7 @@ function submitCoach() {
     img2 = document.querySelector("#Coach input[name='IMG_Vehicle2']").value;
     img3 = document.querySelector("#Coach input[name='IMG_Vehicle3']").value;
     img4 = document.querySelector("#Coach input[name='IMG_Vehicle4']").value;
-    // wrapper.add(2, Control_Plate, null, Fuel_Vehicle, Capacity_Vehicle, null, null, null, null);
+    wrapper.add(2, Control_Plate, null, Fuel_Vehicle, Capacity_Vehicle, null, null, null, null);
 }
 function submitContainer() {
     type = "Container";
@@ -65,9 +71,15 @@ function submitContainer() {
     img2 = document.querySelector("#Container input[name='IMG_Vehicle2']").value;
     img3 = document.querySelector("#Container input[name='IMG_Vehicle3']").value;
     img4 = document.querySelector("#Container input[name='IMG_Vehicle4']").value;
-    // wrapper.add(3, Control_Plate, null, null, null, null, Height_Vehicle, Length_Vehicle, MaxLoad_Vehicle);
+    wrapper.add(3, Control_Plate, null, null, null, null, Height_Vehicle, Length_Vehicle, MaxLoad_Vehicle);
 }
 
-document.getElementById('submit_truck').addEventListener('click', submitTruck());
-document.getElementById('submit_coach').addEventListener('click', submitCoach());
-document.getElementById('submit_container').addEventListener('click', submitContainer());
+document.getElementById('submit_truck').addEventListener('click', async function() {
+    submitTruck();
+});
+document.getElementById('submit_coach').addEventListener('click', async function() {
+    submitCoach();
+});
+document.getElementById('submit_container').addEventListener('click', async function() {
+    submitContainer();
+});
