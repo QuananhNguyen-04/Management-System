@@ -1,4 +1,4 @@
-#Container_Filter{
+#Container_Filter {
     width: 80%;
     height: 500px;
     margin: 20px auto;
@@ -7,27 +7,29 @@
     align-items: center;
 }
 
-  .tableclass table {
-      width: 100%;
-      border-left: 1px solid #ddd;
-      border-top: 1px solid #ddd;
-      border-spacing: 0;
-      border-collapse: collapse;
-      margin: 20px auto;
-      max-height: 500px;
-      overflow: auto;
-      width: 80%;
-      /* box-shadow: 7px 5px 5px #555; */
-  }
+.tableclass table {
+    width: 100%;
+    border-left: 1px solid #ddd;
+    border-top: 1px solid #ddd;
+    border-spacing: 0;
+    border-collapse: collapse;
+    margin: 20px auto;
+    max-height: 500px;
+    overflow: auto;
+    width: 80%;
+    /* box-shadow: 7px 5px 5px #555; */
+}
+
 /* 
 .tableclass thead {
   position: sticky;
   top: 0;
   
 } */
-.tableclass{
+.tableclass {
     margin: 20px auto;
 }
+
 .tableclass th {
     position: sticky;
     top: 0;
@@ -42,6 +44,7 @@
     height: 40px;
     text-align: center;
 }
+
 .tableclass td {
     border-bottom: 1px solid #ddd;
     border-right: 1px solid #ddd;
@@ -61,10 +64,11 @@
     background-color: #ddd;
 }
 
-.row2colors tr:hover{
-  background-color: #dfd;
+.row2colors tr:hover {
+    background-color: #dfd;
 }
-.hire_btn{
+
+.hire_btn {
     background-color: #726a6a;
     margin: 0 auto 20px;
     height: 50px;
@@ -72,7 +76,8 @@
     border-radius: 20px;
     cursor: pointer;
 }
-.Request_Box{
+
+.Request_Box {
     width: 70%;
     height: 30px;
     display: flex;
@@ -81,6 +86,7 @@
     flex-wrap: wrap;
     /* display: inline; */
 }
+
 /* fdsfhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh */
 /* CSS for Header */
 header {
@@ -175,14 +181,15 @@ footer {
     text-align: center;
     padding: 20px 0;
 }
+
 footer {
-  position: relative;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  background-color: #333;
-  color: white;
-  text-align: center;
-  padding: 10px 0;
-  margin: 20px auto;
+    position: relative;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    margin: 20px auto;
 }

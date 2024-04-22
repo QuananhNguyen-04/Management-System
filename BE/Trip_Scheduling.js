@@ -1,5 +1,6 @@
-import { db, app } from './firebase_Init';
-import { and, or, getCountFromServer, getDoc, getDocs, query, where, addDoc, deleteDoc, setDoc, doc, collection } from "firebase/firestore";
+import { db } from './firebase_Init.js';
+import { and, or, getCountFromServer, getDoc, getDocs, query, where, addDoc, deleteDoc, setDoc, doc, collection } 
+from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 
 class Trip_Schedule {
     async sup_Add(car_id, start, des) {
@@ -99,11 +100,13 @@ class Trip_Schedule {
     }
 
     async show_All() {
+        var list = []
         console.log("Show_all")
         const q = query(collection(db, "Trip"))
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
             console.log(doc.id, " => ", doc.data());
+            // getDoc(db, "vehicles", doc.id);
         });
     }
 
@@ -175,10 +178,12 @@ function trip_Money(start, des) {
 
 console.log("Testing...")
 // trip.show_All()
-trip.add("driverId", "car", "sub", "cus_id(name)", "13555",
-    "start", "end", "time_start", "time_end",
-    "cus_phone", "revenue")
-trip.del("car")
+// trip.add("driverId", "car", "sub", "cus_id(name)", "13555",
+//     "start", "end", "time_start", "time_end",
+//     "cus_phone", "revenue")
+// trip.del("car")
 // trip.getSize()
 trip.search("car")
 // trip.search_bien_so_xe("1221")
+
+export { Trip_Schedule, Trip }

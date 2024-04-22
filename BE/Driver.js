@@ -193,4 +193,4 @@ class driver
         else console.log('Fail: Undefined driver.');
     }
 }
-export default {driver,compareDriver,setInfo,driverLicense,/*isObjectExisted,*/setExpiry,clearExpiry};
+export {driver,compareDriver,setInfo,driverLicense,/*isObjectExisted,*/setExpiry,clearExpiry};

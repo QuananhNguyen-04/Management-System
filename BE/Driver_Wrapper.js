@@ -122,4 +122,4 @@ class driver_wrapper
         else console.log('Fail: Undefined driver.');
     }
 }
-export default{driver_wrapper};
+export {driver_wrapper};

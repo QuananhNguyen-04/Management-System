@@ -46,7 +46,7 @@ function submitTruck() {
     img2 = document.querySelector("#Truck input[name='IMG_Vehicle2']").value;
     img3 = document.querySelector("#Truck input[name='IMG_Vehicle3']").value;
     img4 = document.querySelector("#Truck input[name='IMG_Vehicle4']").value;
-    wrapper.add(1, Control_Plate, Weight_Vehicle, Fuel_Vehicle, null, null, null, null, null);
+    wrapper.add(1, control_Plate, weight, fuel, null, null, null, null, null);
 }
 
 function submitCoach() {
@@ -58,7 +58,7 @@ function submitCoach() {
     img2 = document.querySelector("#Coach input[name='IMG_Vehicle2']").value;
     img3 = document.querySelector("#Coach input[name='IMG_Vehicle3']").value;
     img4 = document.querySelector("#Coach input[name='IMG_Vehicle4']").value;
-    wrapper.add(2, Control_Plate, null, Fuel_Vehicle, Capacity_Vehicle, null, null, null, null);
+    wrapper.add(2, control_Plate, null, null, capacity, speciality, null, null, null);
 }
 function submitContainer() {
     type = "Container";
@@ -71,7 +71,7 @@ function submitContainer() {
     img2 = document.querySelector("#Container input[name='IMG_Vehicle2']").value;
     img3 = document.querySelector("#Container input[name='IMG_Vehicle3']").value;
     img4 = document.querySelector("#Container input[name='IMG_Vehicle4']").value;
-    wrapper.add(3, Control_Plate, null, null, null, null, Height_Vehicle, Length_Vehicle, MaxLoad_Vehicle);
+    wrapper.add(3, control_Plate, weight, null, null, null, height, length, max_load);
 }
 
 document.getElementById('submit_truck').addEventListener('click', async function() {

@@ -22,7 +22,9 @@ class vehicles_wrapper {
     add(VehicleType, control_Plate, weight, fuel, capacity, speciality, height, length, max_Load) {
         const new_vehicle = this.vehicleInfo.vehicleRegister(control_Plate, VehicleType, weight, fuel,
             capacity, speciality, height, length, max_Load);
+        console.log(new_vehicle)
         let checked = DefaultsearchVehicle(new_vehicle);
+        console.log(checked)
         if (isExisted(checked)) {
             this.vehicle_list.push(new_vehicle);
             this.size++;
