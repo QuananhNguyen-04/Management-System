@@ -1,25 +1,51 @@
+html{
+    min-height: 100%;
+    margin: 0;
+    position: relative;
+    padding-bottom: 70px;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    /* text-align: center; */
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    min-height: 750px;
+    /* display: flex; */
+    /* flex-direction: column; */
+}
+.tittle {
+    margin: 10px auto;
+    text-align: center;
+}
 #Container_Filter {
     width: 80%;
-    height: 500px;
+    /* height: 500px; */
     margin: 20px auto;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.tableclass table {
+#divtable table {
     width: 100%;
     border-left: 1px solid #ddd;
     border-top: 1px solid #ddd;
     border-spacing: 0;
     border-collapse: collapse;
-    margin: 20px auto;
-    max-height: 500px;
-    overflow: auto;
-    width: 80%;
+    margin: auto;
+    /* width: 80%; */
     /* box-shadow: 7px 5px 5px #555; */
 }
-
+#divtable{
+    width: 100%;
+    max-height: 500px;
+    overflow-y: scroll;
+    text-align: center;
+}
 /* 
 .tableclass thead {
   position: sticky;
@@ -30,7 +56,7 @@
     margin: 20px auto;
 }
 
-.tableclass th {
+#divtable th {
     position: sticky;
     top: 0;
     color: #393E41;
@@ -45,7 +71,7 @@
     text-align: center;
 }
 
-.tableclass td {
+#divtable td {
     border-bottom: 1px solid #ddd;
     border-right: 1px solid #ddd;
     padding-top: 5px;
@@ -56,43 +82,90 @@
     cursor: pointer;
 }
 
-.row2colors tr:nth-child(odd) {
+#divtable tr:nth-child(odd) {
     background-color: #fff;
 }
 
-.row2colors tr:nth-child(even) {
+#divtable tr:nth-child(even) {
     background-color: #ddd;
 }
 
-.row2colors tr:hover {
-    background-color: #dfd;
+#divtable tr:hover {
+    background-color: rgb(209, 240, 209);
 }
 
 .hire_btn {
-    background-color: #726a6a;
-    margin: 0 auto 20px;
+    background-color: #ddd;
+    margin: 20px auto;
     height: 50px;
     width: 100px;
     border-radius: 20px;
     cursor: pointer;
 }
 
-.Request_Box {
-    width: 70%;
-    height: 30px;
-    display: flex;
-    margin: 20px auto;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    /* display: inline; */
+
+input {
+    margin: 0 ;
 }
 
+.Request_Box{
+    display:inline-flex;
+    min-height: 30px;
+    margin: 20px auto;
+    flex-wrap: wrap;
+    text-align: left;
+}
+
+
+.gr1{
+    display: flex;
+    /*     margin: 5px 0; */
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.gr2{
+    display: flex;
+    /*     margin: 5px auto; */
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.center-box {
+    text-align: center;
+}
+
+.Request_Box-item{
+    box-sizing: border-box;
+    margin-top: 10px;
+    margin-left: 20px;
+
+}
+.Type_Vehicles, .Start_Time{
+    max-width: 95px;
+}
+.Start_Day, .btn_check{
+    max-width: 110px;
+}
+.Customer_Name{
+
+    min-width: 230px;
+}
+.Customer_Phone{
+
+    min-width: 230px;
+}
+.End_Dest{
+    min-width: 230px;
+}
+.Start_Dest{
+    min-width: 230px;
+}
 /* fdsfhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh */
 /* CSS for Header */
 header {
     background-color: #333;
     color: #fff;
-    padding: 33px 0;
+    padding: 20px 0;
     text-align: center;
     position: relative;
 }
@@ -182,14 +255,50 @@ footer {
     padding: 20px 0;
 }
 
-footer {
-    position: relative;
-    left: 0;
-    bottom: 0;
+.footer {
     width: 100%;
     background-color: #333;
     color: white;
     text-align: center;
     padding: 10px 0;
-    margin: 20px auto;
+    position: absolute;
+    bottom: 0;
+}
+
+@media only screen and (max-width: 1531px) {
+    .Request_Box {
+        width: 70vw;
+        margin: 0 auto;
+        padding-left: 12%;
+    }
+    /* .Request_Box input[type="text"],
+    .Request_Box input[type="tel"] {
+        width: 80vw;
+        margin-left:0;
+        margin-right:0;
+    } */
+
+    .gr1-2>input:first-child,
+    .Request_Box button{
+        margin-left:20px;
+    }
+
+}
+@media only screen and (max-width: 860px) {
+    .Request_Box {
+        width: 80vw;
+        margin: 0;
+        padding-left: 0;
+    }
+    .Request_Box input[type="text"],
+    .Request_Box input[type="tel"] {
+        width: 80vw;
+        margin-left:0;
+        margin-right:0;
+    }
+
+    .gr1-2>input:first-child,
+    .Request_Box select{
+        margin-left:0;
+    }
 }

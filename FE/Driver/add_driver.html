@@ -3,44 +3,9 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="add_driver.css">
+    <link rel="stylesheet" href="add_drive.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <style>
-        .user-icon {
-            width: 30px;
-            height: auto;
-            border-radius: 100px;
-        }
-
-        /* Định vị dropdown container */
-        .dropdown.logout-container {
-            position: absolute;
-            top: 40px;
-            /* Đặt ở phía trên cùng của màn hình */
-            right: 10px;
-            /* Đặt ở phía bên phải của màn hình */
-        }
-
-        /* Dropdown content */
-        .logout-info {
-            display: none;
-            position: absolute;
-            background-color: #376999;
-            border: 5px solid #ccc;
-            padding: 10px;
-            z-index: 5;
-            top: 30px;
-            /* Hiển thị dropdown content dưới dropdown container */
-            right: 0;
-            text-align: left;
-        }
-
-        /* Hiển thị dropdown content khi hover vào dropdown container */
-        .logout-container:hover .logout-info {
-            display: block;
-        }
-    </style>
     <script type="module" src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js"></script>
     <script type="module" src="https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js"></script>
     <script type="module" src="https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js"></script>
@@ -57,10 +22,10 @@
                 class="vietnam-flag">
         </div>
         <h1>NHÀ XE HẠNH PHÚC</h1>
-        <div class="dropdown logout-container">
+        <!-- <div class="dropdown logout-container">
             <img src="https://png.pngtree.com/png-clipart/20190604/original/pngtree-truck-driver-png-image_805319.jpg"
                 alt="User Icon" class="user-icon">
-            <!-- Thêm dropdown content -->
+            Thêm dropdown content 
             <div class="dropdown-content logout-info">
                 <div>
                     <tr>
@@ -74,7 +39,7 @@
                     </tr>
                 </div>
             </div>
-        </div>
+        </div> -->
     </header>
     <form id="personalForm">
         <h2 class="PI">Thông tin cá nhân</h2>

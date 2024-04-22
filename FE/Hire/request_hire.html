@@ -6,41 +6,6 @@
     <title>Document</title>
     <link rel="stylesheet" href="request.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        .user-icon {
-            width: 30px;
-            height: auto;
-            border-radius: 100px;
-        }
-
-        /* Định vị dropdown container */
-        .dropdown.logout-container {
-            position: absolute;
-            top: 40px;
-            /* Đặt ở phía trên cùng của màn hình */
-            right: 10px;
-            /* Đặt ở phía bên phải của màn hình */
-        }
-
-        /* Dropdown content */
-        .logout-info {
-            display: none;
-            position: absolute;
-            background-color: #376999;
-            border: 5px solid #ccc;
-            padding: 10px;
-            z-index: 5;
-            top: 30px;
-            /* Hiển thị dropdown content dưới dropdown container */
-            right: 0;
-            text-align: left;
-        }
-
-        /* Hiển thị dropdown content khi hover vào dropdown container */
-        .logout-container:hover .logout-info {
-            display: block;
-        }
-    </style>
     <script type="module" src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js"></script>
     <script type="module" src="https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js"></script>
     <script type="module" src="https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js"></script>
@@ -57,10 +22,10 @@
                 class="vietnam-flag">
         </div>
         <h1>NHÀ XE HẠNH PHÚC</h1>
-        <div class="dropdown logout-container">
+        <!-- <div class="dropdown logout-container">
             <img src="https://png.pngtree.com/png-clipart/20190604/original/pngtree-truck-driver-png-image_805319.jpg"
                 alt="User Icon" class="user-icon">
-            <!-- Thêm dropdown content -->
+            Thêm dropdown content
             <div class="dropdown-content logout-info">
                 <div>
                     <tr>
@@ -74,22 +39,43 @@
                     </tr>
                 </div>
             </div>
-        </div>
+        </div> -->
     </header>
-    <div class="Request_Box">
-        <input type="text" class="Customer_Name" placeholder="Tên khách hàng...">
-        <input type="text" class="Customer_Phone" placeholder="SĐT khách hàng...">
-        <input type="text" class="Start_Dest" placeholder="Nơi đi...">
-        <input type="text" class="End_Dest" placeholder="Nơi đến...">
-        <input type="time" class="Start_Time">
-        <input type="date" class="Start_Day">
-        <button type="submit" id="btn_check" class="btn_check">Kiểm tra</button>
+    <h1 class="tittle">Đặt xe</h1>
+    <div class="center-box">
+        <div class="Request_Box">
+            <div class="gr1">
+                <div class="gr1-1">
+                    <input type="text" class="Request_Box-item Customer_Name" placeholder="Tên khách hàng..." required>
+                    <input type="text" class="Request_Box-item Customer_Phone" placeholder="SĐT khách hàng..." required>
+                </div>
+                <div class="gr1-2">
+                    <input type="time" class="Request_Box-item Start_Time" required>
+                    <input type="date" class="Request_Box-item Start_Day" required>
+                </div>
+            </div>
+            <div class="gr2">
+                <div class="gr2-1">
+                    <input type="tel" class="Request_Box-item Start_Dest" placeholder="Nơi đi..." required>
+                    <input type="text" class="Request_Box-item End_Dest" placeholder="Nơi đến..." required>
+                </div>
+                <div class="g2-2">
+                    <select class="Request_Box-item Type_Vehicles" name="Type_Vehicles" id="Type_Vehicles">
+                        <option value="Truck">Xe Tải</option>
+                        <option value="Coach">Xe Khách</option>
+                        <option value="Container">Xe Container</option>
+                    </select>
+                    <button type="submit" id="btn_check" class="Request_Box-item btn_check">Tìm kiếm</button>
+                </div>
+            </div>
+        </div>
     </div>
+
     <div id="Container_Filter" class="tableclass row2colors">
     </div>
-    <footer>
+    <div class="footer">
         <p>&copy; 2024 Nhà Xe Hạnh Phúc. All rights reserved.</p>
-    </footer>
+    </div>
 </body>
 <script type="module" src="request.js"></script>
 

@@ -13,6 +13,7 @@
         /* CSS */
         /* Chỉnh sửa cho thanh tìm kiếm */
         #search-container {
+            position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -23,9 +24,9 @@
             display: flex;
             align-items: center;
             background-color: #f3f3f3;
-            border-radius: 20px;
+            border-radius: 30px;
             padding: 5px 10px;
-            width: 300px;
+            width: 500px;
         }
 
         #search-text {
@@ -73,8 +74,8 @@
     }
      */
         .tableclass {
-            margin: 20px auto;
-            max-height: 500px;
+            margin: 20px auto 100px;
+            max-height: 430px;
             overflow: auto;
             width: 80%;
             box-shadow: 7px 5px 5px #555;
@@ -149,8 +150,10 @@
         .profile-container img {
             width: 150px;
             height: auto;
-            border-radius: 5px;
+            border-radius: 8px;
             margin-bottom: 10px;
+            margin-right: 10px;
+            margin-left: 10px;
             cursor: pointer;
         }
 
@@ -185,6 +188,46 @@
 
         .edit-form input {
             margin-bottom: 10px;
+        }
+
+        #search-container h3 {
+            font-family: Arial, sans-serif;
+            /* Chọn font-family mong muốn */
+            font-size: 15px;
+            /* Kích thước font */
+            color: rgb(90, 76, 76);
+            /* Màu chữ */
+            margin-top: 2px;
+            /* Khoảng cách trên tiêu đề */
+            margin-bottom: 2px;
+            /* Khoảng cách dưới tiêu đề */
+            text-align: center;
+            /* Căn giữa tiêu đề */
+            padding: 10px 15px;
+            /* Khoảng cách giữa các đường viền của tiêu đề */
+        }
+
+
+
+
+        #driver-info-table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        #driver-info-table th,
+        #driver-info-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        #driver-info-table img {
+            max-width: 200px;
+            height: auto;
+            border-radius: 8px;
+
+            display: block;
+            margin: 0 auto;
         }
     </style>
     <script type="module" src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js"></script>
@@ -225,6 +268,7 @@
     <div class="overlay"></div>
     <div id="search-container">
         <div class="search-box">
+            <h3>Xe đang sử dụng</h3>
             <select id="search-type">
                 <option value="">Loại xe</option>
                 <option value="Xe khách">Xe khách</option>
@@ -242,26 +286,51 @@
     <div class="profile-container" id="profile-container">
         <h2 id="profile-name"></h2>
         <div class="driver-info">
-            <img id="profile-driver-photo" alt="Profile Photo">
-            <div class="driver-details">
-                <p id="profile-driver-name"></p>
-                <p id="profile-driver-dob"></p>
-                <p id="profile-driver-hometown"></p>
-            </div>
+            <table id="driver-info-table">
+                <tr>
+                    <td rowspan="5"><img id="profile-driver-photo" alt="Profile Photo"></td>
+                    <td colspan="2" id="profile-driver-name"></td>
+                </tr>
+                <tr>
+                    <td colspan="2" id="profile-driver-dob"></td>
+                </tr>
+                <tr>
+                    <td colspan="2" id="profile-driver-hometown"></td>
+                </tr>
+            </table>
         </div>
         <div class="assistant-info">
-            <img id="profile-assistant-photo" src="" alt="Assistant Photo">
-            <div class="assistant-details">
-                <p id="profile-assistant-name"></p>
-                <p id="profile-assistant-dob"></p>
-                <p id="profile-assistant-hometown"></p>
-            </div>
+            <table id="driver-info-table">
+                <tr>
+                    <td rowspan="5"><img id="profile-assistant-photo" alt="Assistant Photo"></td>
+                    <td colspan="2" id="profile-assistant-name"></td>
+                </tr>
+                <tr>
+                    <td colspan="2" id="profile-assistant-dob"></td>
+                </tr>
+                <tr>
+                    <td colspan="2" id="profile-assistant-hometown"></td>
+                </tr>
+            </table>
+            <!-- </div>
+  <p id="profile-type"></p>
+  <p id="profile-phone"></p>
+  <p id="profile-route"></p>
+  <div id="profile-images"></div> -->
         </div>
-        <p id="profile-type"></p>
-        <p id="profile-phone"></p>
-        <p id="profile-route"></p>
+        <table id="driver-info-table">
+            <tr>
+                <td id="profile-type"></td>
+            </tr>
+            <tr>
+                <td id="profile-phone"></td>
+            </tr>
+            <tr>
+                <td id="profile-route"></td>
+            </tr>
+        </table>
         <div id="profile-images"></div>
-        <button id="edit_btn" >Chỉnh sửa</button>
+        <button id="edit_btn">Chỉnh sửa</button>
     </div>
 
 

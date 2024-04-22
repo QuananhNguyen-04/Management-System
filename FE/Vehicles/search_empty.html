@@ -9,184 +9,226 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <style>
-        /* CSS */
-        /* Chỉnh sửa cho thanh tìm kiếm */
-        #search-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 20px;
-        }
-
-        .search-box {
-            display: flex;
-            align-items: center;
-            background-color: #f3f3f3;
-            border-radius: 20px;
-            padding: 5px 10px;
-            width: 300px;
-        }
-
-        #search-text {
-            border: none;
-            background: none;
-            flex: 1;
-            padding: 5px;
-        }
-
-        #search-type {
-            padding: 5px;
-            margin-right: 10px;
-            border: none;
-            background: none;
-        }
-
-        #search-btn {
-            background-color: #333;
-            color: #fff;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 50%;
-            cursor: pointer;
-        }
-
-        #search-btn:hover {
-            background-color: #555;
-        }
-
-        /* CSS cho bảng dữ liệu */
-        /* #result-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-
-    #result-table th, #result-table td {
-      border: 1px solid #ddd;
-      padding: 8px;
-      text-align: left;
-    }
-
-    #result-table th {
-      background-color: #f2f2f2;
-    }
-     */
-        .tableclass {
-            margin: 20px auto;
-            max-height: 500px;
-            overflow: auto;
-            width: 80%;
-            box-shadow: 7px 5px 5px #555;
-
-        }
-
-        .tableclass table {
-            width: 100%;
-            border-left: 1px solid #ddd;
-            border-top: 1px solid #ddd;
-            border-spacing: 0;
-            border-collapse: collapse;
-        }
-
-        /* 
-  .tableclass thead {
-    position: sticky;
-    top: 0;
+        <style>
+            /* CSS */
+            /* Chỉnh sửa cho thanh tìm kiếm */
+            #search-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-top: 20px;
+            }
     
-  } */
-        .tableclass th {
-            position: sticky;
-            top: 0;
-            color: #393E41;
-            background-color: #bbbbbb;
-            border-bottom: 1px solid #ddd;
-            border-right: 1px solid #ddd;
-            padding-top: 5px;
-            padding-bottom: 5px;
-            padding-left: 5px;
-            padding-right: 5px;
-            height: 40px;
-            text-align: center;
+            .search-box {
+                display: flex;
+                align-items: center;
+                background-color: #f3f3f3;
+                border-radius: 30px;
+                padding: 5px 10px;
+                width: 500px;
+            }
+    
+            #search-text {
+                border: none;
+                background: none;
+                flex: 1;
+                padding: 5px;
+            }
+    
+            #search-type {
+                padding: 5px;
+                margin-right: 10px;
+                border: none;
+                background: none;
+            }
+    
+            #search-btn {
+                background-color: #333;
+                color: #fff;
+                border: none;
+                padding: 5px 10px;
+                border-radius: 50%;
+                cursor: pointer;
+            }
+    
+            #search-btn:hover {
+                background-color: #555;
+            }
+    
+            /* CSS cho bảng dữ liệu */
+            /* #result-table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-top: 20px;
         }
-
-        .tableclass td {
-            border-bottom: 1px solid #ddd;
-            border-right: 1px solid #ddd;
-            padding-top: 5px;
-            padding-bottom: 5px;
-            padding-left: 5px;
-            padding-right: 5px;
-            height: 40px;
-            cursor: pointer;
+    
+        #result-table th, #result-table td {
+          border: 1px solid #ddd;
+          padding: 8px;
+          text-align: left;
         }
-
-        .row2colors tr:nth-child(odd) {
-            background-color: #fff;
+    
+        #result-table th {
+          background-color: #f2f2f2;
         }
-
-        .row2colors tr:nth-child(even) {
-            background-color: #ddd;
-        }
-
-        .row2colors tr:hover {
-            background-color: #dfd;
-        }
-
-        /* CSS cho profile */
-        .profile-container {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: white;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            z-index: 9999;
-        }
-
-        .profile-container img {
-            width: 150px;
-            height: auto;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            cursor: pointer;
-        }
-
-        .profile-container img:hover {
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-        }
-
-        .profile-container .driver-info,
-        .profile-container .assistant-info {
-            display: flex;
-            align-items: center;
-        }
-
-        .profile-container .driver-info img,
-        .profile-container .assistant-info img {
-            margin-right: 20px;
-        }
-
-
-        /* CSS cho form chỉnh sửa */
-        .edit-form {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: white;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            z-index: 9999;
-        }
-
-        .edit-form input {
-            margin-bottom: 10px;
-        }
-    </style>
+         */
+            .tableclass {
+                margin: 20px auto 100px;
+                max-height: 430px;
+                overflow: auto;
+                width: 80%;
+                box-shadow: 7px 5px 5px #555;
+    
+            }
+    
+            .tableclass table {
+                width: 100%;
+                border-left: 1px solid #ddd;
+                border-top: 1px solid #ddd;
+                border-spacing: 0;
+                border-collapse: collapse;
+            }
+    
+            /* 
+      .tableclass thead {
+        position: sticky;
+        top: 0;
+        
+      } */
+            .tableclass th {
+                position: sticky;
+                top: 0;
+                color: #393E41;
+                background-color: #bbbbbb;
+                border-bottom: 1px solid #ddd;
+                border-right: 1px solid #ddd;
+                padding-top: 5px;
+                padding-bottom: 5px;
+                padding-left: 5px;
+                padding-right: 5px;
+                height: 40px;
+                text-align: center;
+            }
+    
+            .tableclass td {
+                border-bottom: 1px solid #ddd;
+                border-right: 1px solid #ddd;
+                padding-top: 5px;
+                padding-bottom: 5px;
+                padding-left: 5px;
+                padding-right: 5px;
+                height: 40px;
+                cursor: pointer;
+            }
+    
+            .row2colors tr:nth-child(odd) {
+                background-color: #fff;
+            }
+    
+            .row2colors tr:nth-child(even) {
+                background-color: #ddd;
+            }
+    
+            .row2colors tr:hover {
+                background-color: #dfd;
+            }
+    
+            /* CSS cho profile */
+            .profile-container {
+                display: none;
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background-color: white;
+                padding: 20px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                z-index: 9999;
+            }
+    
+            .profile-container img {
+                width: 150px;
+                height: auto;
+                border-radius: 8px;
+                margin-bottom: 10px;
+                margin-right: 10px;
+                margin-left: 10px;
+                cursor: pointer;
+            }
+    
+            .profile-container img:hover {
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+            }
+    
+            .profile-container .driver-info,
+            .profile-container .assistant-info {
+                display: flex;
+                align-items: center;
+            }
+    
+            .profile-container .driver-info img,
+            .profile-container .assistant-info img {
+                margin-right: 20px;
+            }
+    
+    
+            /* CSS cho form chỉnh sửa */
+            .edit-form {
+                display: none;
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background-color: white;
+                padding: 20px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                z-index: 9999;
+            }
+    
+            .edit-form input {
+                margin-bottom: 10px;
+            }
+    
+            #search-container h3 {
+                font-family: Arial, sans-serif;
+                /* Chọn font-family mong muốn */
+                font-size: 15px;
+                /* Kích thước font */
+                color: rgb(90, 76, 76);
+                /* Màu chữ */
+                margin-top: 2px;
+                /* Khoảng cách trên tiêu đề */
+                margin-bottom: 2px;
+                /* Khoảng cách dưới tiêu đề */
+                text-align: center;
+                /* Căn giữa tiêu đề */
+                padding: 10px 15px;
+                /* Khoảng cách giữa các đường viền của tiêu đề */
+            }
+    
+    
+    
+    
+            #driver-info-table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+    
+            #driver-info-table th,
+            #driver-info-table td {
+                border: 1px solid #ddd;
+                padding: 8px;
+            }
+    
+            #driver-info-table img {
+                max-width: 200px;
+                height: auto;
+                border-radius: 8px;
+    
+                display: block;
+                margin: 0 auto;
+            }
+        </style>
     <script type="module" src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js"></script>
     <script type="module" src="https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js"></script>
     <script type="module" src="https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js"></script>
@@ -225,6 +267,7 @@
     <div class="overlay"></div>
     <div id="search-container">
         <div class="search-box">
+            <h3>Xe trống</h3>
             <select id="search-type" onchange="redraw()">
                 <option value="">Loại xe</option>
                 <option value="Xe khách">Xe khách</option>
@@ -242,17 +285,31 @@
     <div class="profile-container" id="profile-container">
         <h2 id="profile-name"></h2>
         <div class="driver-info">
-            <img id="profile-driver-photo" alt="Profile Photo">
-            <div class="driver-details">
-                <p id="profile-driver-name"></p>
-                <p id="profile-driver-dob"></p>
-                <p id="profile-driver-hometown"></p>
-            </div>
+            <table id="driver-info-table">
+                <tr>
+                    <td rowspan="5"><img id="profile-driver-photo" alt="Profile Photo"></td>
+                    <td colspan="2" id="profile-driver-name"></td>
+                </tr>
+                <tr>
+                    <td colspan="2" id="profile-driver-dob"></td>
+                </tr>
+                <tr>
+                    <td colspan="2" id="profile-driver-hometown"></td>
+                </tr>
+            </table>
         </div>
 
-        <p id="profile-type"></p>
-        <p id="profile-phone"></p>
-        <p id="profile-route"></p>
+        <table id="driver-info-table">
+            <tr>
+                <td id="profile-type"></td>
+            </tr>
+            <tr>
+                <td id="profile-phone"></td>
+            </tr>
+            <tr>
+                <td id="profile-route"></td>
+            </tr>
+        </table>
         <div id="profile-images"></div>
         <button onclick="editProfile()">Chỉnh sửa</button>
     </div>

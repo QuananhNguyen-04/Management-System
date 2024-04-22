@@ -10,6 +10,26 @@ var drivers = [
     { name: 'Tài xế 9', type: 'Xe container', phone: '0912345678', profilePicture: 'profile3.jpg', drivingLicense: 'license3.jpg', personalInfo: 'Some information about driver 3.' },
     { name: 'Tài xế 10', type: 'Xe khách', phone: '0123456788', profilePicture: 'profile4.jpg', drivingLicense: 'license4.jpg', personalInfo: 'Some information about driver 4.' },
     { name: 'Tài xế 11', type: 'Xe tải', phone: '0987654321', profilePicture: 'profile2.jpg', drivingLicense: 'license2.jpg', personalInfo: 'Some information about driver 2.' },
+    { name: 'Tài xế 11', type: 'Xe tải', phone: '0987654321', profilePicture: 'profile2.jpg', drivingLicense: 'license2.jpg', personalInfo: 'Some information about driver 2.' },
+    { name: 'Tài xế 11', type: 'Xe tải', phone: '0987654321', profilePicture: 'profile2.jpg', drivingLicense: 'license2.jpg', personalInfo: 'Some information about driver 2.' },
+    { name: 'Tài xế 11', type: 'Xe tải', phone: '0987654321', profilePicture: 'profile2.jpg', drivingLicense: 'license2.jpg', personalInfo: 'Some information about driver 2.' },
+    { name: 'Tài xế 11', type: 'Xe tải', phone: '0987654321', profilePicture: 'profile2.jpg', drivingLicense: 'license2.jpg', personalInfo: 'Some information about driver 2.' },
+    { name: 'Tài xế 11', type: 'Xe tải', phone: '0987654321', profilePicture: 'profile2.jpg', drivingLicense: 'license2.jpg', personalInfo: 'Some information about driver 2.' },
+    { name: 'Tài xế 11', type: 'Xe tải', phone: '0987654321', profilePicture: 'profile2.jpg', drivingLicense: 'license2.jpg', personalInfo: 'Some information about driver 2.' },
+    { name: 'Tài xế 11', type: 'Xe tải', phone: '0987654321', profilePicture: 'profile2.jpg', drivingLicense: 'license2.jpg', personalInfo: 'Some information about driver 2.' },
+    { name: 'Tài xế 11', type: 'Xe tải', phone: '0987654321', profilePicture: 'profile2.jpg', drivingLicense: 'license2.jpg', personalInfo: 'Some information about driver 2.' },
+    { name: 'Tài xế 11', type: 'Xe tải', phone: '0987654321', profilePicture: 'profile2.jpg', drivingLicense: 'license2.jpg', personalInfo: 'Some information about driver 2.' },
+    { name: 'Tài xế 11', type: 'Xe tải', phone: '0987654321', profilePicture: 'profile2.jpg', drivingLicense: 'license2.jpg', personalInfo: 'Some information about driver 2.' },
+    { name: 'Tài xế 11', type: 'Xe tải', phone: '0987654321', profilePicture: 'profile2.jpg', drivingLicense: 'license2.jpg', personalInfo: 'Some information about driver 2.' },
+    { name: 'Tài xế 11', type: 'Xe tải', phone: '0987654321', profilePicture: 'profile2.jpg', drivingLicense: 'license2.jpg', personalInfo: 'Some information about driver 2.' },
+    { name: 'Tài xế 11', type: 'Xe tải', phone: '0987654321', profilePicture: 'profile2.jpg', drivingLicense: 'license2.jpg', personalInfo: 'Some information about driver 2.' },
+    { name: 'Tài xế 11', type: 'Xe tải', phone: '0987654321', profilePicture: 'profile2.jpg', drivingLicense: 'license2.jpg', personalInfo: 'Some information about driver 2.' },
+    { name: 'Tài xế 11', type: 'Xe tải', phone: '0987654321', profilePicture: 'profile2.jpg', drivingLicense: 'license2.jpg', personalInfo: 'Some information about driver 2.' },
+    { name: 'Tài xế 11', type: 'Xe tải', phone: '0987654321', profilePicture: 'profile2.jpg', drivingLicense: 'license2.jpg', personalInfo: 'Some information about driver 2.' },
+    { name: 'Tài xế 11', type: 'Xe tải', phone: '0987654321', profilePicture: 'profile2.jpg', drivingLicense: 'license2.jpg', personalInfo: 'Some information about driver 2.' },
+    { name: 'Tài xế 11', type: 'Xe tải', phone: '0987654321', profilePicture: 'profile2.jpg', drivingLicense: 'license2.jpg', personalInfo: 'Some information about driver 2.' },
+    { name: 'Tài xế 11', type: 'Xe tải', phone: '0987654321', profilePicture: 'profile2.jpg', drivingLicense: 'license2.jpg', personalInfo: 'Some information about driver 2.' },
+
 ];
 
     var filteredDrivers = [];
