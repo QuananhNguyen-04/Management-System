@@ -55,7 +55,7 @@ async function searchVehicle(field, value) {
         console.log(field, value)
         const q = await query(VehicleListRef, where(field, '==', value));
         const querySnapshot = await getDocs(q);
-        if (querySnapshot.empty()) return 'Not found';
+        if (querySnapshot.empty) return 'Not found';
         else return querySnapshot;
     } catch (e) {   
         console.error("Error searching vehicle: ", e);
@@ -64,7 +64,7 @@ async function searchVehicle(field, value) {
 
 async function DefaultsearchVehicle(VehicleData) {
     try {
-        let temp = await searchVehicle('control_Plate', VehicleData.Control_Plate);
+        let temp = await searchVehicle('control_Plate', VehicleData.control_Plate);
         if (isExisted(temp) != true) return 'Not found';
         else 
             if(temp.size > 1) return false;
