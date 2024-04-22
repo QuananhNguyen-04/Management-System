@@ -5,27 +5,21 @@ import { maintenance_info } from './Maintainance.js';
 //Create parent vehicle class
 class vehicle {
     //Factory method pattern to create vehicle object
-    constructor() {
-
-    }
-    vehicleRegister(control_Plate, VehicleType, weight, fuel, capacity, speciality,
-        height, length, max_Load) {
+    constructor(control_Plate) {
         this.car_ID = generateID();
         this.control_Plate = control_Plate;
-        this.VehicleType = VehicleType;
-        if (this.VehicleType == Vehicle_Type.B2_Type) {
-            this.vehicle = new Truck(weight, fuel);
-            this.coef = generateCoef(weight, 1000);        //1000 is the min weight for truck and container. Unit: kg 
-        } else if (this.VehicleType == Vehicle_Type.C_type) {
-            this.vehicle = new Coach(capacity, speciality);
-            this.coef = generateCoef(capacity, 10);        //10 is the min capacity for coach. Unit: people
-        } else if (this.VehicleType == Vehicle_Type.E_type)
-            this.vehicle = new Container(weight, height, length, max_Load);
-        this.coef = generateCoef(weight, 1000);        //1000 is the min weight for truck and container. Unit: kg
         this.status = VehicleStatus.ACTIVE;
         this.recent_Trip = null;
         this.maintenance = null;
-        return this.vehicle;
+    }
+    vehicleRegister(control_Plate, VehicleType, weight, fuel, capacity, speciality,
+        height, length, max_Load) {
+        if (VehicleType == Vehicle_Type.B2_Type)
+            return new Truck(control_Plate, weight, fuel);    
+        else if (VehicleType == Vehicle_Type.C_type)
+            return new Coach(control_Plate, capacity, speciality);
+        else if (VehicleType == Vehicle_Type.E_type)
+            return new Container(control_Plate, weight, height, length, max_Load);
     }
     //vehicle method
     vehicles_Info() {
@@ -81,20 +75,28 @@ class vehicle {
 
 //Create child classes for vehicle
 class Truck extends vehicle {
-    constructor(weight, fuel) {
-        super();
+    constructor(control_Plate, weight, fuel) {
+        super(control_Plate);   //Get control_plate from parent class
+        this.VehicleType = Vehicle_Type.B2_Type;
+        this.coef = generateCoef(weight, 1000);        //1000 is the min weight for truck and container. Unit: kg 
         this.weight = weight;
         this.fuel = fuel;
     }
 }
 class Coach extends vehicle {
-    constructor(capacity, speciality) {
+    constructor(control_Plate, VehicleType, capacity, speciality) {
+        super(control_Plate, VehicleType);      //Get control_plate from parent class
+        this.VehicleType = Vehicle_Type.C_type;
+        this.coef = generateCoef(capacity, 10);        //10 is the min capacity for coach. Unit: people
         this.capacity = capacity;
         this.speciality = speciality;
     }
 }
 class Container extends vehicle {
-    constructor(weight, height, length, max_Load) {
+    constructor(control_Plate, VehicleType, weight, height, length, max_Load) {
+        super(control_Plate, VehicleType);       //Get control_plate from parent class
+        this.VehicleType = Vehicle_Type.E_type;
+        this.coef = generateCoef(weight, 1000);        //1000 is the min weight for truck and container. Unit: kg
         this.weight = weight;
         this.height = height;
         this.length = length;
