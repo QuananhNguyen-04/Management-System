@@ -44,8 +44,8 @@ function submitTruck() {
     var fuel = document.querySelector("#Truck input[name='Fuel_Vehicle']").value;
     img1 = document.querySelector("#Truck input[name='IMG_Vehicle1']").value;
     img2 = document.querySelector("#Truck input[name='IMG_Vehicle2']").value;
-    img3 = document.querySelector("#Truck input[name='IMG_Vehicle3']").value;
-    img4 = document.querySelector("#Truck input[name='IMG_Vehicle4']").value;
+    // img3 = document.querySelector("#Truck input[name='IMG_Vehicle3']").value;
+    // img4 = document.querySelector("#Truck input[name='IMG_Vehicle4']").value;
     wrapper.add(1, control_Plate, weight, fuel, null, null, null, null, null);
 }
 
@@ -56,8 +56,8 @@ function submitCoach() {
     var speciality = document.querySelector("#Coach input[name='Speciality_Vehicle']").value;
     img1 = document.querySelector("#Coach input[name='IMG_Vehicle1']").value;
     img2 = document.querySelector("#Coach input[name='IMG_Vehicle2']").value;
-    img3 = document.querySelector("#Coach input[name='IMG_Vehicle3']").value;
-    img4 = document.querySelector("#Coach input[name='IMG_Vehicle4']").value;
+    // img3 = document.querySelector("#Coach input[name='IMG_Vehicle3']").value;
+    // img4 = document.querySelector("#Coach input[name='IMG_Vehicle4']").value;
     wrapper.add(2, control_Plate, null, null, capacity, speciality, null, null, null);
 }
 function submitContainer() {
@@ -69,8 +69,8 @@ function submitContainer() {
     var max_load = document.querySelector("#Container input[name='MaxLoad_Vehicle']").value;
     img1 = document.querySelector("#Container input[name='IMG_Vehicle1']").value;
     img2 = document.querySelector("#Container input[name='IMG_Vehicle2']").value;
-    img3 = document.querySelector("#Container input[name='IMG_Vehicle3']").value;
-    img4 = document.querySelector("#Container input[name='IMG_Vehicle4']").value;
+    // img3 = document.querySelector("#Container input[name='IMG_Vehicle3']").value;
+    // img4 = document.querySelector("#Container input[name='IMG_Vehicle4']").value;
     wrapper.add(3, control_Plate, weight, null, null, null, height, length, max_load);
 }
 

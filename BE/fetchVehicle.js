@@ -39,6 +39,7 @@ async function deleteVehicle(VehicleData_ID) {
 }
 
 async function searchVehicle(field, value) {
+    console.log(field, value)
     try {
         const VehicleListRef = collection(db, "vehicles");
         /* if the field is car_ID, Control_Plate, VehicleType, status: Use default 
@@ -51,7 +52,8 @@ async function searchVehicle(field, value) {
         //         console.log("Vehicle data: ", doc.data());
         //     }
         // });
-        const q = query(VehicleListRef, where(field, '==', value));
+        console.log(field, value)
+        const q = await query(VehicleListRef, where(field, '==', value));
         const querySnapshot = await getDocs(q);
         if (querySnapshot.empty()) return 'Not found';
         else return querySnapshot;
@@ -62,7 +64,7 @@ async function searchVehicle(field, value) {
 
 async function DefaultsearchVehicle(VehicleData) {
     try {
-        let temp = await searchVehicle('Control_Plate', VehicleData.Control_Plate);
+        let temp = await searchVehicle('control_Plate', VehicleData.Control_Plate);
         if (isExisted(temp) != true) return 'Not found';
         else 
             if(temp.size > 1) return false;

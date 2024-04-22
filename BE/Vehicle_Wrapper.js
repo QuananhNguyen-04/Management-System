@@ -50,7 +50,7 @@ class vehicles_wrapper {
         //     if(i.control_Plate == control_Plate)
         //         return i.vehicles_Info();
         // }
-        this.Advanced_search('control_Plate', control_Plate);
+        this.Advanced_search('Control_Plate', control_Plate);
     }
 
     Advanced_search(field, value) {
@@ -93,4 +93,4 @@ class vehicles_wrapper {
 }
 
 //Export the class
-export { vehicles_wrapper };
+export { vehicles_wrapper };    
