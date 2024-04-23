@@ -1,14 +1,14 @@
-var Name_Driver = document.getElementsByName("Name_Driver").values;
-var DoB = document.getElementsByName("DoB_Driver").values;
-var Phone = document.getElementsByName("Phone_Driver").values;
-var ID = document.getElementsByName("ID_Driver").values;
-var IMG_Driver = document.getElementsByName("IMG_Driver").values;
-var Lisence_Rank = document.getElementsByName("Lisence_Rank").values;
-var Lisence_Id = document.getElementsByName("Lisence_ID").values;
-var Lisence_BD = document.getElementsByName("Lisence_BD").values;
-var Lisence_Experies = document.getElementsByName("Lisence_Experies").values;
-var Front_License = document.getElementsByName("Front_License").values;
-var Back_Lisence = document.getElementsByName("Back_Lisence").values;
+var Name_Driver=document.getElementById("Name_Driver").value;
+var DoB= document.getElementById("DoB_Driver").value;
+var Phone= document.getElementById("Phone_Driver").value;
+var ID= document.getElementById("ID_Driver").value;
+var IMG_Driver= document.querySelector("#IMG_Driver").files[0];
+var Lisence_Rank= document.getElementById("Lisence_Rank").value;
+var Lisence_Id= document.getElementById("Lisence_ID").value;
+var Lisence_BD= document.getElementById("Lisence_BD").value;
+var Lisence_Experies= document.getElementById("Lisence_Experies").value;
+var Front_License= document.querySelector("#Front_License").files[0];
+var Back_Lisence= document.querySelector("#Back_Lisence").files[0];
 
 import { driver_wrapper } from "../../BE/Driver_Wrapper.js"
 import { driverLicense } from "../../BE/Driver.js"
