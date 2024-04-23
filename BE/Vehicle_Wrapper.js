@@ -1,6 +1,6 @@
 //import information from another file
 import { addVehicle, deleteVehicle, searchVehicle, DefaultsearchVehicle, editVehicle, fetchVehicle } from './fetchVehicle.js';
-import { isExisted } from './isExisted.js'; //Use from driver-and-driver-wrapper branch
+import { isExisted } from './ExtraFunction2.js'; //Use from driver-and-driver-wrapper branch
 import { Vehicle_Type, VehicleStatus } from './Extra_function.js';
 import { vehicle } from './Vehicle.js';
 

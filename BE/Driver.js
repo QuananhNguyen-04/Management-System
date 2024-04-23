@@ -18,7 +18,7 @@
 
 import { setExpiry, clearExpiry, setInfo } from "./ExtraFunction.js";
 import { isExisted } from "./ExtraFunction2.js";
-import { searchDriverByInfo, editDriver } from "./fetchDriver.js";
+import { searchDriverByInfo, editDriver } from "./driverDatabaseInteract.js";
 //const {Trip} = require("./Trip");
 
 class driverLicense

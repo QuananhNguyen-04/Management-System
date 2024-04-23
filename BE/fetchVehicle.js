@@ -1,5 +1,5 @@
 //Import the firebase functions
-import { isExisted } from "./isExisted.js";
+import { isExisted } from "./ExtraFunction2.js";
 import { db } from "./firebase_Init.js"
 import { getDocs, getDoc, setDoc, doc, collection, deleteDoc, query, where } 
 from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
