@@ -1,18 +1,6 @@
-const {db, app} = require('./firebase_Init')
-const {
-    and,
-    or,
-    getCountFromServer,
-    getDoc,
-    getDocs,
-    query,
-    where,
-    addDoc,
-    deleteDoc,
-    setDoc,
-    doc,
-    collection
-} = require("firebase/firestore");
+import { db } from './firebase_Init.js';
+import { and, or, getCountFromServer, getDoc, getDocs, query, where, addDoc, deleteDoc, setDoc, doc, collection } 
+from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 
 class Trip_Schedule {
     async sup_Add(car_id, start, des) {
@@ -49,7 +37,7 @@ class Trip_Schedule {
     }
 
     async add(driver_Id, car_Id, subDriver_Id, cus_Id, cus_Phone_Num,
-              start_Dest, end_Dest, start_Time, end_Time, customer_Phone_Number, revenue) {
+        start_Dest, end_Dest, start_Time, end_Time, customer_Phone_Number, revenue) {
         try {
             const docRef = doc(collection(db, "Trip").withConverter(tripConverter));
             await setDoc(docRef, new Trip(driver_Id, car_Id, subDriver_Id, cus_Id, cus_Phone_Num,
@@ -112,11 +100,13 @@ class Trip_Schedule {
     }
 
     async show_All() {
+        var list = []
         console.log("Show_all")
         const q = query(collection(db, "Trip"))
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
             console.log(doc.id, " => ", doc.data());
+            // getDoc(db, "vehicles", doc.id);
         });
     }
 
@@ -125,7 +115,7 @@ class Trip_Schedule {
 class Trip {
 
     constructor(driver_Id, car_ID, subDriver_Id, cus_Id, cus_Phone_Num,
-                start_Dest, end_Dest, start_Time, end_Time, customer_Phone_Number, revenue) {
+        start_Dest, end_Dest, start_Time, end_Time, customer_Phone_Number, revenue) {
         this.driver_Id = driver_Id;
         this.subDriver_Id = subDriver_Id;
         this.car_Id = car_ID;
@@ -188,10 +178,12 @@ function trip_Money(start, des) {
 
 console.log("Testing...")
 // trip.show_All()
-trip.add("driverId", "car", "sub", "cus_id(name)", "13555",
-    "start", "end", "time_start", "time_end",
-    "cus_phone", "revenue")
-trip.del("car")
+// trip.add("driverId", "car", "sub", "cus_id(name)", "13555",
+//     "start", "end", "time_start", "time_end",
+//     "cus_phone", "revenue")
+// trip.del("car")
 // trip.getSize()
 trip.search("car")
 // trip.search_bien_so_xe("1221")
+
+export { Trip_Schedule, Trip }

@@ -2,6 +2,10 @@ import { driver } from "./Driver.js";
 import { convertToObject } from "./ExtraFunction.js";
 import { isExisted } from "./ExtraFunction2.js";
 import { searchDriverByInfo, searchDriver, fetchDriverList, editDriver, pushNewDriver, fetchDriver, deleteDriver } from './driverDatabaseInteract.js';
+import { driver } from "./Driver.js";
+import { convertToObject } from "./ExtraFunction.js";
+import { isExisted } from "./ExtraFunction2.js";
+import { searchDriverByInfo, searchDriver, fetchDriverList, editDriver, pushNewDriver, fetchDriver, deleteDriver } from './driverDatabaseInteract.js';
 
 class driver_wrapper
 {
@@ -16,6 +20,7 @@ class driver_wrapper
         if(construct)
         {
             console.log('Create driverWrapper successfully.');
+            //console.log(this.driverList);
             //console.log(this.driverList);
         }
         else
@@ -47,6 +52,7 @@ class driver_wrapper
             console.log("Add: Success.");
         }
         else console.log('Add: Id existed.');
+        else console.log('Add: Id existed.');
     }
 
     async delete(driverDoc)
@@ -73,6 +79,7 @@ class driver_wrapper
     }
 
     async searchByInfoType(infoType, value) //return an array of drivers who has the same info
+    async searchByInfoType(infoType, value) //return an array of drivers who has the same info
     {
         let temp=await searchDriverByInfo(infoType,value);
         let list=[];
@@ -98,6 +105,7 @@ class driver_wrapper
             }
             console.log('Edit: success');
         }
+        else console.log('Edit: Undefined driver.');
         else console.log('Edit: Undefined driver.');
     }
 

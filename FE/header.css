@@ -58,10 +58,15 @@ header {
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 200px; /* Điều chỉnh chiều cao của ô chữ nhật */
-    border: 2px solid #ccc; /* Đường viền cho ô chữ nhật */
-    margin-top: 100px; /* Khoảng cách từ phần thông báo đến bảng */
+    height: 300px; /* Giảm chiều cao của ô chữ nhật */
+    border: 2px solid #ccc;
+    background-color: #f9f9f9; /* Màu nền cho ô chữ nhật */
+    font-family: Arial, sans-serif; /* Font chữ */
+    color: #555; /* Màu chữ */
+    font-size: 25px; /* Kích thước font */
+    padding: 20px; /* Khoảng cách giữa nội dung và đường viền của ô */
 }
+
   
 
 * {
@@ -267,13 +272,40 @@ display: block;
 
 
 
-footer {
-    position: relative; /* Thay đổi từ fixed thành relative */
+/* footer {
+    position: relative; 
     width: 100%;
     background-color: #333;
     color: white;
     text-align: center;
     padding: 20px 0;
-    clear: both; /* Đảm bảo rằng footer không bị overlapped với nội dung khác */
+    clear: both; 
+} */
+
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 60px; /* Adjust the height to your preference */
+    background-color: #333;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
+  .content {
+  padding-bottom: 60px; /* Adjust the padding to match the footer height */
+}
+
+body {
+    /* background-image: url('./image-1.jpg'); */
+    background-size: cover; /* Đảm bảo hình nền đầy đủ kích thước với cửa sổ trình duyệt */
+    background-position: center; /* Căn chỉnh hình nền vào giữa */
+    background-repeat: no-repeat; /* Không lặp lại hình nền */
+  }
+  body {
+  background-color: #f4f7eb; /* Màu nền xám nhạt */
+}
