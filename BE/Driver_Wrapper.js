@@ -1,125 +1,107 @@
-import { driver, compareDriver, setInfo, driverLicense, setExpiry, clearExpiry } 
-from "./Driver.js";
-import { isExisted } 
-from "./isExisted.js";
-import { searchDriverByInfo, searchDriver, fetchDriverList, editDriver, pushNewDriver, deleteDriver } 
-from './fetchDriver.js';
+import { driver } from "./Driver.js";
+import { convertToObject } from "./ExtraFunction.js";
+import { isExisted } from "./ExtraFunction2.js";
+import { searchDriverByInfo, searchDriver, fetchDriverList, editDriver, pushNewDriver, fetchDriver, deleteDriver } from './driverDatabaseInteract.js';
 
-class driver_wrapper
-{
-    constructor()
-    {
-        this.driverList = [];
-        this.idList = [];
-        this.size = 0;
-
-        if(fetchDriverList(this.driverList,this.idList))
-        {
-            console.log('Create driverWrapper successfully.');
-            this.size=this.getSize();
-        }
-        else
-        {
-            console.log('Fail: something wrong happened.');
-            
-        }
-        /*
-        //Creating a Proxy of driverList to make the size variable more independent
-        let handler = {
-            get: function(target, property) 
-            {
-                if(property === 'length')
-                {
-                    return target.length;
-                }
-                return target[property];
-            }
-            set: function(target, property, value)
-            {
-                target[property] = value;
-                return true;
-            }
-        }
-        
-        let proxyDriverList = new Proxy(this.driverList, handler);
-        //END
-
-        this.size = proxyDriverList.length; //size will changed every time driverList's length changed  */
-        // Overcooked
-        
+class driver_wrapper {
+    constructor() {
+        this.driverList = {};
+        this.fetch();
     }
-    create(id, license, yearsOfExp, status, recentTrip, workingTime, efficiency/*,other*/)
-    {
-        let newDriver=new driver(id, license, yearsOfExp, status, recentTrip, workingTime, efficiency/*,other*/);
+    async fetch() {
+        let construct = await fetchDriverList(this.driverList);
+        if (construct) {
+            console.log('Create driverWrapper successfully.');
+            //console.log(this.driverList);
+        }
+        else {
+            console.log('Fail: something wrong happened.');
+        }
+    }
+
+    get size() {
+        return Object.keys(this.driverList).length;
+    }
+
+    create(id, license, yearsOfExp, status, recentTrip, workingTime, efficiency/*,other*/) {
+        let newDriver = new driver(id, license, yearsOfExp, status, recentTrip, workingTime, efficiency/*,other*/);
         this.add(newDriver);
     }
-    getSize()
-    {
-        this.size = this.driverList.length;
-        return this.size;
-    }
 
-    add(newDriver)
-    {
-        let temp=searchDriver(newDriver);
-        //console.log('Temp is calculated.');
-        //console.log(temp);
-        if(isExisted(temp))
-        {
-            this.driverList[newDriver.id]=newDriver;
-            this.idList[this.size]=newDriver.id;                
-            this.size++;
-            pushNewDriver(newDriver);
-            console.log("Add Success")
+    async add(_driver) {
+        //let newDriver=oldDriver.copy();
+        //console.log("New driver:\n",newDriver);
+        let temp = await searchDriver(_driver);
+        if (!isExisted(temp)) {
+            let newDriver = await pushNewDriver(_driver);
+            this.driverList[_driver.id] = newDriver;
+            console.log("Add: Success.");
         }
-        else console.log('Fail: Id existed.');
+        else console.log('Add: Id existed.');
     }
 
-    delete(driver)
-    {
-        let temp=searchDriver(driver);
-        if(isExisted(temp)) 
-        {
-            this.driverList.splice(driver.id,1);
-            this.idList.splice(this.idList.indexOf(driver.id),1);
-            this.size--;
-            temp.forEach(async (doc) => {deleteDriver(doc.id);});
+    async delete(driverDoc) {
+        //let temp=await searchDriver(driver);
+
+        try {
+            let temp = await fetchDriver(driverDoc.id);
+            if (isExisted(temp)) {
+                delete this.driverList[driverDoc.data().id];
+                await deleteDriver(temp.id);
+            }
+            else
+                console.log("Delete: Undefined driver.");
         }
-        else 
-            console.log("Fail: Undefined driver.");
-            
+        catch (error) {
+            console.log('Error deleting driver: ', error);
+        }
+
+
     }
 
-    searchByInfoType(infoType, value) //return an array of drivers who has the same info
+    async searchByInfoType(infoType, value) //return an array of drivers who has the same info
     {
-        let temp=searchDriverByInfo(infoType,value);
-        let list=[];
-        temp.forEach(doc => {list.push(doc.data());});
-        list.forEach(element => {console.log(element);});
+        let temp = await searchDriverByInfo(infoType, value);
+        let list = [];
+        if (!isExisted(temp)) return list;
+        for (const a of temp) {
+            list.push(a.data());
+        }
         return list;
     }
-    edit(driver, newDriver)
-    {
-        let temp=searchDriver(driver);
-        if(isExisted(temp))
-        {
-            this.driverList[driver.id]=newDriver;
-            this.idList[this.idList.indexOf(driver.id)]=newDriver.id;
-            temp.forEach(doc => {editDriver(doc.id,newDriver);});
+
+    async edit(driverDoc, value) {
+        let newDriver = convertToObject(value);
+        let temp = await fetchDriver(driverDoc.id);
+        if (isExisted(temp)) {
+            await editDriver(temp.id, newDriver);
+            if (driverDoc.data().id != value.id) {
+                delete this.driverList[driverDoc.data().id];
+                this.driverList[value.id] = temp;
+            }
+            console.log('Edit: success');
         }
-        else console.log('Fail: Undefined driver.');
+        else console.log('Edit: Undefined driver.');
     }
-    editInfoType(oldDriver,infoType,value)
-    {
-        let temp=searchDriver(oldDriver);
-        if(isExisted(temp))
-        {
-            let newDriver=new driver();
-            temp.forEach(doc => {newDriver=doc.data();});
-            newDriver.updateDriverInfo(infoType, value);
-            editDriver(oldDriver,newDriver);
+
+    async editInfoType(driverDoc, infoType, value) {
+        try {
+            let temp = await fetchDriver(driverDoc.id);
+            if (isExisted(temp)) {
+                let _driver = new driver();
+                _driver.assign(temp.data());
+                _driver.updateDriverInfo(infoType, value);
+                if (infoType == 'id') {
+                    delete this.driverList[temp.data().id];
+                    this.driverList[_driver.id] = temp;
+                }
+                await editDriver(temp, _driver);
+            }
         }
-        else console.log('Fail: Undefined driver.');
+        catch (error) {
+            console.log('Error editing info: ', error);
+        }
     }
 }
-export {driver_wrapper};
+
+exports = { driver_wrapper };

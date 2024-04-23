@@ -15,62 +15,30 @@
 - efficiency:   đánh giá từ manager        
 - other:        Object (đề phòng cần thêm những thông tin cá nhân nhưng ko dùng tới trong BE)
 */
-import { searchDriver, editDriver } from './fetchDriver.js';
-import { isExisted } from "./isExisted.js";
-
+import { searchDriverByInfo, editDriver } from './fetchDriver.js';
+import { isExisted } from "./ExtraFunction2.js";
+import { setExpiry, clearExpiry, setInfo } from './ExtraFunction.js';
 //import { set } from "firebase/database";
-
-
 //          SOME FUNCTION NEEDED TO OPTIMIZE CODING: START
-function setExpiry(driver) {
-    let expiration;
-    if (isExisted(driver.license)) expiration = driver.license.getExpiryTime();
-    if (isExisted(expiration)) {
-        driver.license.expiry = setTimeout(() => {
-            driver.license.updateLicenseInfo('expiryDate', 'Expired');
-            driver.update();
-        }, expiration);
-    }
-}
-function clearExpiry(driver) {
-    clearTimeout(driver.expiry);
-}
-/**function isObjectExisted(S)
-{
-    if (Object.keys(S).length>0)
-    {
-        for(let key in S)
-        {
-            if(isExisted(S[key])) return true;
-        }
-    }
-    return false;
-}**/
-function compareDriver(a, b) {
-    return (a.id == b.id && a.license == b.license && a.yearsOfExp == b.yearsOfExp && a.status == b.status && a.recentTrip == b.recentTrip && a.workingTime == b.workingTime && a.efficiency == b.efficiency);
-}
-function setInfo(info, value) {
-    if (isExisted(value)) info = value;
-    else info = 'N/A';
-    return info;
-}
-
-//          SOME FUNCTION NEEDED TO OPTIMIZE CODING: END
-
-
-
 class driverLicense {
-    constructor(id, tier, img, expiryDate) {
+    constructor(id, tier, issuanceDate, expiryDate, frontImg, backImg) {
         this.id = setInfo(this.id, id);
         this.tier = setInfo(this.tier, tier);
-        this.img = setInfo(this.img, img);
+        this.frontImg = setInfo(this.frontImg, frontImg);
+        this.backImg = setInfo(this.backImg, backImg);
+        this.issuanceDate = setInfo(this.issuanceDate, issuanceDate);
         this.expiryDate = setInfo(this.expiryDate, expiryDate);
         this.expiry = undefined;
     }
 
     getExpiryTime() {
         if (isExisted(this.expiryDate) && this.expiryDate !== 'Expired') {
-            let expiration = Date.parse(this.expiryDate) - new Date();
+            console.log("ExpiryDate: ", this.expiryDate);
+            //let a=Date.parse(this.expiryDate);
+            //console.log(a);
+            let dl = new Date(this.expiryDate);
+            console.log("dl: ", dl);
+            let expiration = dl.getTime() - Date.now();
             if (expiration < 2000) expiration = 2000;
             return expiration;
         }
@@ -85,47 +53,73 @@ class driverLicense {
             case 'tier':
                 this.tier = setInfo(this.tier, newValue);
                 break;
-            case 'img':
-                this.img = setInfo(this.img, newValue);
+            case 'frontImg':
+                this.frontImg = setInfo(this.frontImg, newValue);
+                break;
+            case 'backImg':
+                this.backImg = setInfo(this.backImg, newValue);
                 break;
             case 'expiryDate':
                 this.expiryDate = setInfo(this.expiryDate, newValue);
+                break;
+            case 'issuanceDate':
+                this.issuanceDate = setInfo(this.issuanceDate, newValue);
                 break;
             default:
                 console.log('Invalid info type.');
         }
     }
+
+    copy() {
+        let newLicense = new driverLicense(this.id, this.tier, this.issuanceDate, this.expiryDate, this.frontImg, this.backImg);
+        return newLicense;
+    }
+
+    assign(data) {
+        this.id = setInfo(this.id, data.id);
+        this.tier = setInfo(this.tier, data.tier);
+        this.issuanceDate = setInfo(this.issuanceDate, data.issuanceDate);
+        this.expiryDate = setInfo(this.expiryDate, data.expiryDate);
+        this.frontImg = setInfo(this.frontImg, data.frontImg);
+        this.backImg = setInfo(this.backImg, data.backImg);
+    }
 }
 
 class driver {
-    constructor(id, license, yearsOfExp, status, recentTrip, workingTime, efficiency/*,other*/) {
+    constructor(name, DoB, phoneNumber, id, idCard, license, yearsOfExp, status, recentTrip, workingTime, efficiency/*,other*/) {
+        this.name = setInfo(this.name, name);
+        this.DoB = setInfo(this.DoB, DoB);
+        this.phoneNumber = setInfo(this.phoneNumber, phoneNumber);
+        this.idCard = setInfo(this.idCard, idCard);
         this.id = setInfo(this.id, id);
-        //this.id = parseInt(this.id,10);
+
+
+        // FE nên có 1 section để tạo License luôn trong phần add driver, để tạo driverLicense luôn, còn không thì phần này sẽ trở thành N/A
         this.license = new driverLicense();
         this.license = setInfo(this.license, license);
 
+
+
         this.yearsOfExp = setInfo(this.yearsOfExp, yearsOfExp);
-        this.status = setInfo(this.status, status);
-        this.recentTrip = setInfo(this.recentTrip, recentTrip);
+
+        this.status = setInfo(this.status, status);              //nên là 1 check box, chỉ trọng 1 trong 2 trạng thái active/inactive
+
+        this.recentTrip = setInfo(this.recentTrip, recentTrip);  //chưa có import Trip class
+
+
         this.workingTime = setInfo(this.workingTime, workingTime);
+
         this.efficiency = setInfo(this.efficiency, efficiency);
+
         //this.other = setInfo(this.other,other);
+
         if (isExisted(license)) {
             setExpiry(this);
         }
+
         console.log('Driver created.');
     }
 
-    driverInfo() {
-        console.log('ID: ', this.id);
-        console.log('License: ', this.license);
-        console.log('Years of Experiment: ', this.yearsOfExp);
-        console.log('Status: ', this.status);
-        console.log('Recent Trip: ', this.recentTrip);
-        console.log('Work Hours: ', this.workingTime);
-        console.log('Efficiency: ', this.efficiency);
-        //console.log(this);
-    }
 
     carType() {
         //Car Type sẽ thuộc {A1,A2,A3,A4,B1,B2,B3,...}
@@ -137,8 +131,20 @@ class driver {
 
     updateDriverInfo(infoType, newValue) {
         switch (infoType) {
+            case 'name':
+                this.name = setInfo(this.name, newValue);
+                break;
+            case 'DoB':
+                this.DoB = setInfo(this.DoB, newValue);
+                break;
+            case 'phoneNumber':
+                this.phoneNumber = setInfo(this.phoneNumber, newValue);
+                break;
             case 'id':
                 this.id = setInfo(this.id, newValue);
+                break;
+            case 'idCard':
+                this.idCard = setInfo(this.idCard, newValue);
                 break;
             case 'license':
                 this.license = setInfo(this.license, newValue);
@@ -165,12 +171,44 @@ class driver {
         }
     }
 
-    update() {
-        let temp = searchDriver(this);
+    async update() {
+        let temp = await searchDriverByInfo('id', this.id);
         if (isExisted(temp)) {
-            temp.forEach(doc => { editDriver(doc.id, this); });
+            console.log(temp.size);
+            for (const doc of temp) {
+                await (async () => {
+                    await editDriver(doc.id, this);
+                })();
+            }
         }
-        else console.log('Fail: Undefined driver.');
+        else console.log('Update: Undefined driver.');
+    }
+
+    copy() {
+        let newDriver = new driver(this.name, this.DoB, this.phoneNumber, this.id, this.idCard, this.license, this.yearsOfExp, this.status, this.recentTrip, this.workingTime, this.efficiency/*,other*/);
+        return newDriver;
+    }
+
+    assign(data) {
+        this.name = setInfo(this.name, data.name);
+        this.DoB = setInfo(this.DoB, data.DoB);
+        this.phoneNumber = setInfo(this.phoneNumber, data.phoneNumber);
+        this.idCard = setInfo(this.idCard, data.idCard);
+        this.id = setInfo(this.id, data.id);
+
+        this.license = new driverLicense();
+        this.license.assign(data);
+
+        this.yearsOfExp = setInfo(this.yearsOfExp, data.yearsOfExp);
+        this.status = setInfo(this.status, data.status);
+        this.recentTrip = setInfo(this.recentTrip, data.recentTrip);
+        this.workingTime = setInfo(this.workingTime, data.workingTime);
+        this.efficiency = setInfo(this.efficiency, data.efficiency);
+
+        if (isExisted(license)) {
+            setExpiry(this);
+        }
+
     }
 }
-export { driver, compareDriver, setInfo, driverLicense,/*isObjectExisted,*/setExpiry, clearExpiry };
+export { driver, driverLicense };
