@@ -42,10 +42,10 @@ async function submitTruck() {
     control_Plate = document.querySelector("#Truck input[name='Control_Plate']").value;
     var weight = document.querySelector("#Truck input[name='Weight_Vehicle']").value;
     var fuel = document.querySelector("#Truck input[name='Fuel_Vehicle']").value;
-    img1 = document.querySelector("#Truck input[name='IMG_Vehicle1']").value;
-    img2 = document.querySelector("#Truck input[name='IMG_Vehicle2']").value;
-    // img3 = document.querySelector("#Truck input[name='IMG_Vehicle3']").value;
-    // img4 = document.querySelector("#Truck input[name='IMG_Vehicle4']").value;
+    img1 = document.querySelector("#Truck input[name='IMG_Vehicle1']").files[0];
+    img2 = document.querySelector("#Truck input[name='IMG_Vehicle2']").files[0];
+    // img3 = document.querySelector("#Truck input[name='IMG_Vehicle3']").files[0];
+    // img4 = document.querySelector("#Truck input[name='IMG_Vehicle4']").files[0];
     console.log(control_Plate, weight, fuel)
     await wrapper.add(1, control_Plate, weight, fuel, null, null, null, null, null);
 }
@@ -55,10 +55,10 @@ function submitCoach() {
     control_Plate = document.querySelector("#Coach input[name='Control_Plate']").value;
     var capacity = document.querySelector("#Coach input[name='Capacity_Vehicle']").value;
     var speciality = document.querySelector("#Coach input[name='Speciality_Vehicle']").value;
-    img1 = document.querySelector("#Coach input[name='IMG_Vehicle1']").value;
-    img2 = document.querySelector("#Coach input[name='IMG_Vehicle2']").value;
-    // img3 = document.querySelector("#Coach input[name='IMG_Vehicle3']").value;
-    // img4 = document.querySelector("#Coach input[name='IMG_Vehicle4']").value;
+    img1 = document.querySelector("#Coach input[name='IMG_Vehicle1']").files[0];
+    img2 = document.querySelector("#Coach input[name='IMG_Vehicle2']").files[0];
+    // img3 = document.querySelector("#Coach input[name='IMG_Vehicle3']").files[0];
+    // img4 = document.querySelector("#Coach input[name='IMG_Vehicle4']").files[0];
     wrapper.add(2, control_Plate, null, null, capacity, speciality, null, null, null);
 }
 function submitContainer() {
@@ -68,10 +68,10 @@ function submitContainer() {
     var height = document.querySelector("#Container input[name='Height_Vehicle']").value;
     var length = document.querySelector("#Container input[name='Length_Vehicle']").value;
     var max_load = document.querySelector("#Container input[name='MaxLoad_Vehicle']").value;
-    img1 = document.querySelector("#Container input[name='IMG_Vehicle1']").value;
-    img2 = document.querySelector("#Container input[name='IMG_Vehicle2']").value;
-    // img3 = document.querySelector("#Container input[name='IMG_Vehicle3']").value;
-    // img4 = document.querySelector("#Container input[name='IMG_Vehicle4']").value;
+    img1 = document.querySelector("#Container input[name='IMG_Vehicle1']").files[0];
+    img2 = document.querySelector("#Container input[name='IMG_Vehicle2']").files[0];
+    // img3 = document.querySelector("#Container input[name='IMG_Vehicle3']").files[0];
+    // img4 = document.querySelector("#Container input[name='IMG_Vehicle4']").files[0];
     wrapper.add(3, control_Plate, weight, null, null, null, height, length, max_load);
 }
 
