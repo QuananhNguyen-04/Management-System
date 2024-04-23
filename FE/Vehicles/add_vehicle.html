@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>Document</title>
     <link rel="stylesheet" href="add_vehicle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="module" src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js"></script>
     <script type="module" src="https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js"></script>
@@ -24,13 +25,13 @@
         <h1>NHÀ XE HẠNH PHÚC</h1>
     </header>
     <div class="btn">
-        <button id="btn_Truck" class="Choose_BTN active" type="button">Xe Tải</button>
-        <button id="btn_Coach" class="Choose_BTN" type="button">Xe Khách</button>
-        <button id="btn_Container" class="Choose_BTN" type="button">Xe Container</button>
+        <button id="btn_Truck" class="Choose_BTN"><i class="fa-solid fa-truck"></i><h3>Xe Tải</h3></button>
+        <button id="btn_Coach" class="Choose_BTN"><i class="fa-solid fa-bus"></i><h3>Xe Khách</h3></button>
+        <button id="btn_Container" class="Choose_BTN"><i class="fa-solid fa-truck-moving"></i><h3>Xe Container</h3></button>
     </div>
     <div id="Truck" style="display: block;">
         <form class="Vehicle">
-            <h3>Xe Tải</h3>
+            <h2>Xe Tải</h2>
             <div class="Vehicle_item">
                 <label for="Control_Plate" class="label_">Biển số xe:</label>
                 <input type="text" class="input_" id="Control_Plate" name="Control_Plate" required>
@@ -56,7 +57,7 @@
                 <input type="file" class="input_" id="IMG_Vehicle2" name="IMG_Vehicle2" accept="image/*" required>
                 <br>
             </div>
-            <!-- <div class="Vehicle_item">
+            <div class="Vehicle_item">
                 <label for="IMG_Vehicle3" class="label_">Ảnh bên trái xe:</label>
                 <input type="file" class="input_" id="IMG_Vehicle3" name="IMG_Vehicle3" accept="image/*" required>
                 <br>
@@ -65,13 +66,14 @@
                 <label for="IMG_Vehicle4" class="label_">Ảnh bên phải xe:</label>
                 <input type="file" class="input_" id="IMG_Vehicle4" name="IMG_Vehicle4" accept="image/*" required>
                 <br>
-            </div> -->
-            <button id="submit_truck" class="submit_BTN" type="submit">Thêm xe</button>
+            </div>
+            <!-- <input id="telNo" name="telNo" type="tel" size="20" minlength="9" maxlength="14" placeholder="Nhập số điện thoại" required> -->
+            <button id="submit_truck" class="submit_BTN" type="submit"><i id="icon_add" class="fa-solid fa-cart-plus"></i>Thêm xe</button>
         </form>
     </div>
     <div id="Coach" style="display: none;">
         <form class="Vehicle">
-            <h3>Xe Khách</h3>
+            <h2>Xe Khách</h2>
             <div class="Vehicle_item">
                 <label for="Control_Plate" class="label_">Biển số xe:</label>
                 <input type="text" class="input_" id="Control_Plate" name="Control_Plate" required>
@@ -98,7 +100,7 @@
                 <input type="file" class="input_" id="IMG_Vehicle2" name="IMG_Vehicle2" accept="image/*" required>
                 <br>
             </div>
-            <!-- <div class="Vehicle_item">
+            <div class="Vehicle_item">
                 <label for="IMG_Vehicle3" class="label_">Ảnh bên trái xe:</label>
                 <input type="file" class="input_" id="IMG_Vehicle3" name="IMG_Vehicle3" accept="image/*" required>
                 <br>
@@ -107,13 +109,13 @@
                 <label for="IMG_Vehicle4" class="label_">Ảnh bên phải xe:</label>
                 <input type="file" class="input_" id="IMG_Vehicle4" name="IMG_Vehicle4" accept="image/*" required>
                 <br>
-            </div> -->
-            <button id="submit_coach" class="submit_BTN" type="submit">Thêm xe</button>
+            </div>
+            <button id="submit_coach" class="submit_BTN" type="submit"><i id="icon_add" class="fa-solid fa-cart-plus"></i>Thêm xe</button>
         </form>
     </div>
     <div id="Container" style="display: none;">
         <form class="Vehicle">
-            <h3>Xe Container</h3>
+            <h2>Xe Container</h2>
             <div class="Vehicle_item">
                 <label for="Control_Plate" class="label_">Biển số xe:</label>
                 <input type="text" class="input_" id="Control_Plate" name="Control_Plate" required>
@@ -149,7 +151,7 @@
                 <input type="file" class="input_" id="IMG_Vehicle2" name="IMG_Vehicle2" accept="image/*" required>
                 <br>
             </div>
-            <!-- <div class="Vehicle_item">
+            <div class="Vehicle_item">
                 <label for="IMG_Vehicle3" class="label_">Ảnh bên trái xe:</label>
                 <input type="file" class="input_" id="IMG_Vehicle3" name="IMG_Vehicle3" accept="image/*" required>
                 <br>
@@ -158,8 +160,8 @@
                 <label for="IMG_Vehicle4" class="label_">Ảnh bên phải xe:</label>
                 <input type="file" class="input_" id="IMG_Vehicle4" name="IMG_Vehicle4" accept="image/*" required>
                 <br>
-            </div> -->
-            <button id="submit_container" class="submit_BTN" type="submit">Thêm xe</button>
+            </div>
+            <button id="submit_container" class="submit_BTN" type="submit"><i id="icon_add" class="fa-solid fa-cart-plus"></i>Thêm xe</button>
         </form>
     </div>
     <footer>
