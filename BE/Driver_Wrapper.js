@@ -1,7 +1,7 @@
-const {driver} =require("./Driver");
-const {convertToObject} = require("./ExtraFunction");
-const {isExisted} = require("./ExtraFunction2");
-const {searchDriverByInfo,searchDriver,fetchDriverList,editDriver,pushNewDriver,fetchDriver,deleteDriver} = require('./driverDatabaseInteract');
+import { driver } from "./Driver.js";
+import { convertToObject } from "./ExtraFunction.js";
+import { isExisted } from "./ExtraFunction2.js";
+import { searchDriverByInfo, searchDriver, fetchDriverList, editDriver, pushNewDriver, fetchDriver, deleteDriver } from './driverDatabaseInteract.js';
 
 class driver_wrapper
 {
@@ -126,4 +126,4 @@ class driver_wrapper
     }
 }
 
-module.exports={driver_wrapper};
+export {driver_wrapper};

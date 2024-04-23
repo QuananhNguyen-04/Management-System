@@ -16,7 +16,7 @@
 - other:        Object (đề phòng cần thêm những thông tin cá nhân nhưng ko dùng tới trong BE)
 */
 
-const {setExpiry,clearExpiry,setInfo} = require("./ExtraFunction");
+const {setExpiry,clearExpiry,setInfo} = require("./ExtraFunction").default;
 const {isExisted} = require("./ExtraFunction2");
 const {searchDriverByInfo,editDriver } = require("./fetchDriver");
 //const {Trip} = require("./Trip");
@@ -233,4 +233,4 @@ class driver
 }
 
 
-module.exports = {driver,driverLicense};
+exports = {driver,driverLicense};

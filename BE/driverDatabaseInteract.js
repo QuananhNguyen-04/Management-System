@@ -1,36 +1,25 @@
-const {convertToObject} = require("./ExtraFunction");
-const {isExisted} = require("./ExtraFunction2");
-const {initializeApp} = require("firebase/app");
-const {getDocs, getDoc, setDoc, doc, getFirestore, collection} = require("firebase/firestore");
-const {driver} = require('./Driver');
 
-const firebaseConfig = {
-    apiKey: "AIzaSyAFfRTomodMfFqP3JkXPTu34W3vYnKwtmY",
-    authDomain: "nha-xe-hanh-phuc-ltnc.firebaseapp.com",
-    databaseURL: "https://nha-xe-hanh-phuc-ltnc-default-rtdb.asia-southeast1.firebasedatabase.app/",
-    projectId: "nha-xe-hanh-phuc-ltnc",
-    storageBucket: "nha-xe-hanh-phuc-ltnc.appspot.com",
-    messagingSenderId: "260388398077",
-    appId: "1:260388398077:web:2d2149e08a20947333af94",
-    measurementId: "G-ZF1G64YNDE"
-};
+import { convertToObject } from "./ExtraFunction.js";;
+import { isExisted } from "./ExtraFunction2.js";
+import { getDocs, getDoc, setDoc, doc, getFirestore, collection } from "firebase/firestore";
+import { driver } from './Driver.js';
+import { db } from './firebase_Init.js'
 
-let app = initializeApp(firebaseConfig);
-let db = getFirestore(app);
-
-async function fetchDriverList(driverList)
+async function fetchDriverList(driverList, idList)
 {
     try
     {
         const driverRef=collection(db,'driver');
         const driverWrapper=await getDocs(driverRef);
         driverWrapper.forEach((driverDoc) => {
-            //console.log(driverDoc.data());
-            driverList[driverDoc.data().id]=driverDoc;
-            //console.log(driverData);
+            const driverData=driverDoc.data();
+            driverList.push(driverData);
+            idList.push(driverData.id);
+            console.log(driverData);
         });
         
-        //console.log(driverList);
+        console.log(driverList);
+        console.log(idList);
         return true;
     }
     catch (error)
@@ -40,20 +29,18 @@ async function fetchDriverList(driverList)
     }
 }
 
+//fetchDriverList();
+
 async function editDriver(documentId, value)
 {
     try
     {
         const driverRef=doc(collection(db,'driver'),documentId);
-        value.license.expiry='N/A';
-        value.license=convertToObject(value.license)
-        value.recentTrip=convertToObject(value.recentTrip);
-        const newDriverData=convertToObject(value);
-        await setDoc(driverRef, newDriverData);
+        await setDoc(driverRef, value);
     }
     catch(error)
     {
-        console.log('Error editing driver: ',error);
+        console.log('Error pushing driver: ',error);
     }
 }
 async function pushNewDriver(driverData) 
@@ -62,14 +49,7 @@ async function pushNewDriver(driverData)
     {
         const driverCollectionRef = collection(db, 'driver');
         const newDriverRef = doc(driverCollectionRef);
-        driverData.license.expiry='N/A';
-        driverData.license=convertToObject(driverData.license);
-        //console.log(driverData.license);
-        driverData.recentTrip=convertToObject(driverData.recentTrip);
-        let newDriverData=convertToObject(driverData);
-        //console.log('Type of new object: ',typeof newDriverData);
-        //console.log(newDriverData);
-        //let newDriver=Object.assign({},newDriverData);
+        const newDriverData=Object.assign({},driverData);
         await setDoc(newDriverRef, newDriverData);
         console.log('New driver pushed successfully:', driverData);
         return newDriverRef;
@@ -77,47 +57,28 @@ async function pushNewDriver(driverData)
     catch (error) 
     {
         console.error('Error pushing new driver: ', error);
-        return 'N/A';
     }
 }
 
-async function fetchDriver(documentId)
+async function searchDriver(driver)
 {
     try
     {
-        const colRef=collection(db,'driver');
-        const temp=await getDoc(colRef,documentId);
+        let temp=await searchDriverByInfo('id',driver.id);
         //console.log('Temp: ',temp);
         //console.log('Search direct Done');
         //console.log(temp);
-        if (!temp.exists) return 'Not found';
-        else return temp;
+        if (isExisted(temp)!=true) return 'Not found';
+        else 
+            if(temp.size>1) return false;
+            else temp.forEach((doc) => {return doc.data();});
     }
     catch (error)
     {
         console.log('Error searching direct driver ',error);
     }
 }
-async function searchDriver(_driver)
-{
-    try
-    {
-        let driverDoc='N/A';
-        let temp=await searchDriverByInfo('id',_driver.id);
-        console.log('Direct: ',temp);
-        if(isExisted(temp)) 
-        {
-            temp.forEach(doc => { 
-                driverDoc=doc;
-            })
-        }
-        return driverDoc;
-    }
-    catch (error)
-    {
-        console.log('Error searching driver ',error);
-    }
-}
+
 async function searchDriverByInfo(infoType, value)
 {
     try
@@ -138,39 +99,26 @@ async function searchDriverByInfo(infoType, value)
                     return null;
                 }}
         //console.log('infoType done');
-        const variations = new RegExp('^'+value+'$','i');
-        let q=await getDocs(documentCollectionRef);
-        let docList=q.docs;
-        let res=[];
-        //console.log(docList);
-        if(docList.size === 0) 
-        {
-            console.log('By info: Not found');
-            return 'Not found';
-        }
-        for (const doc of docList)
-        {
-            const data=doc.data();
-            if(data[infoType].match(variations)) res.push(doc);
-        }
+        const q=query(documentCollectionRef, where(infoType, '==', value));
         //console.log('q done.');
         //console.log(q);
+        let qSnapshot = await getDocs(q);
         //console.log('qSnapshot done.');
-        if(res.length<1) 
+        if(qSnapshot.empty) 
         {
             console.log('By info: Not found.');
             return 'Not found';
         }
         else 
         {
-            console.log('By info: Found.');
-            return res;
+            //console.log('Found.');
+            return qSnapshot;
         }
     }
     catch(error)
     {
         //console.log('something wrong in searchbyinfo.');
-        console.log('Error searching driver info: ',error);
+        console.log('Error searching driver: ',error);
         //return null;
     }
 }
@@ -190,5 +138,5 @@ async function deleteDriver(documentId)
 }
 
 
-module.exports={searchDriverByInfo,fetchDriverList,editDriver,pushNewDriver,deleteDriver,searchDriver,fetchDriver};
+export {searchDriverByInfo,fetchDriverList,editDriver,pushNewDriver,deleteDriver,searchDriver};
 

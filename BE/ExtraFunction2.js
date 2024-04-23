@@ -23,4 +23,4 @@ function standardString(_string)
     return standardWords.join(' ');
 }
 
-module.exports={isExisted,standardString}
+export {isExisted,standardString}
