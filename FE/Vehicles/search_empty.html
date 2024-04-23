@@ -311,7 +311,7 @@
             </tr>
         </table>
         <div id="profile-images"></div>
-        <button onclick="editProfile()">Chỉnh sửa</button>
+        <button id="edit_btn">Chỉnh sửa</button>
     </div>
 
 
@@ -342,16 +342,16 @@
                 <td><input type="text" id="edit-main-driver-photo"></td>
             </tr>
         </table>
-        <button onclick="cancelEdit()">Hủy</button>
-        <button onclick="updateDriver()">Cập nhật</button>
+        <button id="cancel_btn" >Hủy</button>
+        <button id="update_btn" >Cập nhật</button>
     </div>
 
 
     <footer>
         <p>&copy; 2024 Nhà Xe Hạnh Phúc. All rights reserved.</p>
     </footer>
-    <div id="overlay" onclick="hideOverlay()"></div>
-    <script src="search_empty.js">
+    <div id="overlay"></div>
+    <script type="module" src="search_empty.js">
     </script>
 </body>
 

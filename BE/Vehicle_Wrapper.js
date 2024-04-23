@@ -19,16 +19,17 @@ class vehicles_wrapper {
         }
     }
     //vehicle_wrapper method
-    add(VehicleType, control_Plate, weight, fuel, capacity, speciality, height, length, max_Load) {
+    async add(VehicleType, control_Plate, weight, fuel, capacity, speciality, height, length, max_Load) {
         const new_vehicle = this.vehicleInfo.vehicleRegister(control_Plate, VehicleType, weight, fuel,
             capacity, speciality, height, length, max_Load);
         // console.log(new_vehicle);
-        let checked = DefaultsearchVehicle(new_vehicle);
-        // console.log(checked)
-        if (isExisted(checked)) {
+        // console.log(control_Plate, weight, fuel, capacity);
+        let checked = await DefaultsearchVehicle(new_vehicle);
+        if (!isExisted(checked)) {
             this.vehicle_list.push(new_vehicle);
             this.size++;
             addVehicle(new_vehicle);
+            console.log("add vehicle success");
         } else console.log("Vehicle already existed");
     }
 
@@ -53,11 +54,18 @@ class vehicles_wrapper {
         this.Advanced_search('control_Plate', control_Plate);
     }
 
-    Advanced_search(field, value) {
-        let result = searchVehicle(field, value);
+    async Advanced_search(field, value) {
+        let result = await searchVehicle(field, value);
+        // console.log(result)
+        if (result === null) {
+            console.log("Not found");
+            return null;
+        }
         let result_list = [];
         result.forEach((doc) => { result_list.push(doc.data()); });
+        console.log("print result_list");
         result_list.forEach(element => { console.log(element); });
+        return result_list;
     }
 
     edit(control_Plate, weight, fuel, capacity, speciality, height, length, max_Load) {
@@ -81,13 +89,13 @@ class vehicles_wrapper {
             }
         }
     }
-    active_List() {
+    async active_List() {
         this.Advanced_search('status', VehicleStatus.ACTIVE);
     }
-    maintenance_List() {
+    async maintenance_List() {
         this.Advanced_search('status', VehicleStatus.MAINTENANCE);
     }
-    unavailable_List() {
+    async unavailable_List() {
         this.Advanced_search('status', VehicleStatus.UNAVAILABLE);
     }
 }

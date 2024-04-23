@@ -8,7 +8,7 @@ class vehicle {
     constructor(control_Plate) {
         this.car_ID = generateID();
         this.control_Plate = control_Plate;
-        this.status = VehicleStatus.ACTIVE;
+        this.status = VehicleStatus.UNAVAILABLE;
         this.recent_Trip = null;
         this.maintenance = null;
     }
@@ -20,7 +20,6 @@ class vehicle {
         else if (VehicleType == Vehicle_Type.C_type)
             return new Coach(control_Plate, capacity, speciality);
         else if (VehicleType == Vehicle_Type.E_type){
-            console.log(control_Plate, weight, height, length, max_Load);
             return new Container(control_Plate, weight, height, length, max_Load);
         }
     }

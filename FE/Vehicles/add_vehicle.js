@@ -37,7 +37,7 @@ document.getElementById('btn_Container').addEventListener('click', () => {
     showForm('Container')
 });
 
-function submitTruck() {
+async function submitTruck() {
     type = "TRUCK";
     control_Plate = document.querySelector("#Truck input[name='Control_Plate']").value;
     var weight = document.querySelector("#Truck input[name='Weight_Vehicle']").value;
@@ -46,7 +46,8 @@ function submitTruck() {
     img2 = document.querySelector("#Truck input[name='IMG_Vehicle2']").value;
     // img3 = document.querySelector("#Truck input[name='IMG_Vehicle3']").value;
     // img4 = document.querySelector("#Truck input[name='IMG_Vehicle4']").value;
-    wrapper.add(1, control_Plate, weight, fuel, null, null, null, null, null);
+    console.log(control_Plate, weight, fuel)
+    await wrapper.add(1, control_Plate, weight, fuel, null, null, null, null, null);
 }
 
 function submitCoach() {
@@ -74,12 +75,15 @@ function submitContainer() {
     wrapper.add(3, control_Plate, weight, null, null, null, height, length, max_load);
 }
 
-document.getElementById('submit_truck').addEventListener('click', async function() {
+document.getElementById('submit_truck').addEventListener('click', async function(e) {
+    e.preventDefault();
     submitTruck();
 });
-document.getElementById('submit_coach').addEventListener('click', async function() {
+document.getElementById('submit_coach').addEventListener('click', async function(e) {
+    e.preventDefault();
     submitCoach();
 });
-document.getElementById('submit_container').addEventListener('click', async function() {
+document.getElementById('submit_container').addEventListener('click', async function(e) {
+    e.preventDefault();
     submitContainer();
 });

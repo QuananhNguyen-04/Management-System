@@ -1,3 +1,6 @@
+import { vehicles_wrapper } from "../../BE/Vehicle_Wrapper.js";
+
+
 var drivers = [
     {
         plateNumber: '29B-12345',
@@ -196,18 +199,20 @@ function updateDriver() {
     document.getElementById('profile-driver-photo').src = driver.mainDriverPhoto;
 }
 
-
+var wrap = new vehicles_wrapper();
 
 // Xử lý sự kiện khi nhấn nút tìm kiếm
 
 
-var redraw = function () {
+var redraw = async function () {
     var selectedType = document.getElementById('search-type').value.toLowerCase();
     var searchText = document.getElementById('search-text').value.toLowerCase();
 
     filteredDrivers = drivers.filter(function (driver) {
         return (driver.plateNumber.toLowerCase().includes(searchText) || searchText === '') && (driver.type.toLowerCase().includes(selectedType) || selectedType === '');
     });
+    let free_list = await wrap.unavailable_List();
+    let maintain_list = await wrap.maintenance_List();
 
     var resultContainer = document.getElementById('result-container');
     resultContainer.innerHTML = '';
@@ -263,3 +268,16 @@ document.addEventListener('keypress', function (event) {
 });
 
 redraw();
+
+document.getElementById('edit_btn').addEventListener('click', async function (e) {
+    e.preventDefault();
+    editProfile();
+})
+document.getElementById('cancel_btn').addEventListener('click', async function (e) {
+    e.preventDefault();
+    cancelEdit();
+})
+document.getElementById('update_btn').addEventListener('click', async function (e) {
+    e.preventDefault();
+    updateDriver();
+})

@@ -52,10 +52,9 @@ async function searchVehicle(field, value) {
         //         console.log("Vehicle data: ", doc.data());
         //     }
         // });
-        console.log(field, value)
         const q = await query(VehicleListRef, where(field, '==', value));
         const querySnapshot = await getDocs(q);
-        if (querySnapshot.empty) return 'Not found';
+        if (querySnapshot.empty) return null;
         else return querySnapshot;
     } catch (e) {   
         console.error("Error searching vehicle: ", e);
