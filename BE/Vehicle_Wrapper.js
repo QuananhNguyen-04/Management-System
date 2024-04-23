@@ -22,9 +22,9 @@ class vehicles_wrapper {
     add(VehicleType, control_Plate, weight, fuel, capacity, speciality, height, length, max_Load) {
         const new_vehicle = this.vehicleInfo.vehicleRegister(control_Plate, VehicleType, weight, fuel,
             capacity, speciality, height, length, max_Load);
-        console.log(new_vehicle)
+        // console.log(new_vehicle);
         let checked = DefaultsearchVehicle(new_vehicle);
-        console.log(checked)
+        // console.log(checked)
         if (isExisted(checked)) {
             this.vehicle_list.push(new_vehicle);
             this.size++;
@@ -50,7 +50,7 @@ class vehicles_wrapper {
         //     if(i.control_Plate == control_Plate)
         //         return i.vehicles_Info();
         // }
-        this.Advanced_search('Control_Plate', control_Plate);
+        this.Advanced_search('control_Plate', control_Plate);
     }
 
     Advanced_search(field, value) {

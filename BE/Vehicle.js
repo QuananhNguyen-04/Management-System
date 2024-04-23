@@ -12,14 +12,17 @@ class vehicle {
         this.recent_Trip = null;
         this.maintenance = null;
     }
-    vehicleRegister(control_Plate, VehicleType, weight, fuel, capacity, speciality,
+    vehicleRegister(control_Plate, VehicleType, weight, fuel, capacity, speciality, 
         height, length, max_Load) {
+        // console.log(max_Load, VehicleType);
         if (VehicleType == Vehicle_Type.B2_Type)
             return new Truck(control_Plate, weight, fuel);    
         else if (VehicleType == Vehicle_Type.C_type)
             return new Coach(control_Plate, capacity, speciality);
-        else if (VehicleType == Vehicle_Type.E_type)
+        else if (VehicleType == Vehicle_Type.E_type){
+            console.log(control_Plate, weight, height, length, max_Load);
             return new Container(control_Plate, weight, height, length, max_Load);
+        }
     }
     //vehicle method
     vehicles_Info() {
@@ -84,8 +87,8 @@ class Truck extends vehicle {
     }
 }
 class Coach extends vehicle {
-    constructor(control_Plate, VehicleType, capacity, speciality) {
-        super(control_Plate, VehicleType);      //Get control_plate from parent class
+    constructor(control_Plate, capacity, speciality) {
+        super(control_Plate);      //Get control_plate from parent class
         this.VehicleType = Vehicle_Type.C_type;
         this.coef = generateCoef(capacity, 10);        //10 is the min capacity for coach. Unit: people
         this.capacity = capacity;
@@ -93,8 +96,8 @@ class Coach extends vehicle {
     }
 }
 class Container extends vehicle {
-    constructor(control_Plate, VehicleType, weight, height, length, max_Load) {
-        super(control_Plate, VehicleType);       //Get control_plate from parent class
+    constructor(control_Plate, weight, height, length, max_Load) {
+        super(control_Plate);       //Get control_plate from parent class
         this.VehicleType = Vehicle_Type.E_type;
         this.coef = generateCoef(weight, 1000);        //1000 is the min weight for truck and container. Unit: kg
         this.weight = weight;
