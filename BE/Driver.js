@@ -15,20 +15,23 @@
 - efficiency:   đánh giá từ manager        
 - other:        Object (đề phòng cần thêm những thông tin cá nhân nhưng ko dùng tới trong BE)
 */
-import { searchDriverByInfo, editDriver } from './fetchDriver.js';
+
+import { setExpiry, clearExpiry, setInfo } from "./ExtraFunction.js";
 import { isExisted } from "./ExtraFunction2.js";
-import { setExpiry, clearExpiry, setInfo } from './ExtraFunction.js';
-//import { set } from "firebase/database";
-//          SOME FUNCTION NEEDED TO OPTIMIZE CODING: START
-class driverLicense {
-    constructor(id, tier, issuanceDate, expiryDate, frontImg, backImg) {
-        this.id = setInfo(this.id, id);
-        this.tier = setInfo(this.tier, tier);
-        this.frontImg = setInfo(this.frontImg, frontImg);
-        this.backImg = setInfo(this.backImg, backImg);
-        this.issuanceDate = setInfo(this.issuanceDate, issuanceDate);
-        this.expiryDate = setInfo(this.expiryDate, expiryDate);
-        this.expiry = undefined;
+import { searchDriverByInfo, editDriver } from "./fetchDriver.js";
+//const {Trip} = require("./Trip");
+
+class driverLicense
+{
+    constructor(id, tier, issuanceDate, expiryDate, frontImg, backImg)
+    {
+        this.id = setInfo(this.id,id);
+        this.tier = setInfo(this.tier,tier);
+        this.frontImg = setInfo(this.frontImg,frontImg);
+        this.backImg = setInfo(this.backImg,backImg);
+        this.issuanceDate = setInfo(this.issuanceDate,issuanceDate);
+        this.expiryDate = setInfo(this.expiryDate,expiryDate);
+        this.expiry= undefined;
     }
 
     getExpiryTime() {
@@ -97,9 +100,6 @@ class driver {
         // FE nên có 1 section để tạo License luôn trong phần add driver, để tạo driverLicense luôn, còn không thì phần này sẽ trở thành N/A
         this.license = new driverLicense();
         this.license = setInfo(this.license, license);
-
-
-
         this.yearsOfExp = setInfo(this.yearsOfExp, yearsOfExp);
 
         this.status = setInfo(this.status, status);              //nên là 1 check box, chỉ trọng 1 trong 2 trạng thái active/inactive
@@ -116,7 +116,6 @@ class driver {
         if (isExisted(license)) {
             setExpiry(this);
         }
-
         console.log('Driver created.');
     }
 
