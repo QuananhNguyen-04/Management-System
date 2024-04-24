@@ -1,7 +1,7 @@
 //Import the firebase functions
 import { isExisted } from "./ExtraFunction2.js";
 import { db } from "./firebase_Init.js"
-import { getDocs, getDoc, setDoc, doc, collection, deleteDoc, query, where } 
+import { getDocs, getDoc, setDoc, doc, collection, deleteDoc, query, where, and, or } 
 from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 
 
@@ -52,7 +52,14 @@ async function searchVehicle(field, value) {
         //         console.log("Vehicle data: ", doc.data());
         //     }
         // });
-        const q = await query(VehicleListRef, where(field, '==', value));
+        var q;
+        console.log(field.length);
+        if (Array.isArray(field) && field.length > 1) {
+            q = await query(VehicleListRef, and(where(field[0], '==', value[0]), where(field[1], '==', value[1])));
+        }
+        else {
+            q = await query(VehicleListRef, where(field, '==', value));
+        }
         const querySnapshot = await getDocs(q);
         if (querySnapshot.empty) return null;
         else return querySnapshot;

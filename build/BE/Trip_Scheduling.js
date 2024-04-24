@@ -26,7 +26,7 @@ class Trip_Schedule {
     async search_bien_so_xe(searh) {
         const q = await query(collection(db, "vehicles"),
             and(where('status', '==', 'on')),
-            where('bxs', '==', search));
+            where('control_Plate', '==', search));
         const temp = await getDocs(q)
         const q1 = await query(collection(db, "Trip"),
             where("car_Id", '==', temp.forEach(doc => doc.id))

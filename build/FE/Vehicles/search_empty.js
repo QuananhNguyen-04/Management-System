@@ -213,7 +213,8 @@ var redraw = async function () {
     });
     let free_list = await wrap.unavailable_List();
     let maintain_list = await wrap.maintenance_List();
-
+    console.log(free_list)
+    console.log(maintain_list)
     var resultContainer = document.getElementById('result-container');
     resultContainer.innerHTML = '';
 
@@ -280,4 +281,7 @@ document.getElementById('cancel_btn').addEventListener('click', async function (
 document.getElementById('update_btn').addEventListener('click', async function (e) {
     e.preventDefault();
     updateDriver();
+})
+document.getElementById('search-type').addEventListener('change', async function() {
+    redraw();
 })

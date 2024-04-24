@@ -110,8 +110,22 @@ document.getElementById('btn_check').addEventListener('click', async function ()
     var Start_Day = document.querySelector(".Start_Day").value;
     var Start_Dest = document.querySelector(".Start_Dest").value;
     var End_Dest = document.querySelector(".End_Dest").value;
-    var Type_Vehicles = document.querySelector(".Type_Vehicles").value;
-    // console.log(Type_Vehicles);
+    var Type_Vehicles = document.querySelector("#Type_Vehicles").value;
+    if (Type_Vehicles != null) {
+        if (Type_Vehicles === "Truck") {
+            Type_Vehicles = 1;
+        }
+        else if (Type_Vehicles === "Coach") {
+            Type_Vehicles = 2;
+        }
+        else if (Type_Vehicles === "Container") {
+            Type_Vehicles = 3;
+        }
+    }
+    // trips.search
+    var vehicle = new vehicles_wrapper();
+    var vList = await vehicle.Advanced_search(["VehicleType", "status"], [Type_Vehicles, 3]);
+    console.log(vList);
     Find_Driver();
 
 })
