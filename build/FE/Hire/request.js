@@ -2,13 +2,6 @@ import { driver_wrapper } from "../../BE/Driver_Wrapper.js"
 import { vehicles_wrapper } from "../../BE/Vehicle_Wrapper.js";
 import { Trip_Schedule, Trip } from "../../BE/Trip_Scheduling.js"
 
-var cus_Name = document.querySelector(".Customer_Name").value;
-var cus_Phone = document.querySelector(".Customer_Phone").value;
-var Start_Time = document.querySelector(".Start_Time").value;
-var Start_Day = document.querySelector(".Start_Day").value;
-var Start_Dest = document.querySelector(".Start_Dest").value;
-var End_Dest = document.querySelector(".End_Dest").value;
-var Type_Vehicles = document.querySelector(".Type_Vehicles").value;
 
 var Vehicles = [
     { Main_Driver_Name: 'Tài', Driver_Phone: '034594582354', Assistant_Driver_Name: 'fsdfsdfsđ', Vehicle_Num: '59-S3 32423', Cost_Veh: '100.000Đ', },
@@ -107,9 +100,18 @@ function Find_Driver() {
 }
 var trips = new Trip_Schedule()
 
+// console.log("click checkbutton");
 document.getElementById('btn_check').addEventListener('click', async function () {
 
-    console.log("click checkbutton")
+    console.log("click checkbutton");
+    var cus_Name = document.querySelector(".Customer_Name").value;
+    var cus_Phone = document.querySelector(".Customer_Phone").value;
+    var Start_Time = document.querySelector(".Start_Time").value;
+    var Start_Day = document.querySelector(".Start_Day").value;
+    var Start_Dest = document.querySelector(".Start_Dest").value;
+    var End_Dest = document.querySelector(".End_Dest").value;
+    var Type_Vehicles = document.querySelector(".Type_Vehicles").value;
+    // console.log(Type_Vehicles);
     Find_Driver();
 
 })

@@ -67,7 +67,10 @@ async function DefaultsearchVehicle(VehicleData) {
         if (isExisted(temp) != true) return 'Not found';
         else 
             if(temp.size > 1) return false;
-            else temp.forEach((doc) => {return doc.data();});
+            else temp.forEach((doc) => {
+                console.log(doc);
+                return doc.data();
+            });
     } catch (e) {    
         console.error("Error searching vehicle: ", e);
     }
