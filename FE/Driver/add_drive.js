@@ -14,8 +14,7 @@ import { driver_wrapper } from "../../BE/Driver_Wrapper.js"
 import { driverLicense } from "../../BE/Driver.js"
 
 
-document.getElementById("add_driver").
-addEventListener("click", async function () {
+document.getElementById("add_driver").addEventListener("click", async function () {
         var wrap = new driver_wrapper();
         var li = new driverLicense(Lisence_Id, Lisence_Rank, Lisence_BD, Lisence_Experies, Front_License, Back_Lisence)
         wrap.create(Name_Driver, DoB, Phone, ID, IMG_Driver, li);
