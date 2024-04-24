@@ -1,13 +1,14 @@
-import { driver } from "./Driver.js";
-import { convertToObject } from "./ExtraFunction.js";
-import { isExisted } from "./ExtraFunction2.js";
-import { searchDriverByInfo, searchDriver, fetchDriverList, editDriver, pushNewDriver, deleteDriver } from './driverDatabaseInteract.js';
+const {driver} =require("./Driver");
+const {convertToObject} = require("./ExtraFunction");
+const {isExisted} = require("./ExtraFunction2");
+const {searchDriverByInfo,searchDriver,fetchDriverList,editDriver,pushNewDriver,fetchDriver,deleteDriver} = require('./driverDatabaseInteract');
+
 class driver_wrapper
 {
     constructor()
     {
-        this.driverList = [];
-        this.fetch().then();
+        this.driverList = {};
+        this.fetch();
     }
     async fetch()
     {
@@ -15,7 +16,6 @@ class driver_wrapper
         if(construct)
         {
             console.log('Create driverWrapper successfully.');
-            //console.log(this.driverList);
             //console.log(this.driverList);
         }
         else
@@ -126,4 +126,4 @@ class driver_wrapper
     }
 }
 
-export {driver_wrapper};
+module.exports={driver_wrapper};
