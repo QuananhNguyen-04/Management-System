@@ -3,6 +3,7 @@ import { convertToObject } from "./ExtraFunction.js";;
 import { isExisted } from "./ExtraFunction2.js";
 import { getDocs, getDoc, setDoc, doc, collection } 
 from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+import {getStorage,ref,uploadBytes,getDownloadURL }from "https://www.gstatic.com/firebasejs/10.10.0/firebase-storage.js";
 import { driver } from './Driver.js';
 import { db } from './firebase_Init.js'
 
@@ -33,7 +34,7 @@ async function editDriver(documentId, value)
     try
     {
         const driverRef=doc(collection(db,'driver'),documentId);
-        value.license.expiry='N/A';
+        //value.license.expiry='N/A';
         value.license=convertToObject(value.license)
         value.recentTrip=convertToObject(value.recentTrip);
         const newDriverData=convertToObject(value);
@@ -50,7 +51,7 @@ async function pushNewDriver(driverData)
     {
         const driverCollectionRef = collection(db, 'driver');
         const newDriverRef = doc(driverCollectionRef);
-        driverData.license.expiry='N/A';
+        //driverData.license.expiry='N/A';
         driverData.license=convertToObject(driverData.license);
         //console.log(driverData.license);
         driverData.recentTrip=convertToObject(driverData.recentTrip);
@@ -86,7 +87,7 @@ async function fetchDriver(documentId)
         console.log('Error searching direct driver ',error);
     }
 }
-async function searchDriver(_driver)
+async function searchDriver(_driver)    //Type: driver
 {
     try
     {
@@ -139,7 +140,11 @@ async function searchDriverByInfo(infoType, value)
         for (const doc of docList)
         {
             const data=doc.data();
-            if(data[infoType].match(variations)) res.push(doc);
+            if(data[infoType].match(variations)) 
+            {
+                ///console.log(doc.data());
+                res.push(doc);
+            }
         }
         //console.log('q done.');
         //console.log(q);
@@ -151,6 +156,7 @@ async function searchDriverByInfo(infoType, value)
         }
         else 
         {
+            //for (const a of res) console.log(a.data());
             console.log('By info: Found.');
             return res;
         }
@@ -177,5 +183,29 @@ async function deleteDriver(documentId)
     }
 }
 
-export { searchDriverByInfo, fetchDriverList, editDriver, pushNewDriver, deleteDriver, searchDriver };
+async function pushFile(path,file,id,type)
+{
+    try {
+        // Upload the image to Firebase Storage
+        
+        const storage=getStorage();
+        const storageRef = ref(storage);
+        const fileName = path + id + '_' + type + '.'+file.name.split('.').pop();
+        const imageRef = ref(storageRef,'images/' + fileName); // Set the desired storage path
+      
+        await uploadBytes(imageRef,file);
+        console.log('Image uploaded successfully.');
+      
+        // Retrieve the image URL from Firebase Storage
+        const imageUrl = await getDownloadURL(imageRef);
+        console.log('Image URL:', imageUrl);
+        return imageUrl;
+        // Store the image URL in a Firestore document
+      } catch (error) {
+        console.error('Error:', error);
+        return 'N/A';
+      }
+}
+
+export { searchDriverByInfo, fetchDriverList, editDriver, pushNewDriver, deleteDriver, searchDriver,fetchDriver,pushFile };
 

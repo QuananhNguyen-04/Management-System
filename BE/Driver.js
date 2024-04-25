@@ -16,9 +16,9 @@
 - other:        Object (đề phòng cần thêm những thông tin cá nhân nhưng ko dùng tới trong BE)
 */
 
-import { setExpiry, clearExpiry, setInfo } from "./ExtraFunction.js";
+import { /*setExpiry, clearExpiry,*/ setInfo } from "./ExtraFunction.js";
 import { isExisted } from "./ExtraFunction2.js";
-import { searchDriverByInfo, editDriver } from "./driverDatabaseInteract.js";
+import { searchDriverByInfo, editDriver, searchDriver, pushNewDriver } from "./driverDatabaseInteract.js";
 //const {Trip} = require("./Trip");
 
 class driverLicense
@@ -31,10 +31,10 @@ class driverLicense
         this.backImg = setInfo(this.backImg,backImg);
         this.issuanceDate = setInfo(this.issuanceDate,issuanceDate);
         this.expiryDate = setInfo(this.expiryDate,expiryDate);
-        this.expiry= undefined;
+        //this.expiry= undefined;
     }
 
-    getExpiryTime() {
+    /*getExpiryTime() {
         if (isExisted(this.expiryDate) && this.expiryDate !== 'Expired') {
             console.log("ExpiryDate: ", this.expiryDate);
             //let a=Date.parse(this.expiryDate);
@@ -46,7 +46,7 @@ class driverLicense
             return expiration;
         }
         else return 'N/A';
-    }
+    }*/
 
     updateLicenseInfo(infoType, newValue) {
         switch (infoType) {
@@ -90,6 +90,10 @@ class driverLicense
 
 class driver {
     constructor(name, DoB, phoneNumber, id, idCard, license, yearsOfExp, status, recentTrip, workingTime, efficiency/*,other*/) {
+        //console.log("Input:");
+        //console.log(name);
+        //console.log(DoB);
+        // phoneNumber, id, idCard, license, yearsOfExp, status, recentTrip, workingTime, efficiency/*,other*/);
         this.name = setInfo(this.name, name);
         this.DoB = setInfo(this.DoB, DoB);
         this.phoneNumber = setInfo(this.phoneNumber, phoneNumber);
@@ -113,10 +117,11 @@ class driver {
 
         //this.other = setInfo(this.other,other);
 
-        if (isExisted(license)) {
+        /*if (isExisted(license)) {
             setExpiry(this);
-        }
+        }*/
         console.log('Driver created.');
+        console.log(this);
     }
 
 
@@ -147,8 +152,8 @@ class driver {
                 break;
             case 'license':
                 this.license = setInfo(this.license, newValue);
-                clearExpiry(this);
-                setExpiry(this);
+                //clearExpiry(this);
+                //setExpiry(this);
                 break;
             case 'yearsOfExp':
                 this.yearsOfExp = setInfo(this.yearsOfExp, newValue);
@@ -204,10 +209,26 @@ class driver {
         this.workingTime = setInfo(this.workingTime, data.workingTime);
         this.efficiency = setInfo(this.efficiency, data.efficiency);
 
-        if (isExisted(license)) {
+        /*if (isExisted(license)) {
             setExpiry(this);
-        }
+        }*/
 
+    }
+
+    async push()
+    {
+        let temp=await searchDriver(this);
+        if(!isExisted(temp))
+        {
+            pushNewDriver(this);
+            console.log("Add: Success.");
+            return true;
+        }
+        else 
+        {
+            console.log('Add: Id existed.');
+            return false;
+        }
     }
 }
 export { driver, driverLicense };
