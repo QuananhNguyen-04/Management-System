@@ -1,6 +1,42 @@
-import { db } from './firebase_Init.js';
+// import { db } from './firebase_Init.js';
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+    apiKey: "AIzaSyAFfRTomodMfFqP3JkXPTu34W3vYnKwtmY",
+    authDomain: "nha-xe-hanh-phuc-ltnc.firebaseapp.com",
+    databaseURL: "https://nha-xe-hanh-phuc-ltnc-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "nha-xe-hanh-phuc-ltnc",
+    storageBucket: "nha-xe-hanh-phuc-ltnc.appspot.com",
+    messagingSenderId: "260388398077",
+    appId: "1:260388398077:web:2d2149e08a20947333af94",
+    measurementId: "G-ZF1G64YNDE"
+};
+
+// Initialize Firebase
+var app;
+let analytics;
+let firestore;
+if (firebaseConfig?.projectId) {
+    // Initialize Firebase
+    app = initializeApp(firebaseConfig);
+
+    // ERROR: window is not defined (cookies or similar), analytics is not supported
+    if (app.name && typeof window !== 'undefined') {
+        analytics = getAnalytics(app);
+    }
+}
+
+const db = getFirestore(app);
+
+
 import { and, or, getCountFromServer, getDoc, getDocs, query, where, addDoc, deleteDoc, setDoc, doc, collection } 
-from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+from /*"https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";*/ "firebase/firestore"
 
 class Trip_Schedule {
     async sup_Add(car_id, start, des) {
@@ -23,18 +59,19 @@ class Trip_Schedule {
         console.log('count: ', snapshot.data().count);
     }
 
-    async search_bien_so_xe(searh) {
-        const q = await query(collection(db, "vehicles"),
-            and(where('status', '==', 'on')),
-            where('bxs', '==', search));
-        const temp = await getDocs(q)
-        const q1 = await query(collection(db, "Trip"),
-            where("car_Id", '==', temp.forEach(doc => doc.id))
-        )
-        temp.forEach(tmp => {
-
-        })
-    }
+    //Delete function search_bien_so_xe
+    // async search_bien_so_xe(search) {
+    //     const q = await query(collection(db, "vehicles"),
+    //         and(where('status', '==', 'on')),
+    //         where('bxs', '==', search));
+    //     const temp = await getDocs(q)
+    //     const q1 = await query(collection(db, "Trip"),
+    //         where("car_Id", '==', temp.forEach(doc => doc.id))
+    //     )
+    //     temp.forEach(tmp => {
+    //
+    //     })
+    // }
 
     async add(driver_Id, car_Id, subDriver_Id, cus_Id, cus_Phone_Num,
         start_Dest, end_Dest, start_Time, end_Time, customer_Phone_Number, revenue) {
@@ -177,13 +214,13 @@ function trip_Money(start, des) {
 }
 
 console.log("Testing...")
-// trip.show_All()
-// trip.add("driverId", "car", "sub", "cus_id(name)", "13555",
-//     "start", "end", "time_start", "time_end",
-//     "cus_phone", "revenue")
+trip.show_All()
+trip.add("driverId", "car", "sub", "cus_id(name)", "13555",
+    "start", "end", "time_start", "time_end",
+    "cus_phone", "revenue")
 // trip.del("car")
 // trip.getSize()
-trip.search("car")
+// trip.search("car")
 // trip.search_bien_so_xe("1221")
 
 export { Trip_Schedule, Trip }

@@ -9,7 +9,7 @@ import { getAnalytics }
     from "https://www.gstatic.com/firebasejs/10.10.0/firebase-analytics.js";
 // import { getDatabase } from "";
 import { getDocs, getDoc, setDoc, doc, addDoc, getFirestore, collection }
-    from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+    from/* "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";*/ "firebase/firestore"
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, updatePassword }
     from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 // TODO: Add SDKs for Firebase products that you want to use
