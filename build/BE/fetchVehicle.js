@@ -53,7 +53,6 @@ async function searchVehicle(field, value) {
         //     }
         // });
         var q;
-        console.log(field.length);
         if (Array.isArray(field) && field.length > 1) {
             q = await query(VehicleListRef, and(where(field[0], '==', value[0]), where(field[1], '==', value[1])));
         }
@@ -101,7 +100,7 @@ async function fetchVehicle(vehicle_list) {
         VehicleWrapper.forEach((doc) => {
             const VehicleData = doc.data();
             vehicle_list.push(VehicleData);
-            console.log("Vehicle data: ", VehicleData);
+            // console.log("Vehicle data: ", VehicleData);
         });
         console.log("Vehicle list fetched succesfully: ", vehicle_list);
         return true;

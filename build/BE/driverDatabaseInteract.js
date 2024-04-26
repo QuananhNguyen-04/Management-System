@@ -188,7 +188,7 @@ async function pushFile(path,file,id,type)
         const storage=getStorage();
         const storageRef = ref(storage);
         const fileName = path + id + '_' + type + '.'+file.name.split('.').pop();
-        const imageRef = ref(storageRef,'images/' + fileName); // Set the desired storage path
+        const imageRef = ref(storageRef,`images/${fileName}`); // Set the desired storage path
       
         await uploadBytes(imageRef,file);
         console.log('Image uploaded successfully.');

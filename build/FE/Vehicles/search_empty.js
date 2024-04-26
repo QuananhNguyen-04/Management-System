@@ -208,12 +208,19 @@ var redraw = async function () {
     var selectedType = document.getElementById('search-type').value.toLowerCase();
     var searchText = document.getElementById('search-text').value.toLowerCase();
 
-    filteredDrivers = drivers.filter(function (driver) {
-        return (driver.plateNumber.toLowerCase().includes(searchText) || searchText === '') && (driver.type.toLowerCase().includes(selectedType) || selectedType === '');
-    });
+    // filteredDrivers = drivers.filter(function (driver) {
+    //     return (driver.plateNumber.toLowerCase().includes(searchText) || searchText === '') && (driver.type.toLowerCase().includes(selectedType) || selectedType === '');
+    // });
     let free_list = await wrap.unavailable_List();
     let maintain_list = await wrap.maintenance_List();
     console.log(free_list)
+    free_list.forEach((ele) => {
+        console.log(free_list.length);
+        console.log(ele.control_Plate)
+
+        console.log(ele);
+        filteredDrivers.push(ele);
+    })
     console.log(maintain_list)
     var resultContainer = document.getElementById('result-container');
     resultContainer.innerHTML = '';
@@ -229,21 +236,73 @@ var redraw = async function () {
             th.textContent = header;
             headerRow.appendChild(th);
         });
-
+        console.log(filteredDrivers.length)
         filteredDrivers.forEach(function (driver, index) {
             var row = table.insertRow();
-            var values = [driver.type, driver.plateNumber, driver.mainDriver, driver.mainDriverPhone, driver.statusVehicle, driver.imageUrl[0]];
-            values.forEach(function (value, i) {
-                var cell = row.insertCell();
-                if (i === 5) {
-                    var img = document.createElement('img');
-                    img.src = value;
-                    img.style.maxWidth = '100px';
-                    cell.appendChild(img);
-                } else {
+            // var values = [driver.type, driver.plateNumber, driver.mainDriver, driver.mainDriverPhone, driver.statusVehicle, driver.imageUrl[0]];
+            let features = ["VehicleType", "control_Plate", "status"];
+            // values.forEach(function (value, i) {
+            //     var cell = row.insertCell();
+            //     if (i === 5) {
+            //         var img = document.createElement('img');
+            //         img.src = value;
+            //         img.style.maxWidth = '100px';
+            //         cell.appendChild(img);
+            //     } else {
+            //         cell.textContent = value;
+            //     }
+            // });
+            console.log("vehicle: ", driver)
+            // Assuming 'driver' is your JSON object
+            for (const key of features) {
+                if (driver.hasOwnProperty(key)) {
+                    if (key == "status") {
+                        if (driver[key] === 3) {
+                            cell = row.insertCell();
+                            cell.textContent = null;
+                            cell = row.insertCell();
+                            cell.textContent = null;
+                            cell = row.insertCell();
+                            cell.textContent = "Chưa Sử Dụng";
+                            continue
+                        }
+                        let maintain = driver["maintenance"];
+                        if (maintain !== null) {
+                            console.log("thg Tuan chua them vo!!!!");
+                        }
+                        continue
+                    }
+                    var cell = row.insertCell();
+                    var value = driver[key];
+                    if (key == "VehicleType") {
+                        switch (driver[key]) {
+                            case 1:
+                                value = "Xe Tải"
+                                break;
+                            
+                            case 2:
+                                value = "Xe Khách"
+                                break;
+                            
+                            case 3:
+                                value = "Container"
+                                break;
+                            
+                            default:
+                                break;
+                        }
+                    }
+                    // Do something with 'value', e.g., insert it into a table cell
+                    console.log("key: ", key);
+                    console.log(value); // Replace with your desired action
                     cell.textContent = value;
                 }
-            });
+            }
+
+            // driver.forEach((component) => {
+            //     var cell = row.insertCell();
+            //     cell.textContent = value;
+            // })
             row.addEventListener('click', function () {
                 document.getElementById('overlay').style.display = 'block';
                 showProfile(index);
@@ -282,6 +341,6 @@ document.getElementById('update_btn').addEventListener('click', async function (
     e.preventDefault();
     updateDriver();
 })
-document.getElementById('search-type').addEventListener('change', async function() {
+document.getElementById('search-type').addEventListener('change', async function () {
     redraw();
 })
