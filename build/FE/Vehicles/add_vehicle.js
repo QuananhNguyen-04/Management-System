@@ -8,8 +8,8 @@ var control_Plate;
 var type;
 var img1;
 var img2;
-var img3;
-var img4;
+// var img3;
+// var img4;
 var wrapper = new vehicles_wrapper()
 
 function showForm(formId) {

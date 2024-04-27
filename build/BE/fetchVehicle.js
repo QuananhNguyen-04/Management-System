@@ -1,7 +1,7 @@
 //Import the firebase functions
 import { isExisted } from "./ExtraFunction2.js";
 import { db } from "./firebase_Init.js"
-import { getDocs, getDoc, setDoc, doc, collection, deleteDoc, query, where } 
+import { getDocs, getDoc, setDoc, doc, collection, deleteDoc, query, where, and, or } 
 from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 
 
@@ -52,7 +52,13 @@ async function searchVehicle(field, value) {
         //         console.log("Vehicle data: ", doc.data());
         //     }
         // });
-        const q = await query(VehicleListRef, where(field, '==', value));
+        var q;
+        if (Array.isArray(field) && field.length > 1) {
+            q = await query(VehicleListRef, and(where(field[0], '==', value[0]), where(field[1], '==', value[1])));
+        }
+        else {
+            q = await query(VehicleListRef, where(field, '==', value));
+        }
         const querySnapshot = await getDocs(q);
         if (querySnapshot.empty) return null;
         else return querySnapshot;
@@ -67,7 +73,10 @@ async function DefaultsearchVehicle(VehicleData) {
         if (isExisted(temp) != true) return 'Not found';
         else 
             if(temp.size > 1) return false;
-            else temp.forEach((doc) => {return doc.data();});
+            else temp.forEach((doc) => {
+                console.log(doc);
+                return doc.data();
+            });
     } catch (e) {    
         console.error("Error searching vehicle: ", e);
     }
@@ -91,7 +100,7 @@ async function fetchVehicle(vehicle_list) {
         VehicleWrapper.forEach((doc) => {
             const VehicleData = doc.data();
             vehicle_list.push(VehicleData);
-            console.log("Vehicle data: ", VehicleData);
+            // console.log("Vehicle data: ", VehicleData);
         });
         console.log("Vehicle list fetched succesfully: ", vehicle_list);
         return true;

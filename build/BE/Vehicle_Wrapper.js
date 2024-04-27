@@ -90,13 +90,13 @@ class vehicles_wrapper {
         }
     }
     async active_List() {
-        this.Advanced_search('status', VehicleStatus.ACTIVE);
+        return this.Advanced_search('status', VehicleStatus.ACTIVE);
     }
     async maintenance_List() {
-        this.Advanced_search('status', VehicleStatus.MAINTENANCE);
+        return this.Advanced_search('status', VehicleStatus.MAINTENANCE);
     }
     async unavailable_List() {
-        this.Advanced_search('status', VehicleStatus.UNAVAILABLE);
+        return this.Advanced_search('status', VehicleStatus.UNAVAILABLE);
     }
 }
 

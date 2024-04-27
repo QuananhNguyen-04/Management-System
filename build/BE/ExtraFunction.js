@@ -2,7 +2,7 @@
 //const {driver,driverLicense} = require("./Driver");
 import { standardString, isExisted } from "./ExtraFunction2.js";
 
-function setExpiry(_driver) {
+/*function setExpiry(_driver) {
     let expiration;
 
     if (isExisted(_driver.license)) expiration = _driver.license.getExpiryTime();
@@ -14,15 +14,17 @@ function setExpiry(_driver) {
             _driver.update();
         }, expiration);
     }
-}
+}*/
 
 
 
-function convertToObject(_object) {
+function convertToObject(_object) 
+{
     if (!isExisted(_object)) {
         console.log('Non exist.');
         return 'N/A';
     }
+    if(_object instanceof Image) return _object;
     if (Object.keys(_object).length > 1) {
         //console.log('Converted.');
         _object = Object.assign({}, _object);
@@ -35,9 +37,9 @@ function convertToObject(_object) {
     return _object;
 }
 
-function clearExpiry(_driver) {
+/*function clearExpiry(_driver) {
     clearTimeout(_driver.expiry);
-}
+}*/
 
 
 function compareDriver(a, b) {
@@ -55,5 +57,5 @@ function setInfo(info, value) {
 
 
 
-export { setExpiry, clearExpiry, compareDriver, setInfo, convertToObject }
+export { /*setExpiry, clearExpiry,*/ compareDriver, setInfo, convertToObject }
 //          SOME FUNCTION NEEDED TO OPTIMIZE CODING: END
