@@ -76,11 +76,13 @@ class driver_wrapper
     {
         let temp=await searchDriverByInfo(infoType,value);
         let list=[];
+        console.log("temp:", temp)
         if(!isExisted(temp)) return list;
         for(const a of temp)
         {
             list.push(a.data());
         }
+        console.log("list:",list);
         return list;
     }
 

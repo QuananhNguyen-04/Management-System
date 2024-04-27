@@ -1,5 +1,5 @@
-import { driver, driverLicense } from "../../BE/Driver";
-import { driver_wrapper } from "../../BE/Driver_Wrapper";
+import { driver, driverLicense } from "../../BE/Driver.js";
+import { driver_wrapper } from "../../BE/Driver_Wrapper.js";
 
 let driverList = new driver_wrapper();
 var drivers = [
@@ -108,7 +108,7 @@ function updateDriver() {
 
 
 // Xử lý sự kiện khi nhấn nút tìm kiếm
-var redraw = function () {
+async function redraw() {
     var selectedType = document.getElementById('search-type').value;
     var searchText = document.getElementById('search-text').value.toLowerCase();
     filteredDrivers = drivers.filter(function (driver) {
@@ -163,6 +163,20 @@ document.addEventListener('keypress', function (event) {
         redraw();
     }
 });
+document.getElementById('cancel_btn').addEventListener('click', async function () {
+    cancelEdit();
+})
+document.getElementById('update_btn').addEventListener('click', async function () {
+    updateDriver();
+})
+document.getElementById('overlay').addEventListener('click', async function (event) {
+    if (!overlay.contains(event.target)) {
+        overlay.style.display = 'block';
+    }
+})
+document.getElementById('search-type').addEventListener('change', async function () {
+    redraw();
+})
 
 redraw();
 // var overlay = document.getElementById('overlay');
@@ -173,4 +187,4 @@ redraw();
 // });
 
 
-search_driver();
+// search_driver();

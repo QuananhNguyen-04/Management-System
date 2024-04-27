@@ -15,31 +15,31 @@ class vehicle {
     vehicleRegister(control_Plate, VehicleType, weight, fuel, capacity, speciality, 
         height, length, max_Load) {
         // console.log(max_Load, VehicleType);
-        if (VehicleType == Vehicle_Type.B2_Type)
+        if (VehicleType == Vehicle_Type.C_Type)
             return new Truck(control_Plate, weight, fuel);    
-        else if (VehicleType == Vehicle_Type.C_type)
+        else if (VehicleType == Vehicle_Type.E_type)
             return new Coach(control_Plate, capacity, speciality);
-        else if (VehicleType == Vehicle_Type.E_type){
+        else if (VehicleType == Vehicle_Type.FC_type){
             return new Container(control_Plate, weight, height, length, max_Load);
         }
     }
     //vehicle method
     vehicles_Info() {
-        if (this.VehicleType == Vehicle_Type.B2_Type)
+        if (this.VehicleType == Vehicle_Type.C_Type)
             return "ID: " + this.car_ID + "\n" +
                 "Control Plate: " + this.control_Plate + "\n" +
                 "Vehicle Type: " + this.VehicleType + "\n" +
                 "Weight: " + this.vehicle.weight + "\n" +
                 "Fuel: " + this.vehicle.fuel + "\n" +
                 "Status: " + this.status;
-        else if (this.VehicleType == Vehicle_Type.C_type)
+        else if (this.VehicleType == Vehicle_Type.E_type)
             return "ID: " + this.car_ID + "\n" +
                 "Control Plate: " + this.control_Plate + "\n" +
                 "Vehicle Type: " + this.VehicleType + "\n" +
                 "Capacity: " + this.vehicle.capacity + "\n" +
                 "Speciality: " + this.vehicle.speciality + "\n" +
                 "Status: " + this.status;
-        else if (this.VehicleType == Vehicle_Type.E_type)
+        else if (this.VehicleType == Vehicle_Type.FC_type)
             return "ID: " + this.car_ID + "\n" +
                 "Control Plate: " + this.control_Plate + "\n" +
                 "Vehicle Type: " + this.VehicleType + "\n" +
@@ -79,7 +79,7 @@ class vehicle {
 class Truck extends vehicle {
     constructor(control_Plate, weight, fuel) {
         super(control_Plate);   //Get control_plate from parent class
-        this.VehicleType = Vehicle_Type.B2_Type;
+        this.VehicleType = Vehicle_Type.C_Type;
         this.coef = generateCoef(weight, 1000);        //1000 is the min weight for truck and container. Unit: kg 
         this.weight = weight;
         this.fuel = fuel;
@@ -88,7 +88,7 @@ class Truck extends vehicle {
 class Coach extends vehicle {
     constructor(control_Plate, capacity, speciality) {
         super(control_Plate);      //Get control_plate from parent class
-        this.VehicleType = Vehicle_Type.C_type;
+        this.VehicleType = Vehicle_Type.E_type;
         this.coef = generateCoef(capacity, 10);        //10 is the min capacity for coach. Unit: people
         this.capacity = capacity;
         this.speciality = speciality;
@@ -97,7 +97,7 @@ class Coach extends vehicle {
 class Container extends vehicle {
     constructor(control_Plate, weight, height, length, max_Load) {
         super(control_Plate);       //Get control_plate from parent class
-        this.VehicleType = Vehicle_Type.E_type;
+        this.VehicleType = Vehicle_Type.FC_type;
         this.coef = generateCoef(weight, 1000);        //1000 is the min weight for truck and container. Unit: kg
         this.weight = weight;
         this.height = height;

@@ -34,7 +34,7 @@ var Vehicles = [
 
 var Suggest = [];
 var cost;
-function Find_Driver() {
+function Find_Driver(Vehicles, Drivers) {
     Suggest = Vehicles;
     var ContainerFilter = document.getElementById('Container_Filter');
     ContainerFilter.innerHTML = '';
@@ -51,7 +51,6 @@ function Find_Driver() {
         });
         Suggest.forEach(function (vehicle, index) {
             if (index < 20) {
-                console.log(index);
                 var row = table.insertRow();
                 var cell = row.insertCell();
                 cell.textContent = vehicle.Main_Driver_Name;
@@ -74,6 +73,9 @@ function Find_Driver() {
                 row.onclick = function () {
                     radio.checked = true;
                 }
+            }
+            else {
+                return;
             }
         });
         divTable.appendChild(table);
@@ -102,6 +104,8 @@ var trips = new Trip_Schedule()
 
 // console.log("click checkbutton");
 document.getElementById('btn_check').addEventListener('click', async function () {
+    var drivers = new driver_wrapper();
+    var vehicle = new vehicles_wrapper();
 
     console.log("click checkbutton");
     var cus_Name = document.querySelector(".Customer_Name").value;
@@ -111,6 +115,7 @@ document.getElementById('btn_check').addEventListener('click', async function ()
     var Start_Dest = document.querySelector(".Start_Dest").value;
     var End_Dest = document.querySelector(".End_Dest").value;
     var Type_Vehicles = document.querySelector("#Type_Vehicles").value;
+    var dList = await drivers.searchByInfoType("tier", Type_Vehicles);
     if (Type_Vehicles != null) {
         if (Type_Vehicles === "Truck") {
             Type_Vehicles = 1;
@@ -123,9 +128,9 @@ document.getElementById('btn_check').addEventListener('click', async function ()
         }
     }
     // trips.search
-    var vehicle = new vehicles_wrapper();
     var vList = await vehicle.Advanced_search(["VehicleType", "status"], [Type_Vehicles, 3]);
-    console.log(vList);
-    Find_Driver();
+    console.log("vehicles", vList);
+    console.log("drivers", dList);
+    Find_Driver(Vehicles);
 
 })

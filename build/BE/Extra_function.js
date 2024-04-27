@@ -18,9 +18,9 @@ function generateCoef(comparison_coef, min_coef){
 
 //Enum for vehicle type and status
 const Vehicle_Type = {
-    B2_Type: 1,
-    C_type: 2,
-    E_type: 3
+    C_Type: 1,
+    E_type: 2,
+    FC_type: 3
 };
 
 const VehicleStatus = {

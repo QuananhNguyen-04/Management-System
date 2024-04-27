@@ -72,13 +72,13 @@ class vehicles_wrapper {
         for (let i in this.vehicle_list) {
             if (i.control_Plate == control_Plate) {
                 let OldData = DefaultsearchVehicle(i);
-                if (i.VehicleType == Vehicle_Type.B2_Type) {
+                if (i.VehicleType == Vehicle_Type.C_Type) {
                     i.vehicle.weight = weight;
                     i.vehicle.fuel = fuel;
-                } else if (i.VehicleType == Vehicle_Type.C_type) {
+                } else if (i.VehicleType == Vehicle_Type.E_type) {
                     i.vehicle.capacity = capacity;
                     i.vehicle.speciality = speciality;
-                } else if (i.VehicleType == Vehicle_Type.E_type) {
+                } else if (i.VehicleType == Vehicle_Type.FC_type) {
                     i.vehicle.weight = weight;
                     i.vehicle.height = height;
                     i.vehicle.length = length;

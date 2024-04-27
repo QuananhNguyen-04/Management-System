@@ -21,19 +21,26 @@ import { isExisted } from "./ExtraFunction2.js";
 import { searchDriverByInfo, editDriver, searchDriver, pushNewDriver } from "./driverDatabaseInteract.js";
 //const {Trip} = require("./Trip");
 
-class driverLicense
-{
-    constructor(id, tier, issuanceDate, expiryDate, frontImg, backImg)
-    {
-        this.id = setInfo(this.id,id);
-        this.tier = setInfo(this.tier,tier);
-        this.frontImg = setInfo(this.frontImg,frontImg);
-        this.backImg = setInfo(this.backImg,backImg);
-        this.issuanceDate = setInfo(this.issuanceDate,issuanceDate);
-        this.expiryDate = setInfo(this.expiryDate,expiryDate);
+class driverLicense {
+    constructor(id, tier, issuanceDate, expiryDate, frontImg, backImg) {
+        this.id = setInfo(this.id, id);
+        this.tier = setInfo(this.tier, tier);
+        this.convertTier();
+        this.frontImg = setInfo(this.frontImg, frontImg);
+        this.backImg = setInfo(this.backImg, backImg);
+        this.issuanceDate = setInfo(this.issuanceDate, issuanceDate);
+        this.expiryDate = setInfo(this.expiryDate, expiryDate);
         //this.expiry= undefined;
     }
 
+    convertTier() {
+        if (this.tier == 'FC') this.tier = 'Container';
+        else
+            if (this.tier >= 'D' && this.tier <= 'F') this.tier = 'Coach';
+            else
+                if (this.tier >= 'C') this.tier = 'Truck';
+                else this.tier = 'disqualified';
+    }
     /*getExpiryTime() {
         if (isExisted(this.expiryDate) && this.expiryDate !== 'Expired') {
             console.log("ExpiryDate: ", this.expiryDate);
@@ -55,6 +62,7 @@ class driverLicense
                 break;
             case 'tier':
                 this.tier = setInfo(this.tier, newValue);
+                this.convertTier();
                 break;
             case 'frontImg':
                 this.frontImg = setInfo(this.frontImg, newValue);
@@ -215,17 +223,14 @@ class driver {
 
     }
 
-    async push()
-    {
-        let temp=await searchDriver(this);
-        if(!isExisted(temp))
-        {
+    async push() {
+        let temp = await searchDriver(this);
+        if (!isExisted(temp)) {
             pushNewDriver(this);
             console.log("Add: Success.");
             return true;
         }
-        else 
-        {
+        else {
             console.log('Add: Id existed.');
             return false;
         }

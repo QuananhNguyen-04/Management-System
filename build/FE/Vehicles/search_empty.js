@@ -99,26 +99,26 @@ var currentDriverIndex = null;
 function showProfile(index) {
     var driver = filteredDrivers[index];
     currentDriverIndex = index;
-    document.getElementById('profile-name').textContent = "Biển số xe: " + driver.plateNumber;
-    document.getElementById('profile-type').textContent = "Loại xe: " + driver.type;
-    document.getElementById('profile-phone').textContent = "Số điện thoại tài xế: " + driver.mainDriverPhone;
-    document.getElementById('profile-route').textContent = "Tình trạng xe: " + driver.statusVehicle;
+    document.getElementById('profile-name').textContent = "Biển số xe: " + driver.control_Plate;
+    document.getElementById('profile-type').textContent = "Loại xe: " + (driver.VehicleType == 1 ? "Xe Tải" : driver.VehicleType == 2? "Xe Khách" : "Containers");
+    document.getElementById('profile-phone').textContent = "Số điện thoại tài xế: " + (driver.mainDriverPhone == null ? "" : driver.mainDriverPhone);
+    document.getElementById('profile-route').textContent = "Tình trạng xe: " + (driver.status == 3? "Chưa Sử Dụng" : "Đang Bảo Dưỡng");
 
-    var profileImages = document.getElementById('profile-images');
-    profileImages.innerHTML = '';
-    driver.imageUrl.forEach(function (imageUrl) {
-        var img = document.createElement('img');
-        img.src = imageUrl;
-        img.onclick = function () {
-            window.open(imageUrl, '_blank');
-        };
-        profileImages.appendChild(img);
-    });
+    // var profileImages = document.getElementById('profile-images');
+    // profileImages.innerHTML = '';
+    // driver.imageUrl.forEach(function (imageUrl) {
+    //     var img = document.createElement('img');
+    //     img.src = imageUrl;
+    //     img.onclick = function () {
+    //         window.open(imageUrl, '_blank');
+    //     };
+    //     profileImages.appendChild(img);
+    // });
 
     // Hiển thị thông tin tài xế và phụ xe
-    document.getElementById('profile-driver-name').textContent = "Tên tài xế: " + driver.mainDriver;
-    document.getElementById('profile-driver-dob').textContent = "Ngày sinh: " + driver.mainDriverDOB;
-    document.getElementById('profile-driver-hometown').textContent = "Quê quán: " + driver.mainDriverHometown;
+    document.getElementById('profile-driver-name').textContent = "Tên tài xế: " + (driver.mainDriver == null ? "" : driver.mainDriver);
+    document.getElementById('profile-driver-dob').textContent = "Ngày sinh: " + (driver.mainDriverDOB == null ? "" : driver.mainDriverDOB);
+    document.getElementById('profile-driver-hometown').textContent = "Quê quán: " + (driver.mainDriverHometown == null ? "" : driver.mainDriverHometown);
     document.getElementById('profile-driver-photo').src = driver.mainDriverPhoto;
 
     document.querySelector('.profile-container').style.display = 'block';
@@ -215,13 +215,8 @@ var redraw = async function () {
     let maintain_list = await wrap.maintenance_List();
     console.log(free_list)
     free_list.forEach((ele) => {
-        console.log(free_list.length);
-        console.log(ele.control_Plate)
-
-        console.log(ele);
         filteredDrivers.push(ele);
     })
-    console.log(maintain_list)
     var resultContainer = document.getElementById('result-container');
     resultContainer.innerHTML = '';
 
@@ -236,7 +231,6 @@ var redraw = async function () {
             th.textContent = header;
             headerRow.appendChild(th);
         });
-        console.log(filteredDrivers.length)
         filteredDrivers.forEach(function (driver, index) {
             var row = table.insertRow();
             // var values = [driver.type, driver.plateNumber, driver.mainDriver, driver.mainDriverPhone, driver.statusVehicle, driver.imageUrl[0]];
@@ -293,8 +287,6 @@ var redraw = async function () {
                         }
                     }
                     // Do something with 'value', e.g., insert it into a table cell
-                    console.log("key: ", key);
-                    console.log(value); // Replace with your desired action
                     cell.textContent = value;
                 }
             }
@@ -342,5 +334,7 @@ document.getElementById('update_btn').addEventListener('click', async function (
     updateDriver();
 })
 document.getElementById('search-type').addEventListener('change', async function () {
+    let vlistfree = await wrap.Advanced_search(["VehicleType", "status"], ["...", 3])
+    let vlistmaintain = await wrap.Advanced_search(["VehicleType", "status"], ["...", 2])
     redraw();
 })
