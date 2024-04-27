@@ -268,12 +268,12 @@
     <div id="search-container">
         <div class="search-box">
             <h3>Xe trống</h3>
-            <select id="search-type">
+            <select id="search-type" onchange="redraw()">
                 <option value="">Loại xe</option>
                 <option value="Xe khách">Xe khách</option>
                 <option value="Xe tải">Xe tải</option>
                 <option value="Xe container">Xe container</option>
-            </select>
+              </select>
             <input type="text" placeholder="Biển số xe" id="search-text">
             <button id="search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
         </div>
@@ -350,7 +350,7 @@
     <footer>
         <p>&copy; 2024 Nhà Xe Hạnh Phúc. All rights reserved.</p>
     </footer>
-    <div id="overlay"></div>
+    <div id="overlay" onclick="hideOverlay()"></div>    
     <script type="module" src="search_empty.js">
     </script>
 </body>
