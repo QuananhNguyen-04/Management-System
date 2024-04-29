@@ -123,10 +123,16 @@ async function showProfile(index) {
 
     // Hiển thị thông tin tài xế và phụ xe
     if (dr != null) {
-    document.getElementById('profile-driver-name').textContent = "Tên tài xế: " + (dr.name == null ? "" : dr.name);
-    document.getElementById('profile-driver-dob').textContent = "Ngày sinh: " + (dr.DoB == null ? "" : dr.DoB);
-    document.getElementById('profile-driver-hometown').textContent = "Quê quán: " + (dr.hometown == null ? "" : dr.hometown);
-    document.getElementById('profile-driver-photo').src = dr.idCard;
+        document.getElementById('profile-driver-name').textContent = "Tên tài xế: " + (dr.name == null ? "" : dr.name);
+        document.getElementById('profile-driver-dob').textContent = "Ngày sinh: " + (dr.DoB == null ? "" : dr.DoB);
+        document.getElementById('profile-driver-hometown').textContent = "Quê quán: " + (dr.hometown == null ? "" : dr.hometown);
+        document.getElementById('profile-driver-photo').src = dr.idCard;
+    }
+    else {
+        document.getElementById('profile-driver-name').textContent = "Tên tài xế: " + "";
+        document.getElementById('profile-driver-dob').textContent = "Ngày sinh: " + "";
+        document.getElementById('profile-driver-hometown').textContent = "Quê quán: " + "";
+        document.getElementById('profile-driver-photo').src = "";
     }
     document.querySelector('.profile-container').style.display = 'block';
     document.querySelector('.overlay').style.display = 'block'; // Show overlay
@@ -340,8 +346,8 @@ var redraw = async function () {
             }
             var cell = row.insertCell();
             var img = document.createElement('img');
-            console.log("loc:", driver.imgCard)
-            img.src = driver.imgCard != null? driver.imgCard: "";
+            console.log("loc:", driver.front_image)
+            img.src = driver.front_image == null || driver.front_image == "N/A" ? "": driver.front_image;
             img.style.maxWidth = '100px';
             cell.appendChild(img);
 
