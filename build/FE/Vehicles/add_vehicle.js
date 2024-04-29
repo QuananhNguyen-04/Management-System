@@ -47,7 +47,7 @@ async function submitTruck() {
     // img3 = document.querySelector("#Truck input[name='IMG_Vehicle3']").files[0];
     // img4 = document.querySelector("#Truck input[name='IMG_Vehicle4']").files[0];
     console.log(control_Plate, weight, fuel)
-    await wrapper.add(1, control_Plate, weight, fuel, null, null, null, null, null);
+    await wrapper.add(1, control_Plate, weight, fuel, null, null, null, null, null, img1, img2);
 }
 
 function submitCoach() {
@@ -59,7 +59,7 @@ function submitCoach() {
     img2 = document.querySelector("#Coach input[name='IMG_Vehicle2']").files[0];
     // img3 = document.querySelector("#Coach input[name='IMG_Vehicle3']").files[0];
     // img4 = document.querySelector("#Coach input[name='IMG_Vehicle4']").files[0];
-    wrapper.add(2, control_Plate, null, null, capacity, speciality, null, null, null);
+    wrapper.add(2, control_Plate, null, null, capacity, speciality, null, null, null, img1, img2);
 }
 function submitContainer() {
     type = "Container";
@@ -72,7 +72,7 @@ function submitContainer() {
     img2 = document.querySelector("#Container input[name='IMG_Vehicle2']").files[0];
     // img3 = document.querySelector("#Container input[name='IMG_Vehicle3']").files[0];
     // img4 = document.querySelector("#Container input[name='IMG_Vehicle4']").files[0];
-    wrapper.add(3, control_Plate, weight, null, null, null, height, length, max_load);
+    wrapper.add(3, control_Plate, weight, null, null, null, height, length, max_load, img1, img2);
 }
 
 document.getElementById('submit_truck').addEventListener('click', async function(e) {
