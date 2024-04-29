@@ -52,9 +52,13 @@ async function searchVehicle(field, value) {
         //         console.log("Vehicle data: ", doc.data());
         //     }
         // });
-        var q;
-        if (Array.isArray(field) && field.length > 1) {
-            q = await query(VehicleListRef, and(where(field[0], '==', value[0]), where(field[1], '==', value[1])));
+        var q = VehicleListRef;
+        
+        if (Array.isArray(field)) {
+            for (let i = 0; i < field.length; i++) {
+                console.log("value: ", field[i], value[i])
+                q = query(q, where(field[i], "==", value[i]));
+            }
         }
         else {
             q = await query(VehicleListRef, where(field, '==', value));

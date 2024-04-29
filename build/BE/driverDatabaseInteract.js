@@ -63,8 +63,9 @@ async function pushNewDriver(driverData) {
 
 async function fetchDriver(documentId) {
     try {
-        const colRef = collection(db, 'driver');
-        const temp = await getDoc(colRef, documentId);
+        // const colRef = collection(db, 'driver');
+        // console.log(documentId)
+        const temp = await getDoc(doc(db, 'driver', documentId));
         if (!temp.exists) return 'Not found';
         else return temp;
     }
@@ -181,5 +182,4 @@ async function pushFile(path, file, id, type) {
     }
 }
 
-export { searchDriverByInfo, fetchDriverList, editDriver, pushNewDriver, deleteDriver, searchDriver, fetchDriver, pushFile };
-
+export { searchDriverByInfo, fetchDriverList, editDriver, pushNewDriver, deleteDriver, searchDriver, fetchDriver, pushFile, getStorage, ref, getDownloadURL};

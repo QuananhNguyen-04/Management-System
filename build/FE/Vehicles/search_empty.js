@@ -1,6 +1,6 @@
 import { vehicles_wrapper } from "../../BE/Vehicle_Wrapper.js";
-
-
+import { fetchDriver } from "../../BE/driverDatabaseInteract.js";
+import { db, doc, getDoc } from "../../BE/firebase_Init.js";
 var drivers = [
     {
         plateNumber: '29B-12345',
@@ -96,13 +96,19 @@ var filteredDrivers = [];
 var currentDriverIndex = null;
 
 // Function hiển thị profile của tài xế và phụ xe
-function showProfile(index) {
+async function showProfile(index) {
     var driver = filteredDrivers[index];
     currentDriverIndex = index;
+    let maintain = driver['maintenance'];
+    let dr = null;
+    if (maintain != null) {
+        dr = await fetchDriver(maintain.driver_Id);
+        dr = dr.data();
+    }
     document.getElementById('profile-name').textContent = "Biển số xe: " + driver.control_Plate;
-    document.getElementById('profile-type').textContent = "Loại xe: " + (driver.VehicleType == 1 ? "Xe Tải" : driver.VehicleType == 2? "Xe Khách" : "Containers");
-    document.getElementById('profile-phone').textContent = "Số điện thoại tài xế: " + (driver.mainDriverPhone == null ? "" : driver.mainDriverPhone);
-    document.getElementById('profile-route').textContent = "Tình trạng xe: " + (driver.status == 3? "Chưa Sử Dụng" : "Đang Bảo Dưỡng");
+    document.getElementById('profile-type').textContent = "Loại xe: " + (driver.VehicleType == 1 ? "Xe Tải" : driver.VehicleType == 2 ? "Xe Khách" : "Containers");
+    document.getElementById('profile-phone').textContent = "Số điện thoại tài xế: " + ((dr == null || dr.phoneNumber == null) ? "" : dr.phoneNumber);
+    document.getElementById('profile-route').textContent = "Tình trạng xe: " + (driver.status == 3 ? "Chưa Sử Dụng" : "Đang Bảo Dưỡng");
 
     // var profileImages = document.getElementById('profile-images');
     // profileImages.innerHTML = '';
@@ -116,11 +122,12 @@ function showProfile(index) {
     // });
 
     // Hiển thị thông tin tài xế và phụ xe
-    document.getElementById('profile-driver-name').textContent = "Tên tài xế: " + (driver.mainDriver == null ? "" : driver.mainDriver);
-    document.getElementById('profile-driver-dob').textContent = "Ngày sinh: " + (driver.mainDriverDOB == null ? "" : driver.mainDriverDOB);
-    document.getElementById('profile-driver-hometown').textContent = "Quê quán: " + (driver.mainDriverHometown == null ? "" : driver.mainDriverHometown);
-    document.getElementById('profile-driver-photo').src = driver.mainDriverPhoto;
-
+    if (dr != null) {
+    document.getElementById('profile-driver-name').textContent = "Tên tài xế: " + (dr.name == null ? "" : dr.name);
+    document.getElementById('profile-driver-dob').textContent = "Ngày sinh: " + (dr.DoB == null ? "" : dr.DoB);
+    document.getElementById('profile-driver-hometown').textContent = "Quê quán: " + (dr.hometown == null ? "" : dr.hometown);
+    document.getElementById('profile-driver-photo').src = dr.idCard;
+    }
     document.querySelector('.profile-container').style.display = 'block';
     document.querySelector('.overlay').style.display = 'block'; // Show overlay
 }
@@ -208,15 +215,36 @@ var redraw = async function () {
     var selectedType = document.getElementById('search-type').value.toLowerCase();
     var searchText = document.getElementById('search-text').value.toLowerCase();
 
-    // filteredDrivers = drivers.filter(function (driver) {
-    //     return (driver.plateNumber.toLowerCase().includes(searchText) || searchText === '') && (driver.type.toLowerCase().includes(selectedType) || selectedType === '');
-    // });
-    let free_list = await wrap.unavailable_List();
-    let maintain_list = await wrap.maintenance_List();
+    filteredDrivers = []
+    let vhType = selectedType == "" ? 0 : selectedType;
+    console.log(vhType)
+    var free_list, maintain_list;
+    if (vhType === 0) {
+        free_list = await wrap.unavailable_List();
+        maintain_list = await wrap.maintenance_List();
+    }
+    else {
+        free_list = await wrap.Advanced_search(["status", "VehicleType"], [3, parseInt(vhType)])
+        maintain_list = await wrap.Advanced_search(["status", "VehicleType"], [2, parseInt(vhType)])
+    }
+
     console.log(free_list)
-    free_list.forEach((ele) => {
-        filteredDrivers.push(ele);
-    })
+    console.log(maintain_list)
+    if (free_list != null) {
+        free_list.forEach((ele) => {
+            filteredDrivers.push(ele);
+        })
+    }
+    if (maintain_list != null) {
+        maintain_list.forEach((ele) => {
+            filteredDrivers.push(ele);
+        })
+    }
+
+    filteredDrivers = filteredDrivers.filter(function (driver) {
+        return (driver["control_Plate"].toLowerCase().includes(searchText) || searchText === '');
+    });
+    console.log(filteredDrivers)
     var resultContainer = document.getElementById('result-container');
     resultContainer.innerHTML = '';
 
@@ -231,7 +259,7 @@ var redraw = async function () {
             th.textContent = header;
             headerRow.appendChild(th);
         });
-        filteredDrivers.forEach(function (driver, index) {
+        filteredDrivers.forEach(async function (driver, index) {
             var row = table.insertRow();
             // var values = [driver.type, driver.plateNumber, driver.mainDriver, driver.mainDriverPhone, driver.statusVehicle, driver.imageUrl[0]];
             let features = ["VehicleType", "control_Plate", "status"];
@@ -262,8 +290,28 @@ var redraw = async function () {
                         }
                         let maintain = driver["maintenance"];
                         if (maintain !== null) {
-                            console.log("thg Tuan chua them vo!!!!");
+                            console.log("maintain: ", maintain);
+                            let id = maintain.driver_Id;
+                            let dr = await fetchDriver(id);
+                            if (dr != 'Not found') {
+                                dr = dr.data();
+                                console.log("driver: ", dr);
+                                cell = row.insertCell();
+                                cell.textContent = dr.name;
+                                cell = row.insertCell();
+                                cell.textContent = dr.phoneNumber;
+                                cell = row.insertCell();
+                                cell.textContent = "Đang Bảo Trì";
+                                continue;
+                            }
                         }
+                        cell = row.insertCell();
+                        cell.textContent = null;
+                        cell = row.insertCell();
+                        cell.textContent = null;
+                        cell = row.insertCell();
+                        cell.textContent = "Đang Bảo Trì";
+                        // }
                         continue
                     }
                     var cell = row.insertCell();
@@ -273,15 +321,15 @@ var redraw = async function () {
                             case 1:
                                 value = "Xe Tải"
                                 break;
-                            
+
                             case 2:
                                 value = "Xe Khách"
                                 break;
-                            
+
                             case 3:
                                 value = "Container"
                                 break;
-                            
+
                             default:
                                 break;
                         }
@@ -290,11 +338,14 @@ var redraw = async function () {
                     cell.textContent = value;
                 }
             }
+            var cell = row.insertCell();
+            var img = document.createElement('img');
+            console.log("loc:", driver.imgCard)
+            img.src = driver.imgCard != null? driver.imgCard: "";
+            img.style.maxWidth = '100px';
+            cell.appendChild(img);
 
-            // driver.forEach((component) => {
-            //     var cell = row.insertCell();
-            //     cell.textContent = value;
-            // })
+
             row.addEventListener('click', function () {
                 document.getElementById('overlay').style.display = 'block';
                 showProfile(index);
@@ -334,7 +385,7 @@ document.getElementById('update_btn').addEventListener('click', async function (
     updateDriver();
 })
 document.getElementById('search-type').addEventListener('change', async function () {
-    let vlistfree = await wrap.Advanced_search(["VehicleType", "status"], ["...", 3])
-    let vlistmaintain = await wrap.Advanced_search(["VehicleType", "status"], ["...", 2])
+    // let vlistfree = await wrap.Advanced_search(["VehicleType", "status"], ["...", 3])
+    // let vlistmaintain = await wrap.Advanced_search(["VehicleType", "status"], ["...", 2])
     redraw();
 })
