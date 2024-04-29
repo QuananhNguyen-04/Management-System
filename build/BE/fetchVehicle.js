@@ -16,11 +16,13 @@ from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 // }
 
 //functions to interact with data on firestore
-async function addVehicle(Vehicle_data) {
+async function addVehicle(Vehicle_data, front_image, back_image) {
     try {
         const VehicleListRef = collection(db, "vehicles");
         const NewVehicleRef = doc(VehicleListRef);
         const NewVehicleData = Object.assign({}, Vehicle_data);
+        NewVehicleData.front_image = front_image;
+        NewVehicleData.back_image = back_image;
         await setDoc(NewVehicleRef, NewVehicleData);
         console.log("Vehicle added succesfully: ", NewVehicleData);
     } catch (e) {   
@@ -87,6 +89,12 @@ async function editVehicle(VehicleData_ID, Vehicle_newdata) {
         const VehicleListRef = collection(db, "vehicles");
         const VehicleRef = doc(VehicleListRef, VehicleData_ID);
         const NewVehicleData = Object.assign({}, Vehicle_newdata);
+        let OldVehicleData = await getDoc(VehicleRef);
+        if(OldVehicleData.exists()){
+            OldVehicleData = OldVehicleData.data();
+            NewVehicleData.front_image = OldVehicleData.front_image;
+            NewVehicleData.back_image = OldVehicleData.back_image;
+        }
         await setDoc(VehicleRef, NewVehicleData);
     } catch (e) {   
         console.error("Error changing data of vehicle: ", e);

@@ -3,6 +3,7 @@ import { addVehicle, deleteVehicle, searchVehicle, DefaultsearchVehicle, editVeh
 import { isExisted } from './ExtraFunction2.js'; //Use from driver-and-driver-wrapper branch
 import { Vehicle_Type, VehicleStatus } from './Extra_function.js';
 import { vehicle } from './Vehicle.js';
+import { pushFile } from './driverDatabaseInteract.js';
 
 //Create wrapper for list of vehicle information
 class vehicles_wrapper {
@@ -19,21 +20,25 @@ class vehicles_wrapper {
         }
     }
     //vehicle_wrapper method
-    async add(VehicleType, control_Plate, weight, fuel, capacity, speciality, height, length, max_Load) {
+    async add(VehicleType, control_Plate, weight, fuel, capacity, speciality, height, length, max_Load, image1, image2) {
         const new_vehicle = this.vehicleInfo.vehicleRegister(control_Plate, VehicleType, weight, fuel,
             capacity, speciality, height, length, max_Load);
+        const front_image = await pushFile('VEHICLE/', image1, new_vehicle.car_ID, 'front');
+        console.log(front_image);
+        const back_image = await pushFile('VEHICLE/', image2, new_vehicle.car_ID, 'back');
+        console.log(back_image);
         // console.log(new_vehicle);
         // console.log(control_Plate, weight, fuel, capacity);
         let checked = await DefaultsearchVehicle(new_vehicle);
         if (!isExisted(checked)) {
             this.vehicle_list.push(new_vehicle);
             this.size++;
-            addVehicle(new_vehicle);
+            addVehicle(new_vehicle, front_image, back_image);
             console.log("add vehicle success");
         } else console.log("Vehicle already existed");
     }
 
-    delete(VehicleData) {
+    async delete(VehicleData) {
         let checked = DefaultsearchVehicle(VehicleData);
         if (isExisted(checked)) {
             checked.forEach(async (doc) => { deleteVehicle(doc.id); });
@@ -46,7 +51,7 @@ class vehicles_wrapper {
         } else console.log("Vehicle not found")
     }
 
-    Default_search(control_Plate) {
+    async Default_search(control_Plate) {
         // for(let i in this.vehicle_list){
         //     if(i.control_Plate == control_Plate)
         //         return i.vehicles_Info();
@@ -68,7 +73,7 @@ class vehicles_wrapper {
         return result_list;
     }
 
-    edit(control_Plate, weight, fuel, capacity, speciality, height, length, max_Load) {
+    async edit(control_Plate, weight, fuel, capacity, speciality, height, length, max_Load) {
         for (let i in this.vehicle_list) {
             if (i.control_Plate == control_Plate) {
                 let OldData = DefaultsearchVehicle(i);
