@@ -107,7 +107,7 @@ async function searchDriverByInfo(infoType, value) {
                 return null;
             }
         //console.log('infoType done');
-        const variations = new RegExp('^' + value + '$', 'i');
+        // const variations = new RegExp('^' + value + '$', 'i');
         let q = await getDocs(documentCollectionRef);
         let docList = q.docs;
         let res = [];
@@ -120,9 +120,9 @@ async function searchDriverByInfo(infoType, value) {
         console.log(keyParts.length)
         for (const doc of docList) {
             const data = doc.data();
-            console.log(data[keyParts[0]][keyParts[1]])
-            let currentValue = (keyParts.length == 1? data[keyParts[0]] : data[keyParts[0]][keyParts[1]]);
-            console.log("currentValue:", currentValue)
+            if (data.id == "N/A") continue;
+            console.log("data: ", data);
+            let currentValue = (keyParts.length == 1 ? data[keyParts[0]] : data[keyParts[0]][keyParts[1]]);
             if (currentValue == value) {
                 console.log("matching: ", doc.data());
                 res.push(doc);
@@ -182,4 +182,4 @@ async function pushFile(path, file, id, type) {
     }
 }
 
-export { searchDriverByInfo, fetchDriverList, editDriver, pushNewDriver, deleteDriver, searchDriver, fetchDriver, pushFile, getStorage, ref, getDownloadURL};
+export { searchDriverByInfo, fetchDriverList, editDriver, pushNewDriver, deleteDriver, searchDriver, fetchDriver, pushFile, getStorage, ref, getDownloadURL };

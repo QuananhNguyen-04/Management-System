@@ -11,6 +11,7 @@ class driver_wrapper
     }
     async fetch()
     {
+        this.driverList = [];
         let construct=await fetchDriverList(this.driverList);
         if(construct)
         {
