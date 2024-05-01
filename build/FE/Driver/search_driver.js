@@ -1,6 +1,6 @@
 import { driver, driverLicense } from "../../BE/Driver.js";
 import { driver_wrapper } from "../../BE/Driver_Wrapper.js";
-
+import { searchDriver } from "../../BE/driverDatabaseInteract.js";
 var wrap = new driver_wrapper();
 var drivers = [
     { name: 'Tài xế 1', type: 'Xe khách', phone: '0123456789', profilePicture: 'profile1.jpg', drivingLicense: 'license1.jpg', personalInfo: 'Some information about driver 1.' },
@@ -45,10 +45,10 @@ function showProfile(index) {
     dIndex = index;
     var driver = filteredDrivers[index];
     currentDriverIndex = index;
-    document.getElementById('profile-picture').src = driver.profilePicture;
-    document.getElementById('driving-license').src = driver.drivingLicense;
+    document.getElementById('profile-picture').src = driver.idCard;
+    document.getElementById('driving-license').src = driver.license.frontImg;
     document.getElementById('profile-name').textContent = driver.name;
-    document.getElementById('profile-info').textContent = driver.personalInfo;
+    document.getElementById('profile-info').textContent = "Eff: " + driver.efficiency + " . Duration: " + driver.workingTime;
     document.querySelector('.edit-container').style.display = 'none';
     document.querySelector('.profile-container').style.display = 'block';
     document.querySelector('.edit-container').style.display = 'none'; // Ẩn phần chỉnh sửa
@@ -71,8 +71,9 @@ document.querySelector('#overlay').addEventListener('click', function () {
 function editProfile() {
     var driver = filteredDrivers[currentDriverIndex];
     document.getElementById('edit-name').value = driver.name;
-    document.getElementById('edit-type').value = driver.type;
-    document.getElementById('edit-phone').value = driver.phone;
+    document.getElementById('edit-type').value = driver.license.tier;
+    document.getElementById('edit-efficiency').value = driver.efficiency;
+    document.getElementById('edit-phone').value = driver.phoneNumber;
     document.querySelector('.edit-container').style.display = 'block'; // Hiển thị phần chỉnh sửa
     document.querySelector('.profile-container button:nth-child(3)').style.display = 'none'; // Ẩn nút "Chỉnh sửa"
     // document.querySelector('.profile-container button:nth-child(4)').style.display = 'none'; // Ẩn nút "Đóng"
@@ -85,15 +86,25 @@ function cancelEdit() {
 }
 
 // Function cập nhật thông tin tài xế
-function updateDriver() {
+async function updateDriver() {
     // console.log(dIndex);
+    var drdata = filteredDrivers[dIndex];
+    var dr = new driver();
+    console.log("🚀 ~ updateDriver ~ dr:", dr)
+    dr.assign(drdata);
+    let newd = dr.copy();
+    let doc = await searchDriver(newd);
     var newName = document.getElementById('edit-name').value;
     var newType = document.getElementById('edit-type').value;
+    var newEff = document.getElementById('edit-efficiency').value;
     var newPhone = document.getElementById('edit-phone').value;
 
-    filteredDrivers[dIndex].name = newName;
-    filteredDrivers[dIndex].type = newType;
-    filteredDrivers[dIndex].phone = newPhone;
+    newd.name = newName;
+    newd.license.tier = newType;
+    newd.efficiency = newEff;
+    newd.phoneNumber = newPhone;
+
+    wrap.edit(doc, newd);
 
     // Hiển thị lại thông tin
     showProfile(dIndex);
@@ -113,7 +124,7 @@ async function redraw() {
     
     filteredDrivers = []
     let vhType = selectedType == "" ? 0 : selectedType;
-    console.log("vhType", vhType == 0);
+    console.log("🚀 ~ redraw ~ vhType:", vhType)
     if (vhType == 0) {
         const t1 = await wrap.searchByInfoType("tier", "Truck")
         const t2 = await wrap.searchByInfoType("tier", "Container")
@@ -138,10 +149,12 @@ async function redraw() {
         if (Array.isArray(containerDrivers))
         filteredDrivers.push(...containerDrivers);
     }
-    console.log(filteredDrivers)
     filteredDrivers = filteredDrivers.filter(function (driver) {
         return (driver["name"].toLowerCase().includes(searchText) || searchText === '');
     });
+    console.log("🚀 ---------------------------------------------------------------------🚀");
+    console.log("🚀 ~~ file: search_driver.js:155 ~~ filteredDrivers:", filteredDrivers);
+    console.log("🚀 ---------------------------------------------------------------------🚀");
 
     var resultContainer = document.getElementById('result-container');
     resultContainer.innerHTML = '';
@@ -225,7 +238,9 @@ document.getElementById('overlay').addEventListener('click', async function (eve
 document.getElementById('search-type').addEventListener('change', async function () {
     redraw();
 })
-
+document.getElementById('edit_btn').addEventListener('click', async function() {
+    editProfile();
+})
 redraw();
 // var overlay = document.getElementById('overlay');
 // document.addEventListener('click', function(event) {

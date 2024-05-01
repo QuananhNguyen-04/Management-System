@@ -1,7 +1,7 @@
 import { driver } from "./Driver.js";
 import { convertToObject } from "./ExtraFunction.js";
 import { isExisted } from "./ExtraFunction2.js";
-import { searchDriverByInfo, searchDriver, fetchDriverList, editDriver, pushNewDriver, deleteDriver } from './driverDatabaseInteract.js';
+import { searchDriverByInfo, searchDriver, fetchDriverList, editDriver, pushNewDriver, deleteDriver, fetchDriver } from './driverDatabaseInteract.js';
 class driver_wrapper
 {
     constructor()
@@ -76,7 +76,7 @@ class driver_wrapper
     {
         let temp=await searchDriverByInfo(infoType,value);
         let list=[];
-        console.log("temp:", temp)
+        // console.log("temp:", temp)
         if(!isExisted(temp)) return list;
         for(const a of temp)
         {
@@ -89,6 +89,8 @@ class driver_wrapper
     async edit(driverDoc,value)
     {
         let newDriver=convertToObject(value);
+        console.log("🚀 ~ value:", value)
+        console.log("🚀 ~ driverDoc:", driverDoc)
         let temp=await fetchDriver(driverDoc.id);
         if(isExisted(temp))
         {

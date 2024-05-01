@@ -117,11 +117,11 @@ async function searchDriverByInfo(infoType, value) {
             return 'Not found';
         }
         var keyParts = infoType.split('.');
-        console.log(keyParts.length)
+        console.log("🚀 ~ searchDriverByInfo ~ keyParts:", keyParts)
         for (const doc of docList) {
             const data = doc.data();
             if (data.id == "N/A") continue;
-            console.log("data: ", data);
+            // console.log("data: ", data);
             let currentValue = (keyParts.length == 1 ? data[keyParts[0]] : data[keyParts[0]][keyParts[1]]);
             if (currentValue == value) {
                 console.log("matching: ", doc.data());
