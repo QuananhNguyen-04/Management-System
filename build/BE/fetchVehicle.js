@@ -66,6 +66,10 @@ async function searchVehicle(field, value) {
             q = await query(VehicleListRef, where(field, '==', value));
         }
         const querySnapshot = await getDocs(q);
+        console.log("🚀 --------------------------------------------------------------------------------🚀");
+        console.log("🚀 ~~ file: fetchVehicle.js:69 ~~ searchVehicle ~~ querySnapshot:", querySnapshot);
+        console.log("🚀 --------------------------------------------------------------------------------🚀");
+        
         if (querySnapshot.empty) return null;
         else return querySnapshot;
     } catch (e) {   
@@ -76,7 +80,7 @@ async function searchVehicle(field, value) {
 async function DefaultsearchVehicle(VehicleData) {
     try {
         let temp = await searchVehicle('control_Plate', VehicleData.control_Plate);
-        if (isExisted(temp) != true) return 'Not found';
+        if (temp == null) return "Not found";
         else 
             if(temp.size > 1) return false;
             else temp.forEach((doc) => {

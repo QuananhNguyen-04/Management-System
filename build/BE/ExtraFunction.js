@@ -43,7 +43,7 @@ function convertToObject(_object)
 
 
 function compareDriver(a, b) {
-    return (a.id == b.id && a.license.id == b.license.id && a.license.tier == b.license.tier && a.license.img == b.license.img && a.license.expiryDate == b.license.expiryDate && a.yearsOfExp == b.yearsOfExp && a.status == b.status && a.recentTrip == b.recentTrip && a.workingTime == b.workingTime && a.efficiency == b.efficiency);
+    return (a.id == b.id || a.license.id == b.license.id || (a.license.tier == b.license.tier && a.license.img == b.license.img));
     //Chưa có so sánh Trip
 }
 

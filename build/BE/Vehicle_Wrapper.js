@@ -23,14 +23,13 @@ class vehicles_wrapper {
     async add(VehicleType, control_Plate, weight, fuel, capacity, speciality, height, length, max_Load, image1, image2) {
         const new_vehicle = this.vehicleInfo.vehicleRegister(control_Plate, VehicleType, weight, fuel,
             capacity, speciality, height, length, max_Load);
-        const front_image = await pushFile('VEHICLE/', image1, new_vehicle.car_ID, 'front');
-        console.log(front_image);
-        const back_image = await pushFile('VEHICLE/', image2, new_vehicle.car_ID, 'back');
-        console.log(back_image);
-        // console.log(new_vehicle);
-        // console.log(control_Plate, weight, fuel, capacity);
         let checked = await DefaultsearchVehicle(new_vehicle);
-        if (!isExisted(checked)) {
+
+        if (checked != null && checked == "Not found") {
+            const front_image = await pushFile('VEHICLE/', image1, new_vehicle.car_ID, 'front');
+            console.log(front_image);
+            const back_image = await pushFile('VEHICLE/', image2, new_vehicle.car_ID, 'back');
+            console.log(back_image);
             this.vehicle_list.push(new_vehicle);
             this.size++;
             addVehicle(new_vehicle, front_image, back_image);
@@ -56,7 +55,7 @@ class vehicles_wrapper {
         //     if(i.control_Plate == control_Plate)
         //         return i.vehicles_Info();
         // }
-        this.Advanced_search('control_Plate', control_Plate);
+        return this.Advanced_search('control_Plate', control_Plate);
     }
 
     async Advanced_search(field, value) {

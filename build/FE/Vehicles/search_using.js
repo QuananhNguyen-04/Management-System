@@ -1,3 +1,4 @@
+import { Trip_Schedule } from "../../BE/Trip_Scheduling.js";
 var drivers = [ 
     {
         plateNumber: '29B-12345',
@@ -287,11 +288,15 @@ function updateDriver() {
 
 // Xử lý sự kiện khi nhấn nút tìm kiếm
 
-
-function redraw () {
+var trips = new Trip_Schedule();
+async function redraw () {
     var selectedType = document.getElementById('search-type').value.toLowerCase();
     var searchText = document.getElementById('search-text').value.toLowerCase();
-
+    
+    filteredDrivers = []
+    let filterTrips = await trips.show_All();
+    console.log("🚀 ~ file: search_using.js:298 ~ filterTrips:", filterTrips);
+    
     filteredDrivers = drivers.filter(function (driver) {
         return (driver.plateNumber.toLowerCase().includes(searchText) || searchText === '') && (driver.type.toLowerCase().includes(selectedType) || selectedType === '');
     });
