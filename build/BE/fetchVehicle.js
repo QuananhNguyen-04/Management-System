@@ -104,8 +104,10 @@ async function editVehicle(VehicleData_ID, Vehicle_newdata) {
             NewVehicleData.back_image = OldVehicleData.back_image;
         }
         await setDoc(VehicleRef, NewVehicleData);
+        return true;
     } catch (e) {   
         console.error("Error changing data of vehicle: ", e);
+        return false;
     }
 }
 

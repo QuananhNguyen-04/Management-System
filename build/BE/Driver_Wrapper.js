@@ -101,8 +101,10 @@ class driver_wrapper
                 this.driverList[value.id]=temp;
             }
             console.log('Edit: success');
+            return true;
         }
         else console.log('Edit: Undefined driver.');
+        return false;
     }
 
     async editInfoType(driverDoc,infoType,value)

@@ -147,8 +147,8 @@ async function searchDriverByInfo(infoType, value) {
             }
             else {
                 
-                q = query(q, where(type, "==", value));
                 console.log("🚀 ~ file: driverDatabaseInteract.js:151 ~ value:", value);
+                q = query(q, where(type, "==", value));
             }
         }
         q = await getDocs(q);
@@ -164,21 +164,17 @@ async function searchDriverByInfo(infoType, value) {
         for (const doc of docList) {
             const data = doc.data();
             if (data.id == "N/A") continue;
-            // console.log("data: ", data);
             let currentValue;
-            console.log("🚀 ----------------------------------------------------------------------------------------------------------🚀");
-            console.log("🚀 ~ file: driverDatabaseInteract.js:166 ~ Array.isArray(licenseInfoNeed):", Array.isArray(licenseInfoNeed));
-            console.log("🚀 ----------------------------------------------------------------------------------------------------------🚀");
             if (needLicense && !Array.isArray(licenseInfoNeed)) {
                 currentValue = data["license"][licenseInfoNeed];
             }
             else {
-                console.log("HANDLE ERROR: multiple license info driverInteraction 164")
+                // console.log("HANDLE ERROR: multiple license info driverInteraction 164")
                 res.push(doc);
                 continue;
             }
-            console.log("🚀 ~ file: driverDatabaseInteract.js:180 ~ value:", value);
-            console.log("🚀 ~ file: driverDatabaseInteract.js:167 ~ currentValue:", currentValue);
+            // console.log("🚀 ~ file: driverDatabaseInteract.js:180 ~ value:", value);
+            // console.log("🚀 ~ file: driverDatabaseInteract.js:167 ~ currentValue:", currentValue);
             if (Array.isArray(value)) {
                 if (value.includes(currentValue)) {
                     console.log("matching: ", doc.data());

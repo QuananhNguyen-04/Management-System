@@ -48,7 +48,7 @@ function showProfile(index) {
     document.getElementById('profile-picture').src = driver.idCard;
     document.getElementById('driving-license').src = driver.license.frontImg;
     document.getElementById('profile-name').textContent = driver.name;
-    document.getElementById('profile-info').textContent = "Eff: " + driver.efficiency + " . Duration: " + driver.workingTime;
+    document.getElementById('profile-info').textContent = "Eff: " + driver.efficiency + ". Status: " + (driver.status == 1? "Working" : "Resting");
     document.querySelector('.edit-container').style.display = 'none';
     document.querySelector('.profile-container').style.display = 'block';
     document.querySelector('.edit-container').style.display = 'none'; // Ẩn phần chỉnh sửa

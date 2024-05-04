@@ -1,5 +1,7 @@
 import { Trip_Schedule } from "../../BE/Trip_Scheduling.js";
-var drivers = [ 
+import { DefaultsearchVehicle } from "../../BE/fetchVehicle.js";
+import { searchVehicle } from "../../BE/fetchVehicle.js";
+var drivers = [
     {
         plateNumber: '29B-12345',
         mainDriver: 'Tài xế 1',
@@ -289,14 +291,32 @@ function updateDriver() {
 // Xử lý sự kiện khi nhấn nút tìm kiếm
 
 var trips = new Trip_Schedule();
-async function redraw () {
+async function redraw() {
     var selectedType = document.getElementById('search-type').value.toLowerCase();
     var searchText = document.getElementById('search-text').value.toLowerCase();
-    
+
     filteredDrivers = []
     let filterTrips = await trips.show_All();
     console.log("🚀 ~ file: search_using.js:298 ~ filterTrips:", filterTrips);
-    
+
+    var newTrips = []
+    for (const trip of filterTrips) {
+        var result = await searchVehicle("control_Plate", trip.car_Id);
+        if (result != null)
+        result.forEach((vh) => {
+            console.log("🚀 ~ file: search_using.js:313 ~ vh:", vh.data());
+            vh = vh.data();
+            if ((vh.control_Plate.toLowerCase().includes(searchText) || searchText === '')
+                && (vh.VehicleType == selectedType || selectedType === '')) {
+                newTrips.push(trip);
+                console.log("🚀 ~ file: search_using.js:311 ~ newTrips:", newTrips);
+            }
+        })
+        console.log("🚀 ~ file: search_using.js:314 ~ newTrips:", newTrips);
+        
+    }
+    console.log("🚀 ~ file:318", newTrips);
+
     filteredDrivers = drivers.filter(function (driver) {
         return (driver.plateNumber.toLowerCase().includes(searchText) || searchText === '') && (driver.type.toLowerCase().includes(selectedType) || selectedType === '');
     });

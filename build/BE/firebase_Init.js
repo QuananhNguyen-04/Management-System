@@ -8,7 +8,7 @@ import { initializeApp }
 import { getAnalytics }
     from "https://www.gstatic.com/firebasejs/10.10.0/firebase-analytics.js";
 // import { getDatabase } from "";
-import { getDocs, getDoc, setDoc, doc, addDoc, getFirestore, collection }
+import { getDocs, getDoc, setDoc, doc, addDoc, getFirestore, collection, Timestamp }
     from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js"; 
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, updatePassword }
     from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
@@ -83,5 +83,6 @@ const push = async function () {
 // temp();
 export default { db };
 export { db, auth, signInWithEmailAndPassword, updatePassword,
-    createUserWithEmailAndPassword, sendPasswordResetEmail, setDoc, getDoc, doc };
+    createUserWithEmailAndPassword, sendPasswordResetEmail, setDoc, getDoc, doc,
+    Timestamp };
 // push();

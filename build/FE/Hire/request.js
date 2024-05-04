@@ -60,7 +60,7 @@ async function Find_Driver(Vehicles, Drivers, start, end) {
         const dlen = Drivers.length;
         if (vlen < 1 || dlen < 2) {
             console.log("Not enough supply");
-            return;
+            return false;
         }
         console.log("🚀 -------------------------------------------------------------🚀");
         console.log("🚀 ~~ file: request.js:60 ~~ Find_Driver ~~ Drivers:", Drivers);
@@ -105,41 +105,31 @@ async function Find_Driver(Vehicles, Drivers, start, end) {
                 radio.checked = true;
             }
         }
-        // Suggest.forEach(function (vehicle, index) {
-        //     if (index < 20) {
-        //         var row = table.insertRow();
-        //         var cell = row.insertCell();
-        //         cell.textContent = vehicle.Main_Driver_Name;
-        //         cell = row.insertCell();
-        //         cell.style.textAlign = "center";
-        //         cell.textContent = vehicle.Assistant_Driver_Name;
-        //         cell = row.insertCell();
-        //         cell.style.textAlign = "center";
-        //         cell.textContent = vehicle.Vehicle_Num;
-        //         cell = row.insertCell();
-        //         cell.style.textAlign = "end";
-        //         cell.textContent = vehicle.Cost_Veh;
-        //         cell = row.insertCell();
-        //         cell.style.textAlign = "center";
-        //         var radio = document.createElement('input');
-        //         radio.setAttribute("type", "radio");
-        //         radio.setAttribute("name", "choose");
-        //         radio.setAttribute("value", vehicle.Driver_Name);
-        //         cell.appendChild(radio);
-        //         row.onclick = function () {
-        //             radio.checked = true;
-        //         }
-        //     }
-        //     else {
-        //         return;
-        //     }
-        // });
+        
         var cus_Name = document.querySelector(".Customer_Name").value;
         var cus_Phone = document.querySelector(".Customer_Phone").value;
         var Start_Time = document.querySelector(".Start_Time").value;
         var Start_Day = document.querySelector(".Start_Day").value;
         var Start_Dest = document.querySelector(".Start_Dest").value;
         var End_Dest = document.querySelector(".End_Dest").value;
+        var Type_Vehicles = document.querySelector("#Type_Vehicles").value;
+        var time;
+
+        if (Start_Day == null || Start_Day == "") {
+            Start_Day = new Date();
+            Start_Day.setSeconds(0, 0);
+            console.log(Start_Day);
+            
+            time = Start_Day;
+        }
+        else {
+            if (Start_Time == null || Start_Time == "") {
+                Start_Time = "12:00";
+            }
+            Start_Time = Start_Day + "T" + Start_Time;
+            time = new Date(Start_Time);
+        }
+        console.log("🚀 ~ file: request.js:152 ~ time:", time);
 
         divTable.appendChild(table);
         ContainerFilter.appendChild(divTable);
@@ -147,17 +137,24 @@ async function Find_Driver(Vehicles, Drivers, start, end) {
         btnhire.innerHTML = `<i id="icon_add" class="fa-solid fa-calendar-plus"></i>Xác nhận`;
         btnhire.classList.add('hire_btn');
         ContainerFilter.appendChild(btnhire);
-        btnhire.onclick = function () {
+        btnhire.onclick = async function () {
             var checkbox = document.getElementsByName("choose");
             for (var i = 0; i < checkbox.length; i++) {
                 if (checkbox[i].checked === true) {
-                    alert(checkbox[i].value);
                     console.log(Store[i]);
                     const temp = Store[i];
-                    trips.add(temp.driver.id, temp.vehicle.control_Plate, temp.sub_driver.id, null, cus_Phone, start, end, Start_Time, null, temp.cost).then();
+                    console.log("🚀 ~ file: request.js:150 ~ Start_Time:", time);
+                    let result = await trips.add(Type_Vehicles, temp.driver.id, temp.vehicle.control_Plate, temp.sub_driver.id, cus_Name, cus_Phone, start, end, time, null, temp.cost).then();
+                    if (result == true) {
+                        alert("Success");
+                        location.reload();
+                    }
+                    else {
+                        alert("Failure");
+                    }
+
                 }
             }
-            // location.reload();
         };
     } else {
         var NoResult = document.createElement('p');
@@ -172,7 +169,7 @@ var trips = new Trip_Schedule()
 document.getElementById('btn_check').addEventListener('click', async function () {
     var drivers = new driver_wrapper();
     var vehicle = new vehicles_wrapper();
-
+    await trips.checkDone();
     console.log("click checkbutton");
     var cus_Name = document.querySelector(".Customer_Name").value;
     var cus_Phone = document.querySelector(".Customer_Phone").value;
@@ -182,6 +179,7 @@ document.getElementById('btn_check').addEventListener('click', async function ()
     var End_Dest = document.querySelector(".End_Dest").value;
     var Type_Vehicles = document.querySelector("#Type_Vehicles").value;
     var dList = await drivers.searchByInfoType(["tier", "status"], [Type_Vehicles, 2]);
+
     if (Type_Vehicles != null) {
         if (Type_Vehicles === "Truck") {
             Type_Vehicles = 1;
@@ -199,6 +197,6 @@ document.getElementById('btn_check').addEventListener('click', async function ()
     console.log("vehicles", vList);
     console.log("drivers", dList);
 
-    Find_Driver(vList, dList, Start_Dest, End_Dest);
+    Find_Driver(vList, dList, Start_Dest, End_Dest).then();
 
 })
