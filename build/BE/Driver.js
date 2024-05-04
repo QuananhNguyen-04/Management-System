@@ -129,7 +129,7 @@ class driver {
             setExpiry(this);
         }*/
         console.log('Driver created.');
-        console.log(this);
+        // console.log(this);
     }
 
 
@@ -209,7 +209,7 @@ class driver {
         this.id = setInfo(this.id, data.id);
 
         this.license = new driverLicense();
-        this.license.assign(data);
+        this.license.assign(data.license);
 
         this.yearsOfExp = setInfo(this.yearsOfExp, data.yearsOfExp);
         this.status = setInfo(this.status, data.status);

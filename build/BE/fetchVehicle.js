@@ -67,7 +67,9 @@ async function searchVehicle(field, value) {
             q = await query(VehicleListRef, where(field, '==', value));
         }
         const querySnapshot = await getDocs(q);
-        console.log("querySnapshot: ", querySnapshot);
+        console.log("🚀 --------------------------------------------------------------------------------🚀");
+        console.log("🚀 ~~ file: fetchVehicle.js:69 ~~ searchVehicle ~~ querySnapshot:", querySnapshot);
+        console.log("🚀 --------------------------------------------------------------------------------🚀");
         if (querySnapshot.empty) return null;
         else return querySnapshot;
     } catch (e) {   
@@ -78,8 +80,11 @@ async function searchVehicle(field, value) {
 async function DefaultsearchVehicle(VehicleData) {
     try {
         let temp = await searchVehicle('control_Plate', VehicleData.control_Plate);
+
+        if (temp == null) return "Not found";
         console.log("Search Complete: ", temp);
         if (isExisted(temp) != true) return 'Not found';
+
         else 
             if(temp.size > 1) return false;
             else return temp;
@@ -110,8 +115,10 @@ async function editVehicle(VehicleData_ID, Vehicle_newdata) {
             NewVehicleData.back_image = OldVehicleData.back_image;
         }
         await setDoc(VehicleRef, NewVehicleData);
+        return true;
     } catch (e) {   
         console.error("Error changing data of vehicle: ", e);
+        return false;
     }
 }
 

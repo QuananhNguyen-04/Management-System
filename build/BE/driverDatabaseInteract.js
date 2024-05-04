@@ -1,7 +1,7 @@
 
 import { convertToObject } from "./ExtraFunction.js";;
 import { isExisted } from "./ExtraFunction2.js";
-import { getDocs, getDoc, setDoc, doc, collection }
+import { getDocs, getDoc, setDoc, doc, collection, query, where }
     from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-storage.js";
 import { driver } from './Driver.js';
@@ -91,46 +91,104 @@ async function searchDriver(_driver)    //Type: driver
     }
 }
 async function searchDriverByInfo(infoType, value) {
+    const handleInfo = (infoType) => {
+        if (infoType == 'recentTrip') infoType = 'recentTrip.id';
+        else
+        if (infoType == 'license') infoType = 'license.id';
+        else if (infoType == 'tier') infoType = 'license.tier';
+        else if (infoType != 'id' && infoType != 'efficiency' && infoType != 'workingTime' && infoType != 'yearsOfExp' && infoType != 'status') {
+            console.log('Invalid info type');
+            return null;
+        }
+        return infoType;
+    }
     try {
-        const documentCollectionRef = collection(db, 'driver');
         /*
         - infoType = 'id' || 'efficiency' || 'workingTime' || 'yearsOfExp' || 'status' : stay unchanged
         - infoType = 'recentTrip' : ='recentTrip.id';
         - infoType = 'license' : ='license.id';
         */
-        if (infoType == 'recentTrip') infoType = 'recentTrip.id';
-        else
-            if (infoType == 'license') infoType = 'license.id';
-            else if (infoType == 'tier') infoType = 'license.tier';
-            else if (infoType != 'id' && infoType != 'efficiency' && infoType != 'workingTime' && infoType != 'yearsOfExp' && infoType != 'status') {
-                console.log('Invalid info type');
-                return null;
+       //console.log('infoType done');
+       // const variations = new RegExp('^' + value + '$', 'i');
+        console.log("🚀 ~ file: driverDatabaseInteract.js:94 ~ value:", value);
+        console.log("🚀 ~ file: driverDatabaseInteract.js:94 ~ infoType:", infoType);
+       
+        const documentCollectionRef = collection(db, 'driver');
+        var q = documentCollectionRef;
+        var type;
+        let needLicense = false;
+        let licenseInfoNeed = null;
+        if (Array.isArray(infoType)) {
+            for (let i = 0; i < infoType.length; ++i) {
+                type = handleInfo(infoType[i]);
+                var keyParts = type.split('.');
+                if (keyParts[0] == "license") {
+                    if (!needLicense) needLicense = true;
+                    else {
+                        let temp = licenseInfoNeed;
+                        licenseInfoNeed = Array();
+                        licenseInfoNeed.push(keyParts[1]);
+                        continue;
+                    }
+                    licenseInfoNeed = keyParts[1];
+                    continue;
+                }
+                q = query(q, where(type, "==", value[i]));
             }
-        //console.log('infoType done');
-        const variations = new RegExp('^' + value + '$', 'i');
-        let q = await getDocs(documentCollectionRef);
+        }
+        else {
+            type = handleInfo(infoType);
+
+            var keyParts = type.split('.');
+            console.log("🚀 ~~ file: driverDatabaseInteract.js:139 ~~ searchDriverByInfo ~~ type:", keyParts);
+            if (keyParts[0] == "license") {
+                needLicense = true;
+                licenseInfoNeed = keyParts[1];
+            }
+            else {
+                
+                console.log("🚀 ~ file: driverDatabaseInteract.js:151 ~ value:", value);
+                q = query(q, where(type, "==", value));
+            }
+        }
+        q = await getDocs(q);
+        console.log("🚀 ~~ file: driverDatabaseInteract.js:144 ~~ searchDriverByInfo ~~ needLicense:", needLicense);
+        console.log("🚀 ~ file: driverDatabaseInteract.js:145 ~ licenseInfoNeed:", licenseInfoNeed);
         let docList = q.docs;
-        let res = [];
-        //console.log(docList);
-        if (docList.size === 0) {
+        console.log("🚀 ~ file: driverDatabaseInteract.js:153 ~ docList:", docList);
+        if (docList == null || docList.length === 0) {
             console.log('By info: Not found');
             return 'Not found';
         }
-        var keyParts = infoType.split('.');
-        console.log(keyParts.length)
+        let res = [];
         for (const doc of docList) {
             const data = doc.data();
-            console.log(data[keyParts[0]][keyParts[1]])
-            let currentValue = (keyParts.length == 1? data[keyParts[0]] : data[keyParts[0]][keyParts[1]]);
-            console.log("currentValue:", currentValue)
-            if (currentValue == value) {
-                console.log("matching: ", doc.data());
+            if (data.id == "N/A") continue;
+            let currentValue;
+            if (needLicense && !Array.isArray(licenseInfoNeed)) {
+                currentValue = data["license"][licenseInfoNeed];
+            }
+            else {
+                // console.log("HANDLE ERROR: multiple license info driverInteraction 164")
                 res.push(doc);
+                continue;
+            }
+            // console.log("🚀 ~ file: driverDatabaseInteract.js:180 ~ value:", value);
+            // console.log("🚀 ~ file: driverDatabaseInteract.js:167 ~ currentValue:", currentValue);
+            if (Array.isArray(value)) {
+                if (value.includes(currentValue)) {
+                    console.log("matching: ", doc.data());
+                    res.push(doc);
+                }
+            }
+            else {
+                if (value == currentValue) {
+                    console.log("matching: ", doc.data());
+                    res.push(doc);
+                }
+
             }
         }
-        //console.log('q done.');
-        //console.log(q);
-        //console.log('qSnapshot done.');
         if (res.length < 1) {
             console.log('By info: Not found.');
             return 'Not found';
@@ -142,10 +200,9 @@ async function searchDriverByInfo(infoType, value) {
         }
     }
     catch (error) {
-        //console.log('something wrong in searchbyinfo.');
         console.log('Error searching driver info: ', error);
-        //return null;
     }
+
 }
 
 async function deleteDriver(documentId) {
@@ -182,4 +239,4 @@ async function pushFile(path, file, id, type) {
     }
 }
 
-export { searchDriverByInfo, fetchDriverList, editDriver, pushNewDriver, deleteDriver, searchDriver, fetchDriver, pushFile, getStorage, ref, getDownloadURL};
+export { searchDriverByInfo, fetchDriverList, editDriver, pushNewDriver, deleteDriver, searchDriver, fetchDriver, pushFile, getStorage, ref, getDownloadURL };

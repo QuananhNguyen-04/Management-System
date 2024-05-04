@@ -1,7 +1,7 @@
 import { driver, driverLicense } from "../../BE/Driver.js";
 import { driver_wrapper } from "../../BE/Driver_Wrapper.js";
-
-let driverList = new driver_wrapper();
+import { searchDriver } from "../../BE/driverDatabaseInteract.js";
+var wrap = new driver_wrapper();
 var drivers = [
     { name: 'Tài xế 1', type: 'Xe khách', phone: '0123456789', profilePicture: 'profile1.jpg', drivingLicense: 'license1.jpg', personalInfo: 'Some information about driver 1.' },
     { name: 'Tài xế 2', type: 'Xe tải', phone: '0987654321', profilePicture: 'profile2.jpg', drivingLicense: 'license2.jpg', personalInfo: 'Some information about driver 2.' },
@@ -45,10 +45,10 @@ function showProfile(index) {
     dIndex = index;
     var driver = filteredDrivers[index];
     currentDriverIndex = index;
-    document.getElementById('profile-picture').src = driver.profilePicture;
-    document.getElementById('driving-license').src = driver.drivingLicense;
+    document.getElementById('profile-picture').src = driver.idCard;
+    document.getElementById('driving-license').src = driver.license.frontImg;
     document.getElementById('profile-name').textContent = driver.name;
-    document.getElementById('profile-info').textContent = driver.personalInfo;
+    document.getElementById('profile-info').textContent = "Eff: " + driver.efficiency + ". Status: " + (driver.status == 1? "Working" : "Resting");
     document.querySelector('.edit-container').style.display = 'none';
     document.querySelector('.profile-container').style.display = 'block';
     document.querySelector('.edit-container').style.display = 'none'; // Ẩn phần chỉnh sửa
@@ -71,8 +71,9 @@ document.querySelector('#overlay').addEventListener('click', function () {
 function editProfile() {
     var driver = filteredDrivers[currentDriverIndex];
     document.getElementById('edit-name').value = driver.name;
-    document.getElementById('edit-type').value = driver.type;
-    document.getElementById('edit-phone').value = driver.phone;
+    document.getElementById('edit-type').value = driver.license.tier;
+    document.getElementById('edit-efficiency').value = driver.efficiency;
+    document.getElementById('edit-phone').value = driver.phoneNumber;
     document.querySelector('.edit-container').style.display = 'block'; // Hiển thị phần chỉnh sửa
     document.querySelector('.profile-container button:nth-child(3)').style.display = 'none'; // Ẩn nút "Chỉnh sửa"
     // document.querySelector('.profile-container button:nth-child(4)').style.display = 'none'; // Ẩn nút "Đóng"
@@ -85,15 +86,25 @@ function cancelEdit() {
 }
 
 // Function cập nhật thông tin tài xế
-function updateDriver() {
+async function updateDriver() {
     // console.log(dIndex);
+    var drdata = filteredDrivers[dIndex];
+    var dr = new driver();
+    console.log("🚀 ~ updateDriver ~ dr:", dr)
+    dr.assign(drdata);
+    let newd = dr.copy();
+    let doc = await searchDriver(newd);
     var newName = document.getElementById('edit-name').value;
     var newType = document.getElementById('edit-type').value;
+    var newEff = document.getElementById('edit-efficiency').value;
     var newPhone = document.getElementById('edit-phone').value;
 
-    filteredDrivers[dIndex].name = newName;
-    filteredDrivers[dIndex].type = newType;
-    filteredDrivers[dIndex].phone = newPhone;
+    newd.name = newName;
+    newd.license.tier = newType;
+    newd.efficiency = newEff;
+    newd.phoneNumber = newPhone;
+
+    wrap.edit(doc, newd);
 
     // Hiển thị lại thông tin
     showProfile(dIndex);
@@ -106,14 +117,44 @@ function updateDriver() {
     // document.querySelector('.profile-container button:nth-child(4)').style.display = 'inline'; // Hiển thị nút "Đóng"
 }
 
-
 // Xử lý sự kiện khi nhấn nút tìm kiếm
 async function redraw() {
-    var selectedType = document.getElementById('search-type').value;
+    var selectedType = document.getElementById('search-type').value.toLowerCase();
     var searchText = document.getElementById('search-text').value.toLowerCase();
-    filteredDrivers = drivers.filter(function (driver) {
-        return (driver.type === selectedType || selectedType === '') && (driver.name.toLowerCase().includes(searchText) || searchText.trim() === '');
+    
+    filteredDrivers = []
+    let vhType = selectedType == "" ? 0 : selectedType;
+    console.log("🚀 ~ redraw ~ vhType:", vhType)
+    if (vhType == 0) {
+        const t1 = await wrap.searchByInfoType("tier", "Truck")
+        const t2 = await wrap.searchByInfoType("tier", "Container")
+        const t3 = await wrap.searchByInfoType("tier", "Coach")
+        filteredDrivers.push(...t1);
+        filteredDrivers.push(...t3);
+        filteredDrivers.push(...t2);
+    }
+    else if (vhType == 1) {
+        // Only Truck
+        const truckDrivers = await wrap.searchByInfoType("tier", "Truck");
+        if (Array.isArray(truckDrivers))
+        filteredDrivers.push(...truckDrivers);
+    } else if (vhType == 2) {
+        // Only Coach
+        const coachDrivers = await wrap.searchByInfoType("tier", "Coach");
+        if (Array.isArray(coachDrivers))
+        filteredDrivers.push(...coachDrivers);
+    } else if (vhType == 3) {
+        // Only Container
+        const containerDrivers = await wrap.searchByInfoType("tier", "Container");
+        if (Array.isArray(containerDrivers))
+        filteredDrivers.push(...containerDrivers);
+    }
+    filteredDrivers = filteredDrivers.filter(function (driver) {
+        return (driver["name"].toLowerCase().includes(searchText) || searchText === '');
     });
+    console.log("🚀 ---------------------------------------------------------------------🚀");
+    console.log("🚀 ~~ file: search_driver.js:155 ~~ filteredDrivers:", filteredDrivers);
+    console.log("🚀 ---------------------------------------------------------------------🚀");
 
     var resultContainer = document.getElementById('result-container');
     resultContainer.innerHTML = '';
@@ -134,12 +175,32 @@ async function redraw() {
 
             var cell = row.insertCell();
             cell.textContent = driver.name;
+            let tier;
+            const lic = driver.license;
+            if (lic == null || lic == "N/A") {
+                tier = "Thiếu thông tin, hãy bổ sung";
+            }
+            else {
+                if (lic.tier == "Truck") {
+                    tier = "Xe Tải";
+                }
+                else if (lic.tier == "Container") {
+                    tier = "Container";
+                }
+                else if (lic.tier == "Coach") {
+                    tier = "Xe Khách";
+                }
+                else {
+                    tier = lic.tier;
+                }
+            }
 
             cell = row.insertCell();
-            cell.textContent = driver.type;
+            cell.textContent = tier;
+
 
             cell = row.insertCell();
-            cell.textContent = driver.phone;
+            cell.textContent = driver.phoneNumber;
             row.addEventListener('click', function () {
                 document.getElementById('overlay').style.display = 'block';
                 showProfile(index);
@@ -177,7 +238,9 @@ document.getElementById('overlay').addEventListener('click', async function (eve
 document.getElementById('search-type').addEventListener('change', async function () {
     redraw();
 })
-
+document.getElementById('edit_btn').addEventListener('click', async function() {
+    editProfile();
+})
 redraw();
 // var overlay = document.getElementById('overlay');
 // document.addEventListener('click', function(event) {

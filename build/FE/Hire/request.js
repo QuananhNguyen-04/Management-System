@@ -1,6 +1,6 @@
 import { driver_wrapper } from "../../BE/Driver_Wrapper.js"
 import { vehicles_wrapper } from "../../BE/Vehicle_Wrapper.js";
-import { Trip_Schedule, Trip } from "../../BE/Trip_Scheduling.js"
+import { Trip_Schedule, Trip, trip_Money } from "../../BE/Trip_Scheduling.js"
 
 
 var Vehicles = [
@@ -33,11 +33,18 @@ var Vehicles = [
 ];
 
 var Suggest = [];
+var Dr = [];
 var cost;
-function Find_Driver(Vehicles, Drivers) {
+async function Find_Driver(Vehicles, Drivers, start, end) {
     Suggest = Vehicles;
+    Dr = Drivers;
+    if (Vehicles == null || Drivers == null) {
+        console.log("EMPTY");
+        return;
+    }
     var ContainerFilter = document.getElementById('Container_Filter');
     ContainerFilter.innerHTML = '';
+    var Store = []
     if (Suggest.length > 0) {
         var divTable = document.createElement('div');
         divTable.id = 'divtable';
@@ -49,49 +56,105 @@ function Find_Driver(Vehicles, Drivers) {
             th.textContent = header;
             headerRow.appendChild(th);
         });
-        Suggest.forEach(function (vehicle, index) {
-            if (index < 20) {
-                var row = table.insertRow();
-                var cell = row.insertCell();
-                cell.textContent = vehicle.Main_Driver_Name;
-                cell = row.insertCell();
-                cell.style.textAlign = "center";
-                cell.textContent = vehicle.Assistant_Driver_Name;
-                cell = row.insertCell();
-                cell.style.textAlign = "center";
-                cell.textContent = vehicle.Vehicle_Num;
-                cell = row.insertCell();
-                cell.style.textAlign = "end";
-                cell.textContent = vehicle.Cost_Veh;
-                cell = row.insertCell();
-                cell.style.textAlign = "center";
-                var radio = document.createElement('input');
-                radio.setAttribute("type", "radio");
-                radio.setAttribute("name", "choose");
-                radio.setAttribute("value", vehicle.Driver_Name);
-                cell.appendChild(radio);
-                row.onclick = function () {
-                    radio.checked = true;
-                }
+        const vlen = Vehicles.length;
+        const dlen = Drivers.length;
+        if (vlen < 1 || dlen < 2) {
+            console.log("Not enough supply");
+            return false;
+        }
+        console.log("🚀 -------------------------------------------------------------🚀");
+        console.log("🚀 ~~ file: request.js:60 ~~ Find_Driver ~~ Drivers:", Drivers);
+        console.log("🚀 -------------------------------------------------------------🚀");
+
+        for (let i = 0; i < Math.min(Math.max(vlen, dlen), 20); ++i) {
+            const row = table.insertRow();
+
+            const dr = Drivers[parseInt(i / 2) % dlen];
+            const subdr = Drivers[parseInt(i / 2 + 1) % dlen];
+            const veh = Vehicles[i % vlen];
+            const coef = veh.coef
+            var cell = row.insertCell();
+            cell.textContent = dr.name;
+
+            cell = row.insertCell();
+            cell.style.textAlign = "center";
+            cell.textContent = subdr.name;
+
+            cell = row.insertCell();
+            cell.style.textAlign = "center";
+            cell.textContent = veh.control_Plate;
+
+            cell = row.insertCell();
+            cell.style.textAlign = "end";
+            const Cost = trip_Money(start, end, coef);
+            Store.push({ driver: dr, sub_driver: subdr, vehicle: veh, cost: Cost });
+            const formatNumberWithSpaces = (number) => {
+                return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            };
+
+            cell.textContent = formatNumberWithSpaces(Cost);
+
+            cell = row.insertCell();
+            cell.style.textAlign = "center";
+            const radio = document.createElement('input');
+            radio.setAttribute("type", "radio");
+            radio.setAttribute("name", "choose");
+            radio.setAttribute("value", dr.name);
+            cell.appendChild(radio);
+            row.onclick = function () {
+                radio.checked = true;
             }
-            else {
-                return;
+        }
+        
+        var cus_Name = document.querySelector(".Customer_Name").value;
+        var cus_Phone = document.querySelector(".Customer_Phone").value;
+        var Start_Time = document.querySelector(".Start_Time").value;
+        var Start_Day = document.querySelector(".Start_Day").value;
+        var Start_Dest = document.querySelector(".Start_Dest").value;
+        var End_Dest = document.querySelector(".End_Dest").value;
+        var Type_Vehicles = document.querySelector("#Type_Vehicles").value;
+        var time;
+
+        if (Start_Day == null || Start_Day == "") {
+            Start_Day = new Date();
+            Start_Day.setSeconds(0, 0);
+            console.log(Start_Day);
+            
+            time = Start_Day;
+        }
+        else {
+            if (Start_Time == null || Start_Time == "") {
+                Start_Time = "12:00";
             }
-        });
+            Start_Time = Start_Day + "T" + Start_Time;
+            time = new Date(Start_Time);
+        }
+        console.log("🚀 ~ file: request.js:152 ~ time:", time);
+
         divTable.appendChild(table);
         ContainerFilter.appendChild(divTable);
         var btnhire = document.createElement('button');
-        btnhire.innerHTML=`<i id="icon_add" class="fa-solid fa-calendar-plus"></i>Xác nhận`;
+        btnhire.innerHTML = `<i id="icon_add" class="fa-solid fa-calendar-plus"></i>Xác nhận`;
         btnhire.classList.add('hire_btn');
         ContainerFilter.appendChild(btnhire);
-        btnhire.onclick = function () {
+        btnhire.onclick = async function () {
             var checkbox = document.getElementsByName("choose");
             for (var i = 0; i < checkbox.length; i++) {
                 if (checkbox[i].checked === true) {
-                    alert(checkbox[i].value);
+                    console.log(Store[i]);
+                    const temp = Store[i];
+                    console.log("🚀 ~ file: request.js:150 ~ Start_Time:", time);
+                    let result = await trips.add(Type_Vehicles, temp.driver.id, temp.vehicle.control_Plate, temp.sub_driver.id, cus_Name, cus_Phone, start, end, time, null, temp.cost).then();
+                    if (result == true) {
+                        alert("Success");
+                        location.reload();
+                    }
+                    else {
+                        alert("Failure");
+                    }
+
                 }
             }
-            location.reload();
         };
     } else {
         var NoResult = document.createElement('p');
@@ -106,7 +169,7 @@ var trips = new Trip_Schedule()
 document.getElementById('btn_check').addEventListener('click', async function () {
     var drivers = new driver_wrapper();
     var vehicle = new vehicles_wrapper();
-
+    await trips.checkDone();
     console.log("click checkbutton");
     var cus_Name = document.querySelector(".Customer_Name").value;
     var cus_Phone = document.querySelector(".Customer_Phone").value;
@@ -115,7 +178,8 @@ document.getElementById('btn_check').addEventListener('click', async function ()
     var Start_Dest = document.querySelector(".Start_Dest").value;
     var End_Dest = document.querySelector(".End_Dest").value;
     var Type_Vehicles = document.querySelector("#Type_Vehicles").value;
-    var dList = await drivers.searchByInfoType("tier", Type_Vehicles);
+    var dList = await drivers.searchByInfoType(["tier", "status"], [Type_Vehicles, 2]);
+
     if (Type_Vehicles != null) {
         if (Type_Vehicles === "Truck") {
             Type_Vehicles = 1;
@@ -128,9 +192,11 @@ document.getElementById('btn_check').addEventListener('click', async function ()
         }
     }
     // trips.search
+
     var vList = await vehicle.Advanced_search(["VehicleType", "status"], [Type_Vehicles, 3]);
     console.log("vehicles", vList);
     console.log("drivers", dList);
-    Find_Driver(Vehicles);
+
+    Find_Driver(vList, dList, Start_Dest, End_Dest).then();
 
 })
