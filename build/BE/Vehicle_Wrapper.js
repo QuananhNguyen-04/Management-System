@@ -5,6 +5,20 @@ import { Vehicle_Type, VehicleStatus } from './Extra_function.js';
 import { vehicle } from './Vehicle.js';
 import { pushFile } from './driverDatabaseInteract.js';
 
+//Function support for Trip Information
+function update_Trip_Info(vehicleData, trip_ID) {
+    // if(vehicleData.recent_Trip != null) {
+    //     const current_time = new Date();
+    //     if (vehicleData.recent_Trip.start_Time > current_time) {
+    //         vehicleData.status = VehicleStatus.ACTIVE;
+    //         vehicleData.recent_Trip = trip_ID;
+    //     } 
+    //     if (vehicleData.recent_Trip.end_Time < current_time) 
+    //         vehicleData.status = VehicleStatus.UNAVAILABLE;
+    // } else { 
+    vehicleData.recent_Trip = trip_ID;
+}
+
 //Create wrapper for list of vehicle information
 class vehicles_wrapper {
     constructor() {
@@ -42,7 +56,7 @@ class vehicles_wrapper {
 
     async delete(VehicleData) {
         let checked = DefaultsearchVehicle(VehicleData);
-        if (isExisted(checked)) {
+        if (checked != null && checked == "Not found") {
             checked.forEach(async (doc) => { deleteVehicle(doc.id); });
             for (let i = 0; i < this.size; i++) {
                 if (this.vehicle_list[i].control_Plate == VehicleData.control_Plate) {
@@ -82,10 +96,10 @@ class vehicles_wrapper {
                 if (vehicle.VehicleType == Vehicle_Type.C_Type) {
                     vehicle.weight = weight;
                     vehicle.fuel = fuel;
-                } else if (i.VehicleType == Vehicle_Type.E_type) {
+                } else if (vehicle.VehicleType == Vehicle_Type.E_type) {
                     vehicle.capacity = capacity;
                     vehicle.speciality = speciality;
-                } else if (i.VehicleType == Vehicle_Type.FC_type) {
+                } else if (vehicle.VehicleType == Vehicle_Type.FC_type) {
                     vehicle.weight = weight;
                     vehicle.height = height;
                     vehicle.length = length;
