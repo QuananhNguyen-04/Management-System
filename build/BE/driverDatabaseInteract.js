@@ -66,7 +66,7 @@ async function fetchDriver(documentId) {
         // const colRef = collection(db, 'driver');
         // console.log(documentId)
         const temp = await getDoc(doc(db, 'driver', documentId));
-        console.log("🚀 ~ file: driverDatabaseInteract.js:69 ~ temp:", temp);
+        // console.log("🚀 ~ file: driverDatabaseInteract.js:69 ~ temp:", temp);
         
         if (!temp.exists) return 'Not found';
         else return temp;
@@ -113,8 +113,8 @@ async function searchDriverByInfo(infoType, value) {
         */
        //console.log('infoType done');
        // const variations = new RegExp('^' + value + '$', 'i');
-        console.log("🚀 ~ file: driverDatabaseInteract.js:94 ~ value:", value);
-        console.log("🚀 ~ file: driverDatabaseInteract.js:94 ~ infoType:", infoType);
+        // console.log("🚀 ~ file: driverDatabaseInteract.js:94 ~ value:", value);
+        // console.log("🚀 ~ file: driverDatabaseInteract.js:94 ~ infoType:", infoType);
 
         const documentCollectionRef = collection(db, 'driver');
         var q = documentCollectionRef;
@@ -143,23 +143,23 @@ async function searchDriverByInfo(infoType, value) {
             type = handleInfo(infoType);
 
             var keyParts = type.split('.');
-            console.log("🚀 ~~ file: driverDatabaseInteract.js:139 ~~ searchDriverByInfo ~~ type:", keyParts);
+            // console.log("🚀 ~~ file: driverDatabaseInteract.js:139 ~~ searchDriverByInfo ~~ type:", keyParts);
             if (keyParts[0] == "license") {
                 needLicense = true;
                 licenseInfoNeed = keyParts[1];
             }
             else {
                 
-                console.log("🚀 ~ file: driverDatabaseInteract.js:151 ~ value:", value);
+                // console.log("🚀 ~ file: driverDatabaseInteract.js:151 ~ value:", value);
                 q = query(q, where(type, "==", value));
             }
         }
         q = await getDocs(q);
         console.log(q);
-        console.log("🚀 ~~ file: driverDatabaseInteract.js:144 ~~ searchDriverByInfo ~~ needLicense:", needLicense);
-        console.log("🚀 ~ file: driverDatabaseInteract.js:145 ~ licenseInfoNeed:", licenseInfoNeed);
+        // console.log("🚀 ~~ file: driverDatabaseInteract.js:144 ~~ searchDriverByInfo ~~ needLicense:", needLicense);
+        // console.log("🚀 ~ file: driverDatabaseInteract.js:145 ~ licenseInfoNeed:", licenseInfoNeed);
         let docList = q.docs;
-        console.log("🚀 ~ file: driverDatabaseInteract.js:153 ~ docList:", docList);
+        // console.log("🚀 ~ file: driverDatabaseInteract.js:153 ~ docList:", docList);
         if (docList == null || docList.length === 0) {
             console.log('By info: Not found');
             return 'Not found';

@@ -152,18 +152,18 @@ class Trip_Schedule {
 
             var myTimestamp = Timestamp.fromDate(start_Time);
             end_Time = await this.add_help(type, start_Dest, end_Dest, start_Time);
-            console.log("🚀 ~ file: Trip_Scheduling.js:153 ~ end_Time:", end_Time);
-            console.log("🚀 ~ file: Trip_Scheduling.js:147 ~ myTimestamp:", myTimestamp);
+            // console.log("🚀 ~ file: Trip_Scheduling.js:153 ~ end_Time:", end_Time);
+            // console.log("🚀 ~ file: Trip_Scheduling.js:147 ~ myTimestamp:", myTimestamp);
 
             var wrap = new driver_wrapper();
             const updateDr = async function (id) {
                 try {
                     var drdata = await searchDriverByInfo("id", id);
-                    // console.log("🚀 ~ file: Trip_Scheduling.js:94 ~ drdata:", drdata[0].data());
+                    // // console.log("🚀 ~ file: Trip_Scheduling.js:94 ~ drdata:", drdata[0].data());
                     var dr = new driver();
 
                     dr.assign(drdata[0].data());
-                    // console.log("🚀 ~ updateDriver ~ dr:", dr)
+                    // // console.log("🚀 ~ updateDriver ~ dr:", dr)
                     let newd = dr.copy();
                     let doc = await searchDriver(newd);
                     newd.status = 1;
@@ -176,24 +176,24 @@ class Trip_Schedule {
             }
             let result = await updateDr(driver_Id);
             if (result == null) {
-                console.log("🚀 ~~ file: Trip_Scheduling.js:102 ~~ Trip_Schedule ~~ buggging nuulll:", result);
+                // console.log("🚀 ~~ file: Trip_Scheduling.js:102 ~~ Trip_Schedule ~~ buggging nuulll:", result);
                 return false;
             }
             result = await updateDr(subDriver_Id);
             if (result == null) {
-                console.log("🚀 ~~ file: Trip_Scheduling.js:115 ~~ Trip_Schedule ~~ result:", result);
+                // console.log("🚀 ~~ file: Trip_Scheduling.js:115 ~~ Trip_Schedule ~~ result:", result);
                 return false;
             }
             result = await searchVehicle("control_Plate", car_Id);
             if (result != null) {
                 var list = result.docs;
                 for (const vh of list) {
-                    console.log("🚀 ~~ file: Trip_Scheduling.js:119 ~~ Trip_Schedule ~~ result:", vh.id);
+                    // console.log("🚀 ~~ file: Trip_Scheduling.js:119 ~~ Trip_Schedule ~~ result:", vh.id);
                     let temp = vh.data();
                     temp.status = 1;
-                    console.log("🚀 -----------------------------------------------🚀");
-                    console.log("🚀 ~ file: Trip_Scheduling.js:199 ~ temp:", temp);
-                    console.log("🚀 -----------------------------------------------🚀");
+                    // console.log("🚀 -----------------------------------------------🚀");
+                    // console.log("🚀 ~ file: Trip_Scheduling.js:199 ~ temp:", temp);
+                    // console.log("🚀 -----------------------------------------------🚀");
                     result = await editVehicle(vh.id, temp);
                     if (!result) {
                         return false;
@@ -262,7 +262,7 @@ class Trip_Schedule {
 
     }
     async checkDone() {
-        console.log("🚀 ~ file: Trip_Scheduling.js:265 ~ checkDone:");
+        // console.log("🚀 ~ file: Trip_Scheduling.js:265 ~ checkDone:");
         const q = query(collection(db, "Trip"),where("done", "==", false))
         const snap = await getDocs(q);
         const currentTime = new Date();
@@ -271,8 +271,8 @@ class Trip_Schedule {
             const data = temp.data();
             let end_Time = data.end_Time;
             let toDateend_Time = end_Time.toDate();
-            console.log("🚀 ~ file: Trip_Scheduling.js:272 ~ toDateend_Time:", toDateend_Time);
-            console.log("🚀 ~ file: Trip_Scheduling.js:272 ~ current:", currentTime);
+            // console.log("🚀 ~ file: Trip_Scheduling.js:272 ~ toDateend_Time:", toDateend_Time);
+            // console.log("🚀 ~ file: Trip_Scheduling.js:272 ~ current:", currentTime);
             if (toDateend_Time <= currentTime){
 
                 let id = data.car_Id;
@@ -286,22 +286,22 @@ class Trip_Schedule {
             try {
                 console.log("trip:286", id);
                 var drdata = await searchDriverByInfo("id", id);
-                console.log("🚀 ~ file: Trip_Scheduling.js:94 ~ drdata:", drdata[0].data());
+                // console.log("🚀 ~ file: Trip_Scheduling.js:94 ~ drdata:", drdata[0].data());
                 var dr = new driver();
 
                 dr.assign(drdata[0].data());
-                console.log("🚀 ~ updateDriver ~ dr:", dr)
+                // console.log("🚀 ~ updateDriver ~ dr:", dr)
                 let newd = dr.copy();
                 let doc = await searchDriver(newd);
 
                 newd.status = 2;
-                console.log("🚀 ~ file: Trip_Scheduling.js:100 ~ newd:", newd);
+                // console.log("🚀 ~ file: Trip_Scheduling.js:100 ~ newd:", newd);
 
                 let result = await wrap.edit(doc, newd);
-                console.log("🚀 ~ file: Trip_Scheduling.js:101 ~ result:", result);
+                // console.log("🚀 ~ file: Trip_Scheduling.js:101 ~ result:", result);
                 return result;
             } catch (error) {
-                console.log("🚀 ~~ file: Trip_Scheduling.js:102 ~~ Trip_Schedule ~~ updateDr ~~ error:", error);
+                // console.log("🚀 ~~ file: Trip_Scheduling.js:102 ~~ Trip_Schedule ~~ updateDr ~~ error:", error);
                 return false;
             }
         }
@@ -340,7 +340,7 @@ class Trip_Schedule {
         const q = query(collection(db, "Trip"))
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
-            console.log(doc.id, " => ", doc.data());
+            // console.log(doc.id, " => ", doc.data());
             list.push(doc.data());
             // getDoc(db, "vehicles", doc.id);
         });
@@ -393,7 +393,7 @@ class Trip {
 
 const tripConverter = {
     toFirestore: (Trip) => {
-        console.log("🚀 ~~ file: Trip_Scheduling.js:180 ~~ Trip:", Trip);
+        // console.log("🚀 ~~ file: Trip_Scheduling.js:180 ~~ Trip:", Trip);
         return {
             driver_Id: Trip.driver_Id,
             subDriver_Id: Trip.subDriver_Id,

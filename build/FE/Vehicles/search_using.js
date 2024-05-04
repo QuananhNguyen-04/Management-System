@@ -1,4 +1,5 @@
 import { Trip_Schedule } from "../../BE/Trip_Scheduling.js";
+import { searchDriverByInfo } from "../../BE/driverDatabaseInteract.js";
 import { DefaultsearchVehicle } from "../../BE/fetchVehicle.js";
 import { searchVehicle } from "../../BE/fetchVehicle.js";
 var drivers = [
@@ -169,17 +170,34 @@ var filteredDrivers = [];
 var currentDriverIndex = null;
 
 // Function hiển thị profile của tài xế và phụ xe
-function showProfile(index) {
-    var driver = filteredDrivers[index];
+async function showProfile(index) {
+    var trip = newTrips[index];
     currentDriverIndex = index;
-    document.getElementById('profile-name').textContent = "Biển số xe: " + driver.plateNumber;
-    document.getElementById('profile-type').textContent = "Loại xe: " + driver.type;
-    document.getElementById('profile-phone').textContent = "Số điện thoại tài xế: " + driver.mainDriverPhone + ", Số điện thoại phụ xe: " + driver.assistantDriverPhone;
-    document.getElementById('profile-route').textContent = "Lộ trình: " + driver.route;
+    const car = await searchVehicle("control_Plate", trip.car_Id);
+    const drDocs = await searchDriverByInfo("id", trip.driver_Id);
+    const subDocs = await searchDriverByInfo("id", trip.subDriver_Id);
+    const vh = car.docs[0].data();
+    console.log("🚀 ~ file: search_using.js:348 ~ vh:", vh);
+    const dr = drDocs[0].data();
+    console.log("🚀 ~ file: search_using.js:352 ~ dr:", dr);
+    const sub = subDocs[0].data();
+    console.log("🚀 ~ file: search_using.js:356 ~ sub:", sub);
+    var route = "";
+    if (trip.start_Dest != "") {
+        route += " Từ " + trip.start_Dest
+    }
+    if (trip.end_Dest != "") {
+        route += " Đến " + trip.end_Dest;
+    }
+    document.getElementById('profile-name').textContent = "Biển Số Xe: " + vh.control_Plate;
+    document.getElementById('profile-type').textContent = "Loại Xe: " + (vh.VehicleType == 1 ? "Xe Tải" : vh.VehicleType == 2 ? "Xe Khách" : "Containers");
+    document.getElementById('profile-phone').textContent = "Liên lạc 1: " + dr.phoneNumber + "\n Liên lạc 2: " + sub.phoneNumber;
+    document.getElementById('profile-route').textContent = "Lộ Trình: " + (route != ""? route: "Đang cập nhật");
 
     var profileImages = document.getElementById('profile-images');
     profileImages.innerHTML = '';
-    driver.imageUrl.forEach(function (imageUrl) {
+    var imgList = [vh.front_image, vh.back_image];
+    imgList.forEach(function (imageUrl) {
         var img = document.createElement('img');
         img.src = imageUrl;
         img.onclick = function () {
@@ -189,15 +207,15 @@ function showProfile(index) {
     });
 
     // Hiển thị thông tin tài xế và phụ xe
-    document.getElementById('profile-driver-name').textContent = "Tên tài xế: " + driver.mainDriver;
-    document.getElementById('profile-driver-dob').textContent = "Ngày sinh: " + driver.mainDriverDOB;
-    document.getElementById('profile-driver-hometown').textContent = "Quê quán: " + driver.mainDriverHometown;
-    document.getElementById('profile-driver-photo').src = driver.mainDriverPhoto;
+    document.getElementById('profile-driver-name').textContent = "Tên Tài Xế: " + dr.name;
+    document.getElementById('profile-driver-dob').textContent = "Ngày Sinh: " + dr.DoB;
+    document.getElementById('profile-driver-hometown').textContent = "Hiệu Quả: " + (dr.efficiency == null ? "" : dr.efficiency);
+    document.getElementById('profile-driver-photo').src = dr.idCard;
 
-    document.getElementById('profile-assistant-name').textContent = "Tên phụ xe: " + driver.assistantDriver;
-    document.getElementById('profile-assistant-dob').textContent = "Ngày sinh: " + driver.assistantDriverDOB;
-    document.getElementById('profile-assistant-hometown').textContent = "Quê quán: " + driver.assistantDriverHometown;
-    document.getElementById('profile-assistant-photo').src = driver.assistantDriverPhoto;
+    document.getElementById('profile-assistant-name').textContent = "Tên Phụ Xe: " + sub.name;
+    document.getElementById('profile-assistant-dob').textContent = "Ngày Sinh: " + sub.DoB;
+    document.getElementById('profile-assistant-hometown').textContent = "Hiệu Quả: " + (dr.efficiency == null ? "" : dr.efficiency);
+    document.getElementById('profile-assistant-photo').src = sub.idCard;
     document.querySelector('.profile-container').style.display = 'block';
     document.querySelector('.overlay').style.display = 'block'; // Show overlay
 }
@@ -291,40 +309,42 @@ function updateDriver() {
 // Xử lý sự kiện khi nhấn nút tìm kiếm
 
 var trips = new Trip_Schedule();
+var newTrips = [];
 async function redraw() {
     var selectedType = document.getElementById('search-type').value.toLowerCase();
     var searchText = document.getElementById('search-text').value.toLowerCase();
 
+    newTrips = []
     filteredDrivers = []
     let filterTrips = await trips.show_All();
     console.log("🚀 ~ file: search_using.js:298 ~ filterTrips:", filterTrips);
 
-    var newTrips = []
     for (const trip of filterTrips) {
+        console.log(trip);
         var result = await searchVehicle("control_Plate", trip.car_Id);
         if (result != null)
-        result.forEach((vh) => {
-            console.log("🚀 ~ file: search_using.js:313 ~ vh:", vh.data());
-            vh = vh.data();
-            if ((vh.control_Plate.toLowerCase().includes(searchText) || searchText === '')
-                && (vh.VehicleType == selectedType || selectedType === '')) {
-                newTrips.push(trip);
-                console.log("🚀 ~ file: search_using.js:311 ~ newTrips:", newTrips);
-            }
-        })
+            result.forEach((vh) => {
+                console.log("🚀 ~ file: search_using.js:313 ~ vh:", vh.data());
+                vh = vh.data();
+                if ((vh.control_Plate.toLowerCase().includes(searchText) || searchText === '')
+                    && (vh.VehicleType == selectedType || selectedType === '')) {
+                    newTrips.push(trip);
+                    console.log("🚀 ~ file: search_using.js:311 ~ newTrips:", newTrips);
+                }
+            })
         console.log("🚀 ~ file: search_using.js:314 ~ newTrips:", newTrips);
-        
+
     }
     console.log("🚀 ~ file:318", newTrips);
 
-    filteredDrivers = drivers.filter(function (driver) {
-        return (driver.plateNumber.toLowerCase().includes(searchText) || searchText === '') && (driver.type.toLowerCase().includes(selectedType) || selectedType === '');
-    });
+    // filteredDrivers = drivers.filter(function (driver) {
+    //     return (driver.plateNumber.toLowerCase().includes(searchText) || searchText === '') && (driver.type.toLowerCase().includes(selectedType) || selectedType === '');
+    // });
 
     var resultContainer = document.getElementById('result-container');
     resultContainer.innerHTML = '';
 
-    if (filteredDrivers.length > 0) {
+    if (newTrips.length > 0) {
         var table = document.createElement('table');
         table.id = 'result-table';
 
@@ -336,10 +356,30 @@ async function redraw() {
             headerRow.appendChild(th);
         });
 
-        filteredDrivers.forEach(function (driver, index) {
-            var row = table.insertRow();
+        // for 
+        newTrips.forEach(async function (trip, index) {
+            console.log("🚀 ~ file: search_using.js:341 ~ trip:", trip);
+            const car = await searchVehicle("control_Plate", trip.car_Id);
+            const drDocs = await searchDriverByInfo("id", trip.driver_Id);
+            const subDocs = await searchDriverByInfo("id", trip.subDriver_Id);
+            const vh = car.docs[0].data();
+            console.log("🚀 ~ file: search_using.js:348 ~ vh:", vh);
+            const dr = drDocs[0].data();
+            console.log("🚀 ~ file: search_using.js:352 ~ dr:", dr);
+            const sub = subDocs[0].data();
+            console.log("🚀 ~ file: search_using.js:356 ~ sub:", sub);
 
-            var values = [driver.type, driver.plateNumber, driver.mainDriver, driver.assistantDriver, driver.mainDriverPhone + ', ' + driver.assistantDriverPhone, driver.route, driver.imageUrl[0]];
+            var row = table.insertRow();
+            var route = "";
+            if (trip.start_Dest != "") {
+                route += " Từ " + trip.start_Dest
+            }
+            if (trip.end_Dest != "" && trip.end_Dest != trip.start_Dest) {
+                route += " Đến " + trip.end_Dest;
+            }
+            var values = [((vh.VehicleType == 1) ? "Xe Tải" : vh.VehicleType == 2 ? "Xe Khách" : "Container"), vh.control_Plate,
+            dr.name, sub.name, dr.phoneNumber + ', ' + sub.phoneNumber,
+                route, vh.front_image];
             values.forEach(function (value, i) {
                 var cell = row.insertCell();
                 if (i === 6) {
@@ -386,6 +426,6 @@ document.getElementById("update_btn").addEventListener('click', () => {
 document.getElementById("edit_btn").addEventListener('click', () => {
     editProfile();
 })
-document.getElementById("search-type").addEventListener('change', () => {
-    redraw();
+document.getElementById("search-type").addEventListener('change', async function () {
+    await redraw();
 })
