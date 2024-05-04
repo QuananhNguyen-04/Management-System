@@ -8,9 +8,9 @@ class vehicle {
     constructor(control_Plate) {
         this.car_ID = generateID();
         this.control_Plate = control_Plate;
-        this.status = VehicleStatus.UNAVAILABLE;
+        this.status = VehicleStatus.ACTIVE;
         this.recent_Trip = null;
-        this.maintenance = null;
+        this.maintenance = new maintenance_info(this.car_ID);
     }
     vehicleRegister(control_Plate, VehicleType, weight, fuel, capacity, speciality, 
         height, length, max_Load) {
@@ -19,59 +19,60 @@ class vehicle {
             return new Truck(control_Plate, weight, fuel);    
         else if (VehicleType == Vehicle_Type.E_type)
             return new Coach(control_Plate, capacity, speciality);
-        else if (VehicleType == Vehicle_Type.FC_type){
+        else if (VehicleType == Vehicle_Type.FC_type)
             return new Container(control_Plate, weight, height, length, max_Load);
+    }
+}
+// vehicle support method
+function vehicles_Info(vehicleData){
+        if (vehicleData.VehicleType == Vehicle_Type.C_Type){
+            return "ID: " + vehicleData.car_ID + "\n" +
+                "Control Plate: " + vehicleData.control_Plate + "\n" +
+                "Vehicle Type: " + vehicleData.VehicleType + "\n" +
+                "Weight: " + vehicleData.vehicle.weight + "\n" +
+                "Fuel: " + vehicleData.vehicle.fuel + "\n" +
+                "Status: " + vehicleData.status;
+        } else if (vehicleData.VehicleType == Vehicle_Type.E_type) {
+            return "ID: " + vehicleData.car_ID + "\n" +
+                "Control Plate: " + vehicleData.control_Plate + "\n" +
+                "Vehicle Type: " + vehicleData.VehicleType + "\n" +
+                "Capacity: " + vehicleData.vehicle.capacity + "\n" +
+                "Speciality: " + vehicleData.vehicle.speciality + "\n" +
+                "Status: " + vehicleData.status;
+        } else if (vehicleData.VehicleType == Vehicle_Type.FC_type){
+            return "ID: " + vehicleData.car_ID + "\n" +
+                "Control Plate: " + vehicleData.control_Plate + "\n" +
+                "Vehicle Type: " + vehicleData.VehicleType + "\n" +
+                "Weight: " + vehicleData.vehicle.weight + "\n" +
+                "Height: " + vehicleData.vehicle.height + "\n" +
+                "Length: " + vehicleData.vehicle.length + "\n" +
+                "Max Load: " + vehicleData.vehicle.max_Load + "\n" +
+                "Status: " + vehicleData.status;
+        }
+}
+function setting_Maintenance(driver_ID) {
+        vehicleData.maintenance.assign_Driver(driver_ID);
+}
+function alert_Maintenance(vehicleData, driver_list) {
+    vehicleData.status = VehicleStatus.MAINTENANCE;
+    // if (vehicleData.maintenance.driver_ID == null) vehicleData.setting_Maintenance(driver_list[0].driver_ID);
+    vehicleData.maintenance.assign_Driver(123456);
+    vehicleData.maintenance.alert();
+}
+function update_Info(Trip_Info_Object, crashed) {
+    if (vehicleData.maintenance == null && crashed == false) {
+        vehicleData.status = VehicleStatus.ACTIVE;
+    } else if (crashed == true) {
+        vehicleData.status = VehicleStatus.UNAVAILABLE;
+    } else {
+        const current_time = new Date();
+        if (vehicleData.maintenance.date + vehicleData.maintenance.maintenance_time < current_time) {
+            vehicleData.status = VehicleStatus.ACTIVE;
+            vehicleData.maintenance = null;
         }
     }
-    //vehicle method
-    vehicles_Info() {
-        if (this.VehicleType == Vehicle_Type.C_Type)
-            return "ID: " + this.car_ID + "\n" +
-                "Control Plate: " + this.control_Plate + "\n" +
-                "Vehicle Type: " + this.VehicleType + "\n" +
-                "Weight: " + this.vehicle.weight + "\n" +
-                "Fuel: " + this.vehicle.fuel + "\n" +
-                "Status: " + this.status;
-        else if (this.VehicleType == Vehicle_Type.E_type)
-            return "ID: " + this.car_ID + "\n" +
-                "Control Plate: " + this.control_Plate + "\n" +
-                "Vehicle Type: " + this.VehicleType + "\n" +
-                "Capacity: " + this.vehicle.capacity + "\n" +
-                "Speciality: " + this.vehicle.speciality + "\n" +
-                "Status: " + this.status;
-        else if (this.VehicleType == Vehicle_Type.FC_type)
-            return "ID: " + this.car_ID + "\n" +
-                "Control Plate: " + this.control_Plate + "\n" +
-                "Vehicle Type: " + this.VehicleType + "\n" +
-                "Weight: " + this.vehicle.weight + "\n" +
-                "Height: " + this.vehicle.height + "\n" +
-                "Length: " + this.vehicle.length + "\n" +
-                "Max Load: " + this.vehicle.max_Load + "\n" +
-                "Status: " + this.status;
-    }
-    setting_Maintenance(Date, maintenance_time, driver_ID, Driver_Object) {
-        this.maintenance = new maintenance_info(this.car_ID, Date, maintenance_time);
-        this.maintenance.assign_Driver(driver_ID, Driver_Object);
-    }
-    alert_Maintenance() {
-        this.status = VehicleStatus.MAINTENANCE;
-        this.maintenance.alert();
-    }
-    update_Info(Trip_Info_Object, crashed) {
-        if (this.maintenance == null && crashed == false) {
-            this.status = VehicleStatus.ACTIVE;
-        } else if (crashed == true) {
-            this.status = VehicleStatus.UNAVAILABLE;
-        } else {
-            const current_time = new Date();
-            if (this.maintenance.date + this.maintenance.maintenance_time < current_time) {
-                this.status = VehicleStatus.ACTIVE;
-                this.maintenance = null;
-            }
-        }
-        if (this.recent_Trip != null) {
-            this.recent_Trip = Trip_Info_Object;
-        }
+    if (vehicleData.recent_Trip != null) {
+        vehicleData.recent_Trip = Trip_Info_Object;
     }
 }
 
@@ -107,7 +108,7 @@ class Container extends vehicle {
 }
 
 //export the classes
-export { vehicle, Truck, Coach, Container };
+export { vehicle, Truck, Coach, Container, alert_Maintenance};
 
 // Test communication between classes
 // const vehicleList = new vehicles_wrapper();
