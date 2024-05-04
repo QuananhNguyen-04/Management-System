@@ -1,15 +1,25 @@
 //import information from another file
 import { editVehicle } from "./fetchVehicle.js"
 import { VehicleStatus } from "./Extra_function.js";
+import { searchDriverByInfo } from "./driverDatabaseInteract.js";
 
 //Function support for maintenance alert
 function setting_Maintenance(vehicleData, driver_ID) {
     vehicleData.maintenance.assign_Driver(driver_ID);
 }
 
-function alert_Maintenance(vehicleData, driver_list) {
+async function alert_Maintenance(vehicleData) {
     vehicleData.status = VehicleStatus.MAINTENANCE;
-    if (vehicleData.maintenance.driver_ID == null) setting_Maintenance(vehicleData, driver_list[0].driver_ID);
+    console.log("🚀 ~ file: Maintainance.js:12 ~ vehicleData:", vehicleData);
+    var type = vehicleData.VehicleType;
+    type = ((type == 1) ? "Truck" : type == 2 ? "Coach" : "Container") 
+    let temp = await searchDriverByInfo(["tier", "status"], [type, 2]);
+    if (temp == "Not found") {
+        return;
+    }
+    console.log("🚀 ~ file: Maintainance.js:17 ~ temp:", temp);
+    let newid = temp[0].data().id;
+    if (vehicleData.maintenance.driver_ID == null) vehicleData.maintenance.driver_ID = newid;
     // vehicleData.maintenance.assign_Driver(123456);
     vehicleData.maintenance.alert();
 }
@@ -29,6 +39,7 @@ class maintenance_info{
 
     //maintenance_info method
     assign_Driver(driver_ID){
+
         this.driver_ID = driver_ID;
     }
     alert(){
@@ -54,10 +65,10 @@ class maintenance_info{
 
 //Observer pattern for maintenance alert
 class maintenance_alert{
-    constructor(vehicle_list, driver_available_list){
+    constructor(vehicle_list){
         this.observers = [];
         this.vehicle_list = vehicle_list;
-        this.driver_list = driver_available_list;
+
     }
     
     //maintenance_alert method
@@ -70,7 +81,7 @@ class maintenance_alert{
     // notify(){
     //     this.observers.forEach(observer => observer.update());
     // }
-    reload(){
+    async reload(){
         const current_time = new Date();
         for(let vehicle of this.vehicle_list){
             if(vehicle.maintenance != null){
@@ -97,8 +108,8 @@ class maintenance_alert{
             }
         }
         console.log("Reload method called");
-        this.observers.forEach(observer => {
-            alert_Maintenance(observer, this.driver_list); 
+        this.observers.forEach(async function (observer) {
+            await alert_Maintenance(observer); 
             observer.maintenance = observer.maintenance.toObject();
         });
     }

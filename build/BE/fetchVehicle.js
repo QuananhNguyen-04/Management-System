@@ -108,6 +108,7 @@ async function editVehicle(VehicleData_ID, Vehicle_newdata) {
         const VehicleListRef = collection(db, "vehicles");
         const VehicleRef = doc(VehicleListRef, VehicleData_ID);
         const NewVehicleData = Object.assign({}, Vehicle_newdata);
+        
         let OldVehicleData = await getDoc(VehicleRef);
         if(OldVehicleData.exists()){
             OldVehicleData = OldVehicleData.data();
@@ -115,6 +116,7 @@ async function editVehicle(VehicleData_ID, Vehicle_newdata) {
             NewVehicleData.front_image = OldVehicleData.front_image;
             NewVehicleData.back_image = OldVehicleData.back_image;
         }
+        console.log("🚀 ~ file: fetchVehicle.js:111 ~ NewVehicleData:", NewVehicleData);
         await setDoc(VehicleRef, NewVehicleData);
         return true;
     } catch (e) {   

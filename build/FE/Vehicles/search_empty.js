@@ -1,7 +1,6 @@
 import { vehicles_wrapper } from "../../BE/Vehicle_Wrapper.js";
 import { fetchDriver, searchDriver, searchDriverByInfo } from "../../BE/driverDatabaseInteract.js";
-import { searchVehicle } from "../../BE/fetchVehicle.js";
-import { db, doc, getDoc } from "../../BE/firebase_Init.js";
+import { maintenance_alert } from "../../BE/Maintainance.js";
 var drivers = [
     {
         plateNumber: '29B-12345',
@@ -95,7 +94,7 @@ var drivers = [
 ];
 var filteredDrivers = [];
 var currentDriverIndex = null;
-
+var wrapper = new vehicles_wrapper();
 // Function hiển thị profile của tài xế và phụ xe
 async function showProfile(index) {
     var driver = filteredDrivers[index];
@@ -108,8 +107,10 @@ async function showProfile(index) {
 
         console.log(id);
         console.log("sth: ", sth[0]);
+        if (sth != "Not found") {
         dr = sth[0];
         dr = dr.data();
+        }
     }
     document.getElementById('profile-name').textContent = "Biển số xe: " + driver.control_Plate;
     document.getElementById('profile-type').textContent = "Loại xe: " + (driver.VehicleType == 1 ? "Xe Tải" : driver.VehicleType == 2 ? "Xe Khách" : "Containers");
@@ -308,8 +309,8 @@ var redraw = async function () {
 
                             console.log(id);
                             console.log("sth: ", sth[0]);
-                            let dr = sth[0];
-                            if (dr != 'Not found') {
+                            if (sth != 'Not found') {
+                                let dr = sth[0];
                                 dr = dr.data();
                                 console.log("vehicle: ", dr);
                                 cell = row.insertCell();
@@ -405,3 +406,13 @@ document.getElementById('search-type').addEventListener('change', async function
     // let vlistmaintain = await wrap.Advanced_search(["VehicleType", "status"], ["...", 2])
     redraw();
 })
+setTimeout(async function(){
+    const maintenanceAlert = new maintenance_alert(wrapper.vehicle_list);
+    await maintenanceAlert.reload();
+    wrapper.update_continuous();
+    // for(let i in vehicleList.vehicle_list){
+    //     if(Trip_Info_Object.end_Time < new Date()) vehicleList.vehicle_list[i].update_Info(Trip_Info_Object, false);
+    //     else if(crashed == true) vehicleList.vehicle_list[i].update_Info(null, true);
+    //     else vehicleList.vehicle_list[i].update_Info(null, false);
+    // }
+}, 1000);

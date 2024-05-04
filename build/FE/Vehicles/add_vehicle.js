@@ -103,4 +103,4 @@ setTimeout(async function(){
     //     else if(crashed == true) vehicleList.vehicle_list[i].update_Info(null, true);
     //     else vehicleList.vehicle_list[i].update_Info(null, false);
     // }
-}, 5000);
+}, 1000);

@@ -37,7 +37,7 @@ class vehicles_wrapper {
     async add(VehicleType, control_Plate, weight, fuel, capacity, speciality, height, length, max_Load, image1, image2) {
         const new_vehicle = this.vehicleInfo.vehicleRegister(control_Plate, VehicleType, weight, fuel,
             capacity, speciality, height, length, max_Load);
-            
+
         new_vehicle.maintenance = new_vehicle.maintenance.toObject();
         let checked = await DefaultsearchVehicle(new_vehicle);
         if (checked != null && checked == "Not found") {
@@ -121,7 +121,8 @@ class vehicles_wrapper {
     }
     async update_continuous() {
         for (let vehicle of this.vehicle_list) {
-            console.log(vehicle);
+            console.log("🚀 ~ file: Vehicle_Wrapper.js:124 ~ vehicle:", vehicle);
+            
             let OldData = await DefaultsearchVehicle(vehicle);
             // let NewData = vehicle;
             // NewData.maintenance = NewData.maintenance.toObject();
@@ -132,7 +133,10 @@ class vehicles_wrapper {
             //     console.log(OldData.car_ID);
             //     editVehicle(OldData.id, vehicle);
             // }
-            OldData.forEach(doc => { editVehicle(doc.id, vehicle); });
+            OldData.forEach(async function (doc) {
+                console.log("🚀 ~ file: Vehicle_Wrapper.js:136 ~ doc:", doc);
+                await editVehicle(doc.id, vehicle);
+            });
         }
     }
 }
