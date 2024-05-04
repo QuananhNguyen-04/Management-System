@@ -8,7 +8,7 @@ class vehicle {
     constructor(control_Plate) {
         this.car_ID = generateID();
         this.control_Plate = control_Plate;
-        this.status = VehicleStatus.ACTIVE;
+        this.status = VehicleStatus.UNAVAILABLE;
         this.recent_Trip = null;
         this.maintenance = new maintenance_info(this.car_ID);
     }
@@ -23,7 +23,7 @@ class vehicle {
             return new Container(control_Plate, weight, height, length, max_Load);
     }
 }
-// vehicle support method
+// vehicle infomation support method
 function vehicles_Info(vehicleData){
         if (vehicleData.VehicleType == Vehicle_Type.C_Type){
             return "ID: " + vehicleData.car_ID + "\n" +
@@ -49,31 +49,6 @@ function vehicles_Info(vehicleData){
                 "Max Load: " + vehicleData.vehicle.max_Load + "\n" +
                 "Status: " + vehicleData.status;
         }
-}
-function setting_Maintenance(driver_ID) {
-        vehicleData.maintenance.assign_Driver(driver_ID);
-}
-function alert_Maintenance(vehicleData, driver_list) {
-    vehicleData.status = VehicleStatus.MAINTENANCE;
-    // if (vehicleData.maintenance.driver_ID == null) vehicleData.setting_Maintenance(driver_list[0].driver_ID);
-    vehicleData.maintenance.assign_Driver(123456);
-    vehicleData.maintenance.alert();
-}
-function update_Info(Trip_Info_Object, crashed) {
-    if (vehicleData.maintenance == null && crashed == false) {
-        vehicleData.status = VehicleStatus.ACTIVE;
-    } else if (crashed == true) {
-        vehicleData.status = VehicleStatus.UNAVAILABLE;
-    } else {
-        const current_time = new Date();
-        if (vehicleData.maintenance.date + vehicleData.maintenance.maintenance_time < current_time) {
-            vehicleData.status = VehicleStatus.ACTIVE;
-            vehicleData.maintenance = null;
-        }
-    }
-    if (vehicleData.recent_Trip != null) {
-        vehicleData.recent_Trip = Trip_Info_Object;
-    }
 }
 
 //Create child classes for vehicle
@@ -108,7 +83,7 @@ class Container extends vehicle {
 }
 
 //export the classes
-export { vehicle, Truck, Coach, Container, alert_Maintenance};
+export { vehicle, Truck, Coach, Container};
 
 // Test communication between classes
 // const vehicleList = new vehicles_wrapper();

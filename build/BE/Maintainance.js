@@ -1,9 +1,22 @@
 //import information from another file
 import { editVehicle } from "./fetchVehicle.js"
-import { alert_Maintenance } from "./Vehicle.js"
+import { VehicleStatus } from "./Extra_function.js";
+
+//Function support for maintenance alert
+function setting_Maintenance(vehicleData, driver_ID) {
+    vehicleData.maintenance.assign_Driver(driver_ID);
+}
+
+function alert_Maintenance(vehicleData, driver_list) {
+    vehicleData.status = VehicleStatus.MAINTENANCE;
+    if (vehicleData.maintenance.driver_ID == null) setting_Maintenance(vehicleData, driver_list[0].driver_ID);
+    // vehicleData.maintenance.assign_Driver(123456);
+    vehicleData.maintenance.alert();
+}
+
 //Create class for maintenance information
 class maintenance_info{
-    constructor(car_ID, driver_ID = null, date = new Date().setMinutes(new Date().getMinutes() + 1)){
+    constructor(car_ID, driver_ID = null, date = new Date().setMonth(new Date().getMonth() + 2)){
         //Assign value for maintenance information - change a object into class temporary
         this.car_ID = car_ID;
         this.driver_ID = driver_ID;
@@ -27,7 +40,7 @@ class maintenance_info{
         this.driver_ID = null;
         this.date = new Date();  //current date
         // this.date.setMonth(this.date.getMonth() + 6); //6 months 
-        this.date.setMinutes(this.date.getMinutes() + 10); //10 minutes
+        this.date.setMonth(this.date.getMonth() + 2); //2 months
     }
     toObject(){
         return {
@@ -61,19 +74,20 @@ class maintenance_alert{
         const current_time = new Date();
         for(let vehicle of this.vehicle_list){
             if(vehicle.maintenance != null){
-                console.log(vehicle.maintenance);
+                // console.log(vehicle.maintenance);
                 vehicle.maintenance = new maintenance_info(vehicle.car_ID, vehicle.maintenance.driver_ID, vehicle.maintenance.date);
-                console.log(vehicle.maintenance);
-                console.log(current_time);
-                console.log(current_time - vehicle.maintenance.date)
-                if(vehicle.maintenance.date <= current_time && (current_time - vehicle.maintenance.date) <= (2 * 60 * 60 * 1000)){ 
+                // console.log(vehicle.maintenance);
+                // console.log(current_time);
+                // console.log(current_time - vehicle.maintenance.date)
+                if(vehicle.maintenance.date <= current_time && (current_time - vehicle.maintenance.date) <= (7 * 24 * 60 * 60 * 1000)){ 
                     this.Alert_List(vehicle);
                     console.log("Set Alert successfully")
                     console.log(vehicle.maintenance);
                 } else {
                     this.NonAlert_List(vehicle);
                     console.log("Remove Alert successfully")
-                    if((current_time - vehicle.maintenance.date) >= (2 * 60 * 60 * 1000)){
+                    vehicle.status = VehicleStatus.UNAVAILABLE
+                    if((current_time - vehicle.maintenance.date) >= (7 * 24 * 60 * 60 * 1000)){
                         console.log("Run update")
                         vehicle.maintenance.update();
                     }
@@ -89,7 +103,6 @@ class maintenance_alert{
         });
     }
 }
-
 
 //Exporting the classes
 export {maintenance_info, maintenance_alert};
