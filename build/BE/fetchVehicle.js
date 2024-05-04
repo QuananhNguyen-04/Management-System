@@ -70,7 +70,6 @@ async function searchVehicle(field, value) {
         console.log("🚀 --------------------------------------------------------------------------------🚀");
         console.log("🚀 ~~ file: fetchVehicle.js:69 ~~ searchVehicle ~~ querySnapshot:", querySnapshot);
         console.log("🚀 --------------------------------------------------------------------------------🚀");
-        
         if (querySnapshot.empty) return null;
         else return querySnapshot;
     } catch (e) {   
@@ -81,9 +80,12 @@ async function searchVehicle(field, value) {
 async function DefaultsearchVehicle(VehicleData) {
     try {
         let temp = await searchVehicle('control_Plate', VehicleData.control_Plate);
+
+        if (temp == null) return "Not found";
         console.log("Search Complete: ", temp);
         if (temp == null) return "Not found";
         if (isExisted(temp) != true) return 'Not found';
+
         else 
             if(temp.size > 1) return false;
             else return temp;

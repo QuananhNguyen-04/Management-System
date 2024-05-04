@@ -23,9 +23,9 @@ class vehicles_wrapper {
     async add(VehicleType, control_Plate, weight, fuel, capacity, speciality, height, length, max_Load, image1, image2) {
         const new_vehicle = this.vehicleInfo.vehicleRegister(control_Plate, VehicleType, weight, fuel,
             capacity, speciality, height, length, max_Load);
+            
         new_vehicle.maintenance = new_vehicle.maintenance.toObject();
         let checked = await DefaultsearchVehicle(new_vehicle);
-
         if (checked != null && checked == "Not found") {
             const front_image = await pushFile('VEHICLE/', image1, new_vehicle.car_ID, 'front');
             console.log(front_image);
