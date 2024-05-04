@@ -1,5 +1,6 @@
 import { vehicles_wrapper } from "../../BE/Vehicle_Wrapper.js";
-import { fetchDriver } from "../../BE/driverDatabaseInteract.js";
+import { fetchDriver, searchDriver, searchDriverByInfo } from "../../BE/driverDatabaseInteract.js";
+import { searchVehicle } from "../../BE/fetchVehicle.js";
 import { db, doc, getDoc } from "../../BE/firebase_Init.js";
 var drivers = [
     {
@@ -102,7 +103,12 @@ async function showProfile(index) {
     let maintain = driver['maintenance'];
     let dr = null;
     if (maintain != null) {
-        dr = await fetchDriver(maintain.driver_Id);
+        let id = maintain.driver_ID;
+        let sth = await searchDriverByInfo("id", id);
+
+        console.log(id);
+        console.log("sth: ", sth[0]);
+        dr = sth[0];
         dr = dr.data();
     }
     document.getElementById('profile-name').textContent = "Biển số xe: " + driver.control_Plate;
@@ -126,13 +132,13 @@ async function showProfile(index) {
         document.getElementById('profile-driver-name').textContent = "Tên tài xế: " + (dr.name == null ? "" : dr.name);
         document.getElementById('profile-driver-dob').textContent = "Ngày sinh: " + (dr.DoB == null ? "" : dr.DoB);
         document.getElementById('profile-driver-hometown').textContent = "Quê quán: " + (dr.hometown == null ? "" : dr.hometown);
-        document.getElementById('profile-driver-photo').src = dr.idCard;
+        document.getElementById('profile-driver-photo').src = (dr.idCard == "" || dr.idCard == "N/A") ? "": dr.idCard;
     }
     else {
         document.getElementById('profile-driver-name').textContent = "Tên tài xế: " + "";
         document.getElementById('profile-driver-dob').textContent = "Ngày sinh: " + "";
         document.getElementById('profile-driver-hometown').textContent = "Quê quán: " + "";
-        document.getElementById('profile-driver-photo').src = "";
+        document.getElementById('profile-driver-photo').textContent = "Non driver";
     }
     document.querySelector('.profile-container').style.display = 'block';
     document.querySelector('.overlay').style.display = 'block'; // Show overlay
@@ -265,9 +271,9 @@ var redraw = async function () {
             th.textContent = header;
             headerRow.appendChild(th);
         });
-        filteredDrivers.forEach(async function (driver, index) {
+        filteredDrivers.forEach(async function (vehicle, index) {
             var row = table.insertRow();
-            // var values = [driver.type, driver.plateNumber, driver.mainDriver, driver.mainDriverPhone, driver.statusVehicle, driver.imageUrl[0]];
+            // var values = [vehicle.type, vehicle.plateNumber, vehicle.mainDriver, vehicle.mainDriverPhone, vehicle.statusVehicle, vehicle.imageUrl[0]];
             let features = ["VehicleType", "control_Plate", "status"];
             // values.forEach(function (value, i) {
             //     var cell = row.insertCell();
@@ -280,12 +286,12 @@ var redraw = async function () {
             //         cell.textContent = value;
             //     }
             // });
-            console.log("vehicle: ", driver)
-            // Assuming 'driver' is your JSON object
+            console.log("vehicle: ", vehicle)
+            // Assuming 'vehicle' is your JSON object
             for (const key of features) {
-                if (driver.hasOwnProperty(key)) {
+                if (vehicle.hasOwnProperty(key)) {
                     if (key == "status") {
-                        if (driver[key] === 3) {
+                        if (vehicle[key] === 3) {
                             cell = row.insertCell();
                             cell.textContent = null;
                             cell = row.insertCell();
@@ -294,14 +300,18 @@ var redraw = async function () {
                             cell.textContent = "Chưa Sử Dụng";
                             continue
                         }
-                        let maintain = driver["maintenance"];
+                        let maintain = vehicle["maintenance"];
                         if (maintain !== null) {
                             console.log("maintain: ", maintain);
-                            let id = maintain.driver_Id;
-                            let dr = await fetchDriver(id);
+                            let id = maintain.driver_ID;
+                            let sth = await searchDriverByInfo("id", id);
+
+                            console.log(id);
+                            console.log("sth: ", sth[0]);
+                            let dr = sth[0];
                             if (dr != 'Not found') {
                                 dr = dr.data();
-                                console.log("driver: ", dr);
+                                console.log("vehicle: ", dr);
                                 cell = row.insertCell();
                                 cell.textContent = dr.name;
                                 cell = row.insertCell();
@@ -321,9 +331,9 @@ var redraw = async function () {
                         continue
                     }
                     var cell = row.insertCell();
-                    var value = driver[key];
+                    var value = vehicle[key];
                     if (key == "VehicleType") {
-                        switch (driver[key]) {
+                        switch (vehicle[key]) {
                             case 1:
                                 value = "Xe Tải"
                                 break;
@@ -346,8 +356,8 @@ var redraw = async function () {
             }
             var cell = row.insertCell();
             var img = document.createElement('img');
-            console.log("loc:", driver.front_image)
-            img.src = driver.front_image == null || driver.front_image == "N/A" ? "": driver.front_image;
+            console.log("loc:", vehicle.front_image)
+            img.src = vehicle.front_image == null || vehicle.front_image == "N/A" ? "" : vehicle.front_image;
             img.style.maxWidth = '100px';
             cell.appendChild(img);
 

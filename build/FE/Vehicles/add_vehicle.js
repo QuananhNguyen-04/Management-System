@@ -1,6 +1,7 @@
 import { vehicles_wrapper } from "../../BE/Vehicle_Wrapper.js";
 import { vehicle } from "../../BE/Vehicle.js";
 import { maintenance_alert } from "../../BE/Maintainance.js";
+import { driver_wrapper } from "../../BE/Driver_Wrapper.js";
 
 
 let buttonActive = document.getElementById('btn_Truck');
@@ -93,9 +94,9 @@ document.getElementById('submit_container').addEventListener('click', async func
 // const vehicleList = new vehicles_wrapper();
 // const maintenanceAlert = new maintenance_alert(vehicleList.vehicle_list, null);
 // Test program to run Real-time for classes
-setTimeout(function(){
-    const maintenanceAlert = new maintenance_alert(wrapper.vehicle_list, null);
-    maintenanceAlert.reload();
+setTimeout(async function(){
+    const maintenanceAlert = new maintenance_alert(wrapper.vehicle_list, new driver_wrapper());
+    await maintenanceAlert.reload();
     wrapper.update_continuous();
     // for(let i in vehicleList.vehicle_list){
     //     if(Trip_Info_Object.end_Time < new Date()) vehicleList.vehicle_list[i].update_Info(Trip_Info_Object, false);

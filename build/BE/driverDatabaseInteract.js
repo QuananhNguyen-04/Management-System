@@ -66,11 +66,14 @@ async function fetchDriver(documentId) {
         // const colRef = collection(db, 'driver');
         // console.log(documentId)
         const temp = await getDoc(doc(db, 'driver', documentId));
+        console.log("🚀 ~ file: driverDatabaseInteract.js:69 ~ temp:", temp);
+        
         if (!temp.exists) return 'Not found';
         else return temp;
     }
     catch (error) {
         console.log('Error searching direct driver ', error);
+        return "Not found";
     }
 }
 async function searchDriver(_driver)    //Type: driver
@@ -112,7 +115,7 @@ async function searchDriverByInfo(infoType, value) {
        // const variations = new RegExp('^' + value + '$', 'i');
         console.log("🚀 ~ file: driverDatabaseInteract.js:94 ~ value:", value);
         console.log("🚀 ~ file: driverDatabaseInteract.js:94 ~ infoType:", infoType);
-       
+
         const documentCollectionRef = collection(db, 'driver');
         var q = documentCollectionRef;
         var type;
@@ -152,6 +155,7 @@ async function searchDriverByInfo(infoType, value) {
             }
         }
         q = await getDocs(q);
+        console.log(q);
         console.log("🚀 ~~ file: driverDatabaseInteract.js:144 ~~ searchDriverByInfo ~~ needLicense:", needLicense);
         console.log("🚀 ~ file: driverDatabaseInteract.js:145 ~ licenseInfoNeed:", licenseInfoNeed);
         let docList = q.docs;
