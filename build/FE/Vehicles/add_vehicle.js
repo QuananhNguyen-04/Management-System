@@ -1,5 +1,6 @@
 import { vehicles_wrapper } from "../../BE/Vehicle_Wrapper.js";
 import { vehicle } from "../../BE/Vehicle.js";
+import { maintenance_alert } from "../../BE/Maintainance.js";
 
 
 let buttonActive = document.getElementById('btn_Truck');
@@ -87,3 +88,18 @@ document.getElementById('submit_container').addEventListener('click', async func
     e.preventDefault();
     submitContainer();
 });
+
+// Test communication between classes
+// const vehicleList = new vehicles_wrapper();
+// const maintenanceAlert = new maintenance_alert(vehicleList.vehicle_list, null);
+// Test program to run Real-time for classes
+setTimeout(function(){
+    const maintenanceAlert = new maintenance_alert(wrapper.vehicle_list, null);
+    maintenanceAlert.reload();
+    wrapper.update_continuous();
+    // for(let i in vehicleList.vehicle_list){
+    //     if(Trip_Info_Object.end_Time < new Date()) vehicleList.vehicle_list[i].update_Info(Trip_Info_Object, false);
+    //     else if(crashed == true) vehicleList.vehicle_list[i].update_Info(null, true);
+    //     else vehicleList.vehicle_list[i].update_Info(null, false);
+    // }
+}, 5000);

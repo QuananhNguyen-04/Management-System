@@ -23,6 +23,7 @@ class vehicles_wrapper {
     async add(VehicleType, control_Plate, weight, fuel, capacity, speciality, height, length, max_Load, image1, image2) {
         const new_vehicle = this.vehicleInfo.vehicleRegister(control_Plate, VehicleType, weight, fuel,
             capacity, speciality, height, length, max_Load);
+        new_vehicle.maintenance = new_vehicle.maintenance.toObject();
         const front_image = await pushFile('VEHICLE/', image1, new_vehicle.car_ID, 'front');
         console.log(front_image);
         const back_image = await pushFile('VEHICLE/', image2, new_vehicle.car_ID, 'back');
@@ -74,22 +75,22 @@ class vehicles_wrapper {
     }
 
     async edit(control_Plate, weight, fuel, capacity, speciality, height, length, max_Load) {
-        for (let i in this.vehicle_list) {
-            if (i.control_Plate == control_Plate) {
-                let OldData = DefaultsearchVehicle(i);
-                if (i.VehicleType == Vehicle_Type.C_Type) {
-                    i.vehicle.weight = weight;
-                    i.vehicle.fuel = fuel;
+        for (let vehicle of this.vehicle_list) {
+            if (vehicle.control_Plate == control_Plate) {
+                let OldData = await DefaultsearchVehicle(vehicle);
+                if (vehicle.VehicleType == Vehicle_Type.C_Type) {
+                    vehicle.weight = weight;
+                    vehicle.fuel = fuel;
                 } else if (i.VehicleType == Vehicle_Type.E_type) {
-                    i.vehicle.capacity = capacity;
-                    i.vehicle.speciality = speciality;
+                    vehicle.capacity = capacity;
+                    vehicle.speciality = speciality;
                 } else if (i.VehicleType == Vehicle_Type.FC_type) {
-                    i.vehicle.weight = weight;
-                    i.vehicle.height = height;
-                    i.vehicle.length = length;
-                    i.vehicle.max_Load = max_Load;
+                    vehicle.weight = weight;
+                    vehicle.height = height;
+                    vehicle.length = length;
+                    vehicle.max_Load = max_Load;
                 }
-                OldData.forEach(doc => { editVehicle(doc.id, i); });
+                OldData.forEach(doc => { editVehicle(doc.id, vehicle); });
                 break;
             }
         }
@@ -102,6 +103,22 @@ class vehicles_wrapper {
     }
     async unavailable_List() {
         return this.Advanced_search('status', VehicleStatus.UNAVAILABLE);
+    }
+    async update_continuous() {
+        for(let vehicle of this.vehicle_list){
+            console.log(vehicle);
+            let OldData = await DefaultsearchVehicle(vehicle);
+            // let NewData = vehicle;
+            // NewData.maintenance = NewData.maintenance.toObject();
+            // if (Array.isArray(OldData)) {
+            //     console.log(OldData.id);
+            //     OldData.forEach(doc => { console.log(doc.id); editVehicle(doc.id, vehicle); });
+            // } else {
+            //     console.log(OldData.car_ID);
+            //     editVehicle(OldData.id, vehicle);
+            // }
+            OldData.forEach(doc => { editVehicle(doc.id, vehicle); });
+        }
     }
 }
 
