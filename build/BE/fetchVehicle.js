@@ -1,6 +1,6 @@
 //Import the firebase functions
 import { isExisted } from "./ExtraFunction2.js";
-import { db } from "./firebase_Init.js"
+import { db } from "./firebase_Init.js";
 import { getDocs, getDoc, setDoc, doc, collection, deleteDoc, query, where, and, or } 
 from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 
@@ -21,6 +21,7 @@ async function addVehicle(Vehicle_data, front_image, back_image) {
         const VehicleListRef = collection(db, "vehicles");
         const NewVehicleRef = doc(VehicleListRef);
         const NewVehicleData = Object.assign({}, Vehicle_data);
+        // NewVehicleData.maintenance = maintenance_info;
         NewVehicleData.front_image = front_image;
         NewVehicleData.back_image = back_image;
         await setDoc(NewVehicleRef, NewVehicleData);
@@ -80,13 +81,16 @@ async function searchVehicle(field, value) {
 async function DefaultsearchVehicle(VehicleData) {
     try {
         let temp = await searchVehicle('control_Plate', VehicleData.control_Plate);
+        console.log("Search Complete: ", temp);
         if (temp == null) return "Not found";
+        if (isExisted(temp) != true) return 'Not found';
         else 
             if(temp.size > 1) return false;
-            else temp.forEach((doc) => {
-                console.log(doc);
-                return doc.data();
-            });
+            else return temp;
+            // temp.forEach((doc) => {
+            //     console.log("WTF: ", doc.data());
+            //     return doc.data();
+            // });
     } catch (e) {    
         console.error("Error searching vehicle: ", e);
     }
@@ -94,12 +98,18 @@ async function DefaultsearchVehicle(VehicleData) {
 
 async function editVehicle(VehicleData_ID, Vehicle_newdata) {
     try {
+        // if (!VehicleData_ID) {
+        //     console.error("Invalid VehicleData_ID: ", VehicleData_ID);
+        //     return;
+        // }
+        
         const VehicleListRef = collection(db, "vehicles");
         const VehicleRef = doc(VehicleListRef, VehicleData_ID);
         const NewVehicleData = Object.assign({}, Vehicle_newdata);
         let OldVehicleData = await getDoc(VehicleRef);
         if(OldVehicleData.exists()){
             OldVehicleData = OldVehicleData.data();
+            // NewVehicleData.maintenance = OldVehicleData.maintenance.toObject();
             NewVehicleData.front_image = OldVehicleData.front_image;
             NewVehicleData.back_image = OldVehicleData.back_image;
         }
