@@ -1,8 +1,8 @@
 //Import the firebase functions
 import { isExisted } from "./ExtraFunction2.js";
 import { db } from "./firebase_Init.js";
-import { getDocs, getDoc, setDoc, doc, collection, deleteDoc, query, where, and, or } 
-from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+import { getDocs, getDoc, setDoc, doc, collection, deleteDoc, query, where, and, or }
+    from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 
 
 // try {
@@ -17,18 +17,17 @@ from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 
 //functions to interact with data on firestore
 async function addVehicle(Vehicle_data, front_image, back_image) {
-    try {
-        const VehicleListRef = collection(db, "vehicles");
-        const NewVehicleRef = doc(VehicleListRef);
-        const NewVehicleData = Object.assign({}, Vehicle_data);
-        // NewVehicleData.maintenance = maintenance_info;
-        NewVehicleData.front_image = front_image;
-        NewVehicleData.back_image = back_image;
-        await setDoc(NewVehicleRef, NewVehicleData);
-        console.log("Vehicle added succesfully: ", NewVehicleData);
-    } catch (e) {   
-        console.error("Error adding vehicle: ", e);
-    }
+    const VehicleListRef = collection(db, "vehicles");
+    const NewVehicleRef = doc(VehicleListRef);
+    const NewVehicleData = Object.assign({}, Vehicle_data);
+    console.log(NewVehicleData)
+    // NewVehicleData.maintenance = maintenance_info;
+    NewVehicleData.front_image = front_image;
+    NewVehicleData.back_image = back_image;
+    await setDoc(NewVehicleRef, NewVehicleData);
+    console.log("check add");
+    console.log("Vehicle added succesfully: ", NewVehicleData);
+    return true;
 }
 
 async function deleteVehicle(VehicleData_ID) {
@@ -36,7 +35,7 @@ async function deleteVehicle(VehicleData_ID) {
         const VehicleListRef = collection(db, "vehicles");
         const VehicleRef = await getDoc(VehicleListRef, VehicleData_ID);
         await deleteDoc(VehicleRef);
-    } catch (e) {   
+    } catch (e) {
         console.error("Error deleting vehicle: ", e);
     }
 }
@@ -56,7 +55,7 @@ async function searchVehicle(field, value) {
         //     }
         // });
         var q = VehicleListRef;
-        
+
         if (Array.isArray(field)) {
             for (let i = 0; i < field.length; i++) {
                 console.log("value: ", field[i], value[i])
@@ -72,7 +71,7 @@ async function searchVehicle(field, value) {
         console.log("🚀 --------------------------------------------------------------------------------🚀");
         if (querySnapshot.empty) return null;
         else return querySnapshot;
-    } catch (e) {   
+    } catch (e) {
         console.error("Error searching vehicle: ", e);
     }
 }
@@ -86,14 +85,14 @@ async function DefaultsearchVehicle(VehicleData) {
         if (temp == null) return "Not found";
         if (isExisted(temp) != true) return 'Not found';
 
-        else 
-            if(temp.size > 1) return false;
+        else
+            if (temp.size > 1) return false;
             else return temp;
-            // temp.forEach((doc) => {
-            //     console.log("WTF: ", doc.data());
-            //     return doc.data();
-            // });
-    } catch (e) {    
+        // temp.forEach((doc) => {
+        //     console.log("WTF: ", doc.data());
+        //     return doc.data();
+        // });
+    } catch (e) {
         console.error("Error searching vehicle: ", e);
     }
 }
@@ -104,13 +103,13 @@ async function editVehicle(VehicleData_ID, Vehicle_newdata) {
         //     console.error("Invalid VehicleData_ID: ", VehicleData_ID);
         //     return;
         // }
-        
+
         const VehicleListRef = collection(db, "vehicles");
         const VehicleRef = doc(VehicleListRef, VehicleData_ID);
         const NewVehicleData = Object.assign({}, Vehicle_newdata);
-        
+
         let OldVehicleData = await getDoc(VehicleRef);
-        if(OldVehicleData.exists()){
+        if (OldVehicleData.exists()) {
             OldVehicleData = OldVehicleData.data();
             // NewVehicleData.maintenance = OldVehicleData.maintenance.toObject();
             NewVehicleData.front_image = OldVehicleData.front_image;
@@ -119,7 +118,7 @@ async function editVehicle(VehicleData_ID, Vehicle_newdata) {
         console.log("🚀 ~ file: fetchVehicle.js:111 ~ NewVehicleData:", NewVehicleData);
         await setDoc(VehicleRef, NewVehicleData);
         return true;
-    } catch (e) {   
+    } catch (e) {
         console.error("Error changing data of vehicle: ", e);
         return false;
     }
@@ -136,10 +135,10 @@ async function fetchVehicle(vehicle_list) {
         });
         console.log("Vehicle list fetched succesfully: ", vehicle_list);
         return true;
-    } catch (e) {   
+    } catch (e) {
         console.error("Error fetching vehicle list: ", e);
         return false;
     }
 }
 
-export {addVehicle, deleteVehicle, searchVehicle, DefaultsearchVehicle, editVehicle, fetchVehicle};
+export { addVehicle, deleteVehicle, searchVehicle, DefaultsearchVehicle, editVehicle, fetchVehicle };

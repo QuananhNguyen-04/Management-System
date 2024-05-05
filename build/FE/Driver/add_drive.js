@@ -35,15 +35,10 @@ document.getElementById("submitt").addEventListener("click", async function (e) 
     }
     else {
         ExistID();
-        alert("id exist");
     }
     var _license = new driverLicense(License_Id, License_Rank, License_BD, License_Experies, Front_License, Back_License);
     var _driver = new driver(Name_Driver, DoB, Phone, ID, IMG_Driver, _license, 0, 2, null, 0, null);
     var temp = await _driver.push();
     if (temp) Success();
-    else Error();
-});
-//  function để show ra thông báo
-document.getElementById("notify").addEventListener("click", async function (e) {
-    showNotify();
+    else ExistID();
 });

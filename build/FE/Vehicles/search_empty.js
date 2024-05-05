@@ -204,14 +204,19 @@ async function updateDriver() {
 
     // driver.imageUrl[0] = document.getElementById('edit-image-url').value;
     // redraw()
-    await wrapper.edit(driver.control_Plate, driver.weight, driver.fuel, driver.capacity, driver.speciality,
+    let result = await wrapper.edit(driver.control_Plate, driver.weight, driver.fuel, driver.capacity, driver.speciality,
         driver.height, driver.lenght, driver.max_Load)
     // Cập nhật xong, ẩn form chỉnh sửa và hiển thị profile
     document.querySelector('.edit-form').style.display = 'none';
     document.querySelector('.profile-container').style.display = 'block';
     // Hiển thị thông tin cập nhật trên profile
     showProfile(currentDriverIndex);
-    redraw();
+    if (result == true) {
+        Success("Chỉnh sửa thành công");
+    }
+    else {
+        Error(result);
+    }
 }
 
 var wrap = new vehicles_wrapper();
@@ -411,7 +416,3 @@ setTimeout(async function () {
     //     else vehicleList.vehicle_list[i].update_Info(null, false);
     // }
 }, 1000);
-//  function để show ra thông báo
-document.getElementById("notify").addEventListener("click", async function (e) {
-    showNotify();
-});

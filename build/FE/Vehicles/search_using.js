@@ -430,7 +430,3 @@ document.getElementById("edit_btn").addEventListener('click', () => {
 document.getElementById("search-type").addEventListener('change', async function () {
     await redraw();
 })
-//  function để show ra thông báo
-document.getElementById("notify").addEventListener("click", async function (e) {
-    showNotify();
-});

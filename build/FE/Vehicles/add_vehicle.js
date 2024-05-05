@@ -49,10 +49,16 @@ async function submitTruck() {
     // img3 = document.querySelector("#Truck input[name='IMG_Vehicle3']").files[0];
     // img4 = document.querySelector("#Truck input[name='IMG_Vehicle4']").files[0];
     console.log(control_Plate, weight, fuel)
-    await wrapper.add(1, control_Plate, weight, fuel, null, null, null, null, null, img1, img2);
+    let result = await wrapper.add(1, control_Plate, weight, fuel, null, null, null, null, null, img1, img2);
+    if (result == true) {
+        Success("Đăng ký phương tiện thành công.");
+    }
+    else {
+        Error(result);
+    }
 }
 
-function submitCoach() {
+async function submitCoach() {
     type = "COACH";
     control_Plate = document.querySelector("#Coach input[name='Control_Plate']").value;
     var capacity = document.querySelector("#Coach input[name='Capacity_Vehicle']").value;
@@ -61,9 +67,15 @@ function submitCoach() {
     img2 = document.querySelector("#Coach input[name='IMG_Vehicle2']").files[0];
     // img3 = document.querySelector("#Coach input[name='IMG_Vehicle3']").files[0];
     // img4 = document.querySelector("#Coach input[name='IMG_Vehicle4']").files[0];
-    wrapper.add(2, control_Plate, null, null, capacity, speciality, null, null, null, img1, img2);
+    let result = await wrapper.add(2, control_Plate, null, null, capacity, speciality, null, null, null, img1, img2);
+    if (result == true) {
+        Success("Đăng ký phương tiện thành công.");
+    }
+    else {
+        Error(result);
+    }
 }
-function submitContainer() {
+async function submitContainer() {
     type = "Container";
     control_Plate = document.querySelector("#Container input[name='Control_Plate']").value;
     var weight = document.querySelector("#Container input[name='Weight_Vehicle']").value;
@@ -74,7 +86,13 @@ function submitContainer() {
     img2 = document.querySelector("#Container input[name='IMG_Vehicle2']").files[0];
     // img3 = document.querySelector("#Container input[name='IMG_Vehicle3']").files[0];
     // img4 = document.querySelector("#Container input[name='IMG_Vehicle4']").files[0];
-    wrapper.add(3, control_Plate, weight, null, null, null, height, length, max_load, img1, img2);
+    let result = await wrapper.add(3, control_Plate, weight, null, null, null, height, length, max_load, img1, img2);
+    if (result == true) {
+        Success("Đăng ký phương tiện thành công.");
+    }
+    else {
+        Error(result);
+    }
 }
 
 document.getElementById('submit_truck').addEventListener('click', async function(e) {
@@ -104,7 +122,3 @@ setTimeout(async function(){
     //     else vehicleList.vehicle_list[i].update_Info(null, false);
     // }
 }, 1000);
-//  function để show ra thông báo
-document.getElementById("notify").addEventListener("click", async function (e) {
-    showNotify();
-});

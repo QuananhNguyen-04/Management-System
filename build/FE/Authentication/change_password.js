@@ -1,5 +1,5 @@
 import { update } from "../../BE/Login.js";
-
+import { Warning, Success, Error } from "../alertbox.js";
 // validation form  and  user local storage
 const inputUsername = document.querySelector(".input-login-username");
 const inputEmail = document.querySelector(".input-login-email");
@@ -16,13 +16,13 @@ btnChangePassword.addEventListener("click", async (e) => {
     const newPassword = inputNewPassword.value;
     // Kiểm tra xem mật khẩu mới có nhiều hơn 8 ký tự và chứa ít nhất một chữ và một số không
     if (newPassword.length < 8 || !(/[a-zA-Z]/.test(newPassword) && /[0-9]/.test(newPassword))) {
-        alert("New password must be at least 8 characters long and contain at least one letter and one number.");
+        Error("Mật khẩu phải có 8 ký tự và chứa ít nhất một Chữ và Số");
         return;
     }
 
     // Kiểm tra xác nhận mật khẩu mới
     if (newPassword !== inputConfirmPassword.value) {
-        alert("New passwords do not match.");
+        Error("Mật khẩu không đúng.");
         return;
     }
 
@@ -33,17 +33,17 @@ btnChangePassword.addEventListener("click", async (e) => {
         inputNewPassword.value === "" ||
         inputConfirmPassword.value === ""
     ) {
-        alert("Please do not leave it blank");
+        Warning();
     }
     else {
         const status = await update(username, newPassword);
         if (
             status === true
         ) {
-            alert("Succeed");
+            Success("Thay đổi thành công");
             window.location.href = "../index.html";
         } else {
-            alert("Failed 1");
+            Error(status);
         }
     }
 });

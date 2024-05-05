@@ -95,34 +95,40 @@ function cancelEdit() {
 
 // Function cập nhật thông tin tài xế
 async function updateDriver() {
-    // console.log(dIndex);
-    var drdata = filteredDrivers[dIndex];
-    var dr = new driver();
-    console.log("🚀 ~ updateDriver ~ dr:", dr)
-    dr.assign(drdata);
-    let newd = dr.copy();
-    let doc = await searchDriver(newd);
-    var newName = document.getElementById('edit-name').value;
-    var newType = document.getElementById('edit-type').value;
-    var newEff = document.getElementById('edit-efficiency').value;
-    var newPhone = document.getElementById('edit-phone').value;
-
-    newd.name = newName;
-    newd.license.tier = newType;
-    newd.efficiency = newEff;
-    newd.phoneNumber = newPhone;
-
-    wrap.edit(doc, newd);
-
-    // Hiển thị lại thông tin
-    showProfile(dIndex);
-    redraw();
-
-    // Ẩn phần chỉnh sửa và hiển thị thông báo cập nhật
-    document.querySelector('.edit-container').style.display = 'none';
-    // document.querySelector('.update-text').style.display = 'block';ppppppppppppppppppppppppppppppppppppppppppppppppp
-    document.querySelector('.profile-container button:nth-child(3)').style.display = 'inline'; // Hiển thị nút "Chỉnh sửa"
-    // document.querySelector('.profile-container button:nth-child(4)').style.display = 'inline'; // Hiển thị nút "Đóng"
+    try {
+        
+        // console.log(dIndex);
+        var drdata = filteredDrivers[dIndex];
+        var dr = new driver();
+        console.log("🚀 ~ updateDriver ~ dr:", dr)
+        dr.assign(drdata);
+        let newd = dr.copy();
+        let doc = await searchDriver(newd);
+        var newName = document.getElementById('edit-name').value;
+        var newType = document.getElementById('edit-type').value;
+        var newEff = document.getElementById('edit-efficiency').value;
+        var newPhone = document.getElementById('edit-phone').value;
+    
+        newd.name = newName;
+        newd.license.tier = newType;
+        newd.efficiency = newEff;
+        newd.phoneNumber = newPhone;
+    
+        wrap.edit(doc, newd);
+    
+        // Hiển thị lại thông tin
+        showProfile(dIndex);
+        redraw();
+    
+        // Ẩn phần chỉnh sửa và hiển thị thông báo cập nhật
+        document.querySelector('.edit-container').style.display = 'none';
+        // document.querySelector('.update-text').style.display = 'block';ppppppppppppppppppppppppppppppppppppppppppppppppp
+        document.querySelector('.profile-container button:nth-child(3)').style.display = 'inline'; // Hiển thị nút "Chỉnh sửa"
+        // document.querySelector('.profile-container button:nth-child(4)').style.display = 'inline'; // Hiển thị nút "Đóng"
+        Success("Chỉnh sửa thành công");
+    } catch (error) {
+        Error(error.message);
+    }
 }
 
 // Xử lý sự kiện khi nhấn nút tìm kiếm
@@ -256,9 +262,3 @@ redraw();
 //     overlay.style.display = 'block';
 // }
 // });
-
-
-//  function để show ra thông báo
-document.getElementById("notify").addEventListener("click", async function (e) {
-    showNotify();
-});

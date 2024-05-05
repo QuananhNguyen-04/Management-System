@@ -218,7 +218,7 @@ class Trip_Schedule {
             return true;
         } catch (e) {
             console.error("Error adding document: ", e);
-            return false;
+            return e.message;
         }
 
     }

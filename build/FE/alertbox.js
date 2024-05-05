@@ -42,18 +42,18 @@ function toast({
     }
 }
 // hàm alert
-function Success(){
+function Success(message = "Thêm tài xế thành công"){
     toast({
-        messeage: 'Thêm tài xế thành công',
+        messeage: message,
         type: 'success',
         func: function(){
             window.location.reload();
         }
     });
 }
-function Warning(){
+function Warning(message){
     toast({
-        messeage: 'Bạn phải điền đầy đủ thông tin',
+        messeage: message,
         type: 'warning',
         func: function(){
         }

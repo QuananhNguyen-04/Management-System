@@ -60,6 +60,7 @@ async function Find_Driver(Vehicles, Drivers, start, end) {
         const dlen = Drivers.length;
         if (vlen < 1 || dlen < 2) {
             console.log("Not enough supply");
+            Warning("Không có tài xế, phương tiện phù hợp. Hãy thử lại sau.")
             return false;
         }
         console.log("🚀 -------------------------------------------------------------🚀");
@@ -146,11 +147,11 @@ async function Find_Driver(Vehicles, Drivers, start, end) {
                     console.log("🚀 ~ file: request.js:150 ~ Start_Time:", time);
                     let result = await trips.add(Type_Vehicles, temp.driver.id, temp.vehicle.control_Plate, temp.sub_driver.id, cus_Name, cus_Phone, start, end, time, null, temp.cost).then();
                     if (result == true) {
-                        alert("Success");
+                        Success("Đăng ký thành công");
                         location.reload();
                     }
                     else {
-                        alert("Failure");
+                        Error(result);
                     }
 
                 }
@@ -200,7 +201,3 @@ document.getElementById('btn_check').addEventListener('click', async function ()
     Find_Driver(vList, dList, Start_Dest, End_Dest).then();
 
 })
-//  function để show ra thông báo
-document.getElementById("notify").addEventListener("click", async function (e) {
-    showNotify();
-});

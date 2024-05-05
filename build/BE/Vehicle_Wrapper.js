@@ -49,9 +49,16 @@ class vehicles_wrapper {
             // console.log(control_Plate, weight, fuel, capacity);
             this.vehicle_list.push(new_vehicle);
             this.size++;
-            addVehicle(new_vehicle, front_image, back_image);
+            let result = await addVehicle(new_vehicle, front_image, back_image);
+            if (result != true) {
+                return "Đã xảy ra lỗi";
+            }
             console.log("add vehicle success");
-        } else console.log("Vehicle already existed");
+            return true;
+        } else {
+            console.log("Vehicle already existed");
+            return "Phương tiện tồn tại.";
+        }
     }
 
     async delete(VehicleData) {
@@ -90,6 +97,7 @@ class vehicles_wrapper {
     }
 
     async edit(control_Plate, weight, fuel, capacity, speciality, height, length, max_Load) {
+    try {
         for (let vehicle of this.vehicle_list) {
             if (vehicle.control_Plate == control_Plate) {
                 let OldData = await DefaultsearchVehicle(vehicle);
@@ -109,6 +117,10 @@ class vehicles_wrapper {
                 break;
             }
         }
+        return true;
+    } catch (error) {
+        return error.message
+    }
     }
     async active_List() {
         return this.Advanced_search('status', VehicleStatus.ACTIVE);
