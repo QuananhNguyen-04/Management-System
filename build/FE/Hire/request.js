@@ -1,7 +1,7 @@
 import { driver_wrapper } from "../../BE/Driver_Wrapper.js"
 import { vehicles_wrapper } from "../../BE/Vehicle_Wrapper.js";
 import { Trip_Schedule, Trip, trip_Money } from "../../BE/Trip_Scheduling.js"
-
+import {Warning, ExistID, Success, Error, showNotify} from "../alertbox.js"
 
 var Vehicles = [
     { Main_Driver_Name: 'Tài', Driver_Phone: '034594582354', Assistant_Driver_Name: 'fsdfsdfsđ', Vehicle_Num: '59-S3 32423', Cost_Veh: '100.000Đ', },
@@ -200,3 +200,7 @@ document.getElementById('btn_check').addEventListener('click', async function ()
     Find_Driver(vList, dList, Start_Dest, End_Dest).then();
 
 })
+//  function để show ra thông báo
+document.getElementById("notify").addEventListener("click", async function (e) {
+    showNotify();
+});

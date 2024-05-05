@@ -244,6 +244,11 @@
             <img src="https://media.loveitopcdn.com/3807/la-co-viet-nam-vector-1.png" alt="Vietnam Flag"
                 class="vietnam-flag">
         </div>
+        <div class="Noti">
+            <div id="notify"><i class="fa-regular fa-bell"></i></div>
+            <div id="excla" class="excla" style="display: none;"><i class="fa-solid fa-exclamation"></i></div>
+            <div id="notify_box"></div>
+        </div>
         <h1>NHÀ XE HẠNH PHÚC</h1>
         <div class="dropdown logout-container">
             <img src="https://png.pngtree.com/png-clipart/20190604/original/pngtree-truck-driver-png-image_805319.jpg"
@@ -264,6 +269,7 @@
             </div>
         </div>
     </header>
+    <div id="toast"></div>
     <div class="overlay"></div>
     <div id="search-container">
         <div class="search-box">
@@ -318,28 +324,29 @@
     <div class="edit-form" id="edit-form">
         <table>
             <tr>
-                <td>Tài xế chính:</td>
-                <td><input type="text" id="edit-main-driver"></td>
+                <td>Khối lượng:</td>
+                <td><input type="text" id="edit-weight"></td>
             </tr>
             <tr>
-                <td>Ngày sinh tài xế:</td>
-                <td><input type="text" id="edit-main-driver-dob"></td>
+                <td>Nhiên liệu:</td>
+                <td><input type="text" id="edit-fuel"></td>
+            </tr>
+            
+            <tr>
+                <td>Sức chứa:</td>
+                <td><input type="text" id="edit-capacity"></td>
             </tr>
             <tr>
-                <td>Quê quán tài xế:</td>
-                <td><input type="text" id="edit-main-driver-hometown"></td>
+                <td>Chiều cao:</td>
+                <td><input type="text" id="edit-height"></td>
             </tr>
             <tr>
-                <td>Số điện thoại tài xế:</td>
-                <td><input type="text" id="edit-main-driver-phone"></td>
+                <td>Chiều dài:</td>
+                <td><input type="text" id="edit-length"></td>
             </tr>
             <tr>
                 <td>Tình trạng xe:</td>
-                <td><input type="text" id="edit-status-vehicle"></td>
-            </tr>
-            <tr>
-                <td>Hình ảnh tài xế:</td>
-                <td><input type="text" id="edit-main-driver-photo"></td>
+                <td><input type="text" id="edit-status"></td>
             </tr>
         </table>
         <button id="cancel_btn" >Hủy</button>

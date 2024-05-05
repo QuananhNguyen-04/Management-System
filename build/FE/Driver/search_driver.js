@@ -1,6 +1,7 @@
 import { driver, driverLicense } from "../../BE/Driver.js";
 import { driver_wrapper } from "../../BE/Driver_Wrapper.js";
 import { searchDriver } from "../../BE/driverDatabaseInteract.js";
+import {Warning, ExistID, Success, Error, showNotify} from "../alertbox.js"
 var wrap = new driver_wrapper();
 var drivers = [
     { name: 'Tài xế 1', type: 'Xe khách', phone: '0123456789', profilePicture: 'profile1.jpg', drivingLicense: 'license1.jpg', personalInfo: 'Some information about driver 1.' },
@@ -47,6 +48,13 @@ function showProfile(index) {
     currentDriverIndex = index;
     document.getElementById('profile-picture').src = driver.idCard;
     document.getElementById('driving-license').src = driver.license.frontImg;
+    document.getElementById('profile-picture').onclick = function () {
+        window.open(driver.idCard, '_blank');
+    };
+    document.getElementById('driving-license').onclick = function () {
+        window.open(driver.license.frontImg, '_blank');
+    };
+
     document.getElementById('profile-name').textContent = driver.name;
     document.getElementById('profile-info').textContent = "Eff: " + driver.efficiency + ". Status: " + (driver.status == 1? "Working" : "Resting");
     document.querySelector('.edit-container').style.display = 'none';
@@ -250,4 +258,7 @@ redraw();
 // });
 
 
-// search_driver();
+//  function để show ra thông báo
+document.getElementById("notify").addEventListener("click", async function (e) {
+    showNotify();
+});

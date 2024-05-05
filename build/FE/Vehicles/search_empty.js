@@ -1,6 +1,7 @@
 import { vehicles_wrapper } from "../../BE/Vehicle_Wrapper.js";
 import { fetchDriver, searchDriver, searchDriverByInfo } from "../../BE/driverDatabaseInteract.js";
 import { maintenance_alert } from "../../BE/Maintainance.js";
+import {Warning, ExistID, Success, Error, showNotify} from "../alertbox.js"
 var drivers = [
     {
         plateNumber: '29B-12345',
@@ -108,8 +109,8 @@ async function showProfile(index) {
         console.log(id);
         console.log("sth: ", sth[0]);
         if (sth != "Not found") {
-        dr = sth[0];
-        dr = dr.data();
+            dr = sth[0];
+            dr = dr.data();
         }
     }
     document.getElementById('profile-name').textContent = "Biển số xe: " + driver.control_Plate;
@@ -133,14 +134,19 @@ async function showProfile(index) {
         document.getElementById('profile-driver-name').textContent = "Tên tài xế: " + (dr.name == null ? "" : dr.name);
         document.getElementById('profile-driver-dob').textContent = "Ngày sinh: " + (dr.DoB == null ? "" : dr.DoB);
         document.getElementById('profile-driver-hometown').textContent = "Quê quán: " + (dr.hometown == null ? "" : dr.hometown);
-        document.getElementById('profile-driver-photo').src = (dr.idCard == "" || dr.idCard == "N/A") ? "": dr.idCard;
+        document.getElementById('profile-driver-photo').src = (dr.idCard == "" || dr.idCard == "N/A") ? "" : dr.idCard;
     }
     else {
         document.getElementById('profile-driver-name').textContent = "Tên tài xế: " + "";
         document.getElementById('profile-driver-dob').textContent = "Ngày sinh: " + "";
         document.getElementById('profile-driver-hometown').textContent = "Quê quán: " + "";
+        document.getElementById('profile-driver-photo').src = driver.front_image == null || driver.front_image == "N/A" ? "" : driver.front_image;;
         document.getElementById('profile-driver-photo').textContent = "Non driver";
     }
+    var profileImages = document.getElementById('profile-driver-photo');
+    profileImages.onclick = function () {
+        window.open(profileImages.src, '_blank');
+    };
     document.querySelector('.profile-container').style.display = 'block';
     document.querySelector('.overlay').style.display = 'block'; // Show overlay
 }
@@ -158,11 +164,12 @@ document.querySelector('.overlay').addEventListener('click', function () {
 // Function mở form chỉnh sửa
 function editProfile() {
     var driver = filteredDrivers[currentDriverIndex];
-    document.getElementById('edit-main-driver').value = driver.mainDriver;
-    document.getElementById('edit-main-driver-dob').value = driver.mainDriverDOB;
-    document.getElementById('edit-main-driver-hometown').value = driver.mainDriverHometown;
-    document.getElementById('edit-main-driver-phone').value = driver.mainDriverPhone;
-    document.getElementById('edit-status-vehicle').value = driver.statusVehicle;
+    document.getElementById("edit-weight").value = driver.weight != null ? driver.weight : "Không thể sửa";
+    document.getElementById("edit-fuel").value = driver.fuel != null ? driver.fuel : "Không thể sửa";
+    document.getElementById("edit-capacity").value = driver.capacity != null ? driver.capacity : "Không thể sửa";
+    document.getElementById("edit-height").value = driver.height != null ? driver.height : "Không thể sửa";
+    document.getElementById("edit-length").value = driver.length != null ? driver.length : "Không thể sửa";
+    document.getElementById("edit-status").value = driver.status != null ? driver.status : "Không thể sửa";
     document.querySelector('.edit-form').style.display = 'block';
     document.querySelector('.profile-container').style.display = 'none';
 
@@ -186,37 +193,25 @@ function cancelEdit() {
 
 
 // Function cập nhật thông tin tài xế
-function updateDriver() {
+async function updateDriver() {
     var driver = filteredDrivers[currentDriverIndex];
-    driver.mainDriver = document.getElementById('edit-main-driver').value;
-    driver.mainDriverPhone = document.getElementById('edit-main-driver-phone').value;
-    driver.statusVehicle = document.getElementById('edit-status-vehicle').value;
+    driver.weight = document.getElementById("edit-weight").value;
+    driver.fuel = document.getElementById("edit-fuel").value;
+    driver.capacity = document.getElementById("edit-capacity").value;
+    driver.height = document.getElementById("edit-height").value;
+    driver.length = document.getElementById("edit-length").value;
+    driver.status = document.getElementById("edit-status").value;
 
     // driver.imageUrl[0] = document.getElementById('edit-image-url').value;
     // redraw()
+    await wrapper.edit(driver.control_Plate, driver.weight, driver.fuel, driver.capacity, driver.speciality,
+        driver.height, driver.lenght, driver.max_Load)
     // Cập nhật xong, ẩn form chỉnh sửa và hiển thị profile
     document.querySelector('.edit-form').style.display = 'none';
     document.querySelector('.profile-container').style.display = 'block';
     // Hiển thị thông tin cập nhật trên profile
-    document.getElementById('profile-name').textContent = "Biển số xe: " + driver.plateNumber;
-    document.getElementById('profile-type').textContent = "Loại xe: " + driver.type;
-    document.getElementById('profile-phone').textContent = "Số điện thoại tài xế: " + driver.mainDriverPhone;
-    var profileImages = document.getElementById('profile-images');
-    profileImages.innerHTML = '';
-    driver.imageUrl.forEach(function (imageUrl) {
-        var img = document.createElement('img');
-        img.src = imageUrl;
-        img.onclick = function () {
-            window.open(imageUrl, '_blank');
-        };
-        profileImages.appendChild(img);
-    });
-
-    // Hiển thị thông tin tài xế và phụ xe
-    document.getElementById('profile-driver-name').textContent = "Tên tài xế: " + driver.mainDriver;
-    document.getElementById('profile-driver-dob').textContent = "Ngày sinh: " + driver.mainDriverDOB;
-    document.getElementById('profile-driver-hometown').textContent = "Quê quán: " + driver.mainDriverHometown;
-    document.getElementById('profile-driver-photo').src = driver.mainDriverPhoto;
+    showProfile(currentDriverIndex);
+    redraw();
 }
 
 var wrap = new vehicles_wrapper();
@@ -399,14 +394,14 @@ document.getElementById('cancel_btn').addEventListener('click', async function (
 })
 document.getElementById('update_btn').addEventListener('click', async function (e) {
     e.preventDefault();
-    updateDriver();
+    await updateDriver();
 })
 document.getElementById('search-type').addEventListener('change', async function () {
     // let vlistfree = await wrap.Advanced_search(["VehicleType", "status"], ["...", 3])
     // let vlistmaintain = await wrap.Advanced_search(["VehicleType", "status"], ["...", 2])
     redraw();
 })
-setTimeout(async function(){
+setTimeout(async function () {
     const maintenanceAlert = new maintenance_alert(wrapper.vehicle_list);
     await maintenanceAlert.reload();
     wrapper.update_continuous();
@@ -416,3 +411,7 @@ setTimeout(async function(){
     //     else vehicleList.vehicle_list[i].update_Info(null, false);
     // }
 }, 1000);
+//  function để show ra thông báo
+document.getElementById("notify").addEventListener("click", async function (e) {
+    showNotify();
+});

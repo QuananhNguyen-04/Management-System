@@ -2,7 +2,7 @@ import { vehicles_wrapper } from "../../BE/Vehicle_Wrapper.js";
 import { vehicle } from "../../BE/Vehicle.js";
 import { maintenance_alert } from "../../BE/Maintainance.js";
 import { driver_wrapper } from "../../BE/Driver_Wrapper.js";
-
+import {Warning, ExistID, Success, Error, showNotify} from "../alertbox.js"
 
 let buttonActive = document.getElementById('btn_Truck');
 var control_Plate;
@@ -104,3 +104,7 @@ setTimeout(async function(){
     //     else vehicleList.vehicle_list[i].update_Info(null, false);
     // }
 }, 1000);
+//  function để show ra thông báo
+document.getElementById("notify").addEventListener("click", async function (e) {
+    showNotify();
+});

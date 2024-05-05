@@ -2,6 +2,7 @@ import { Trip_Schedule } from "../../BE/Trip_Scheduling.js";
 import { searchDriverByInfo } from "../../BE/driverDatabaseInteract.js";
 import { DefaultsearchVehicle } from "../../BE/fetchVehicle.js";
 import { searchVehicle } from "../../BE/fetchVehicle.js";
+import {Warning, ExistID, Success, Error, showNotify} from "../alertbox.js"
 var drivers = [
     {
         plateNumber: '29B-12345',
@@ -429,3 +430,7 @@ document.getElementById("edit_btn").addEventListener('click', () => {
 document.getElementById("search-type").addEventListener('change', async function () {
     await redraw();
 })
+//  function để show ra thông báo
+document.getElementById("notify").addEventListener("click", async function (e) {
+    showNotify();
+});
